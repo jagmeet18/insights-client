@@ -1,31 +1,13 @@
+import React, { useEffect, useState, useCallback } from "react"
+// import { Switch, Route, Redirect } from "react-router-dom"
 import TextEditor from "./TextEditor"
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-} from "react-router-dom"
+import VirtualSpaces from "./VirtualSpaces"
 
-function App() {
+export default function App() {
+	const [userId, setUserId] = useState("qlQpFvVmJoV0LDGV5Zjr")
+    const [roomData, setRoomData] = useState()
+    
+    console.log("App component re-rendered!")
 
-  return (
-		<Router>
-			<Switch>
-				<Route path="/" exact>
-					<Redirect to={`/vs/create`} />
-				</Route>
-				<Route path="/:id" exact>
-					<Redirect to={`/vs/join/:id`} />
-				</Route>
-				<Route path="/vs/join/:id">
-					<TextEditor />
-				</Route>
-				<Route path="/vs/create">
-					<TextEditor />
-				</Route>
-			</Switch>
-		</Router>
-  )
+    return <>{!roomData ? <VirtualSpaces setRoomData={setRoomData} userId={userId} /> : <TextEditor data={roomData} />}</>
 }
-
-export default App

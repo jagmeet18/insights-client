@@ -1,25 +1,26 @@
 import axios from "axios"
 
-export async function joinRoom({ userId, roomId, quill, setSocket, io }) {
-	console.log(`Joining ${roomId ? "an old" : "a new"} virtual space...`)
-    const methodisGet = roomId ? true : false
-    const url = methodisGet ? `http://localhost:3000/vs?USER_ID=${userId}&ROOM_ID=${roomId}` : `http://localhost:3000/vs`
+export async function getVSData({ roomIsNew, roomIdentifier, userId, setData }) {
+	console.log(`${roomIsNew ? "Creating new" : "Retrieving existing"} virtual space data with the following params:`)
 	const options = {
-		url,
-		method: methodisGet ? "GET" : "POST",
-		...(!methodisGet && {
-			data: {
-				USER_ID: userId,
-				ROOM_NAME: "FIRST REACT ROOM",
+        // `?USER_ID=${userId}&ROOM_ID=${roomIdentifier}`
+		url: `http://localhost:3000/vs${!roomIsNew ? "?USER_ID=" + userId + "&ROOM_ID=" + roomIdentifier : ""}`,
+		method: roomIsNew ? "POST" : "GET",
+		...(roomIsNew && {
+            data: {
+                USER_ID: userId,
+				ROOM_NAME: roomIdentifier,
 			},
 		}),
-    }
+	}
+    console.table({...options})
 
 	try {
 		const response = await axios(options)
-        console.log(response)
-        setSocket(io(url))
+		// const response = { data: options }
+		response && console.log("Got data:", response)
+		setData(response.data)
 	} catch (err) {
-		console.error(`Error while fetching: ${err}`)
+		console.error("Error while fetching virtual space data: ", err)
 	}
 }
