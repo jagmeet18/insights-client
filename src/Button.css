@@ -1,0 +1,13 @@
+.button-container{
+    display: flex;
+    justify-content: center;
+    border: 1px solid red;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.profile-catalogue-button {
+    margin-inline: 15px;
+    border: 1px solid blue;
+    background-color: red;
+}

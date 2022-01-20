@@ -1,0 +1,7 @@
+export default CommunitySection = () => {
+    return ( 
+        <div className="all-communities">
+            {/* all the cards components come here */}
+        </div>
+     );
+}
