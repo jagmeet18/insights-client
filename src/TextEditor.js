@@ -15,60 +15,63 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
 ]
 
-// function unloadOnEditorHandler(socket, setSocket, register) {
-// 	window.onbeforeunload = register
-// 		? function () {
-// 				console.log("Disconnecting socket before unload")
-// 				socket.disconnect()
-// 				setSocket(socket)
-// 		  }
-// 		: null
-// }
-
 export default function TextEditor({ data }) {
 	const [socket, setSocket] = useState()
 	const [quill, setQuill] = useState()
 
-	console.log("Text Editor component re-rendered!")
+	console.log("Text Editor component rendered!")
+
+	// useEffect(() => {
+	// 	const s = io("http://localhost:3000")
+	// 	const close = (s) => s.close()
+	// 	window.onbeforeunload = (e) => close(s)
+	// 	window.addEventListener("beforeunload", (e) => close(s))
+	// 	return () => {
+	// 		window.removeEventListener("beforeunload", (e) => close(s))
+	// 		window.onbeforeunload = null
+	// 		close(s)
+	// 	}
+	// })
 
 	useEffect(() => {
-		console.log("Attempting to initialize Quill with data: ", data)
-		if (!data || !quill) return
+		console.log("Attempting to populate document...")
+		console.log("Quill: ", quill)
+		console.log("Data: ", data.collab)
+		if (!data.collab || !quill) return
 		const documentData = data.collab.content.arrayValue.values
 		quill.setContents(documentData)
 		quill.enable()
-	}, [data, quill])
+		return () => {
+			console.log("Document cleanup...")
+			console.log("Quill during cleanup: ", quill)
+			if (!quill) return
+			quill.deleteText(0, quill.getLength())
+			quill.disable()
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [
+		/**
+		 * We want to repopulate the document if the collab content
+		 * was changed before the last render.
+		 */
+		data.collab.content.arrayValue.values,
+		/**
+		 * We want to repopulate the document if the quill instance
+		 * was changed before the last render.
+		 */
+		quill,
+	])
 
 	// this inits a websocket connection w server
 	useEffect(() => {
-		console.log("Attempting to establish Websocket connection [data: ", data, "]")
-		if (!data) return
+	    if (!data) return
 		const s = io("http://localhost:3000")
-		s && console.log("Websocket connection established succesfully: ", s)
 		setSocket(s)
-
-		function unloadOnEditorHandler(event) { 
-			const e = event || window.event
-			if (e) {
-				e.preventDefault()
-				e.returnValue = ""
-			}
-			s.disconnect()
-			setSocket(s)
-			return ""
-		}
-
-		window.onbeforeunload = unloadOnEditorHandler
-		window.addEventListener("beforeunload", unloadOnEditorHandler)
-		// unloadOnEditorHandler(s, true)
-
-		return () => {
-			// unloadOnEditorHandler(s, setSocket, false)
-			console.log("Socket cleanup function")
-			s.disconnect()
-			setSocket(s)
-		}
-	}, [socket, data])
+		s.emit("join-room", {
+			userId: data.room.id,
+			roomId: data.room.id,
+		})
+	}, [data])
 
 	// this requests collab data and sets it to quill when it arrives
 	//   useEffect(() => {
@@ -83,33 +86,33 @@ export default function TextEditor({ data }) {
 	//   }, [socket, quill, documentId])
 
 	// this updates the document when the server sends changes
-	useEffect(() => {
-		if (socket == null || quill == null) return
+	// useEffect(() => {
+	// 	if (socket == null || quill == null) return
 
-		const handler = (delta) => {
-			quill.updateContents(delta)
-		}
-		socket.on("receive-changes", handler)
+	// 	const handler = (delta) => {
+	// 		quill.updateContents(delta)
+	// 	}
+	// 	socket.on("receive-changes", handler)
 
-		return () => {
-			socket.off("receive-changes", handler)
-		}
-	}, [socket, quill])
+	// 	return () => {
+	// 		socket.off("receive-changes", handler)
+	// 	}
+	// }, [socket, quill])
 
 	// this sends changes to the server everytime there is a change
-	useEffect(() => {
-		if (socket == null || quill == null) return
+	// useEffect(() => {
+	// 	if (socket == null || quill == null) return
 
-		const handler = (delta, oldDelta, source) => {
-			if (source !== "user") return
-			socket.emit("send-changes", delta)
-		}
-		quill.on("text-change", handler)
+	// 	const handler = (delta, oldDelta, source) => {
+	// 		if (source !== "user") return
+	// 		socket.emit("send-changes", delta)
+	// 	}
+	// 	quill.on("text-change", handler)
 
-		return () => {
-			quill.off("text-change", handler)
-		}
-	}, [socket, quill])
+	// 	return () => {
+	// 		quill.off("text-change", handler)
+	// 	}
+	// }, [socket, quill])
 
 	const quillInitializerRef = useCallback((containerDiv) => {
 		if (containerDiv == null) return

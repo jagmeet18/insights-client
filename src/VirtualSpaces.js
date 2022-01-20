@@ -1,42 +1,43 @@
 import { useEffect, useState, useCallback } from "react"
+import { v4 as uuidv4 } from "uuid"
 import { getVSData } from "./server"
+import axios from "axios"
 
-export default function VirtualSpaces(props) {
+export default function VirtualSpaces({ userId, setRoomData }) {
 	const [roomId, setRoomId] = useState()
+	const [formState, setFormState] = useState(null)
 	const [roomName, setRoomName] = useState()
 	const [data, setData] = useState()
 
-	const { userId, setRoomData } = props
-
-	console.log("Virtual Spaces component re-rendered!")
+	console.log("Virtual Spaces component rendered!")
 
 	useEffect(() => {
-		console.log("Trying to set room data as:")
-		console.table(data ? { ...data } : {undefined})
 		if (!data) return
 		setRoomData(data)
 	}, [data, setRoomData])
 
-	const fetchRoomData = useCallback(
-		(roomIsNew, roomIdentifier) => {
-			getVSData({
-				roomIsNew,
-				roomIdentifier,
-				userId,
-				setData,
-			})
-		},
-		[userId]
-	)
+	useEffect(() => {
+		if (!formState) return
+
+		// if formState === "CREATE" : Name is provided and id needs to be generated
+		// if formState === "JOIN" : No name is provided and id is provided
+		getVSData(formState,{
+			userId,
+			roomId,
+			roomName,
+		}, setData)
+		
+	}, [formState, roomId, roomName, userId])
 
 	const handleJoinRoom = (e) => {
 		e.preventDefault()
-		fetchRoomData(false, roomId)
+		setFormState("JOIN")
 	}
 
 	const handleCreateRoom = (e) => {
 		e.preventDefault()
-		fetchRoomData(true, roomName)
+		setRoomId(uuidv4())
+		setFormState("CREATE")
 	}
 
 	return (
@@ -49,7 +50,7 @@ export default function VirtualSpaces(props) {
 						type="text"
 						onChange={(e) => {
 							const text = e.target.value
-							console.log("name: " + text)
+							// console.log("name: " + text)
 							setRoomName(text)
 						}}
 					/>
@@ -64,7 +65,7 @@ export default function VirtualSpaces(props) {
 						type="text"
 						onChange={(e) => {
 							const text = e.target.value
-							console.log("id: " + text)
+							// console.log("id: " + text)
 							setRoomId(text)
 						}}
 					/>
