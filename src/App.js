@@ -29,7 +29,7 @@ export default function App({ match }) {
 			</Route>
 			<Route path={`${match.path}/rooms`}>
 				<Rooms />
-        <ShowChat/>
+        {/* <ShowChat/> */}
 			</Route>
 			{/* <Route path="/rooms" exact>
 				<Rooms
