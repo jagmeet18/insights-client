@@ -1,28 +1,26 @@
-
+import {
+  faUsers,
+  faBookmark,
+  faUserCircle,
+} from "@fortawesome/free-solid-svg-icons";
 
 export const NavBarItems = [
   {
-    title: "Communities",
+    title: "communities",
     url: "#", //route to communities page
     cName: "side-links-communities",
-    fontClass: "faUsers",
+    fontClass: faUsers,
   },
   {
-    title: "Virtual Space",
+    title: "rooms",
     url: "#", //route to virtualspace page
     cName: "side-links-virtual-space",
-    fontClass: "faBookmark",
+    fontClass: faBookmark,
   },
   {
-    title: "Explore",
-    url: "#", //route to explore page
-    cName: "side-links-explore",
-    fontClass: "faCompass",
-  },
-  {
-    title: "Profile Page",
+    title: "profile",
     url: "#", //route to profile page
     cName: "side-links-profile-page",
-    fontClass: "faUserCircle",
+    fontClass: faUserCircle,
   },
 ];

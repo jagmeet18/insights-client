@@ -3,6 +3,7 @@ import React from "react"
 import styles from './appbar.module.css'
 
 class AppBar extends React.Component {
+
     render() {
         return(
             <nav className={styles["navbar"]}>

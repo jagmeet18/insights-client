@@ -1,8 +1,7 @@
 import React from 'react';
-import { useHistory, Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 
-const SignUp = () => {
-    const history = useHistory()
+const SignUp = ({ history }) => {
     return (
         <div style={{ paddingLeft: "25px", paddingTop: "25px" }}>
             <button style={{marginBottom:"15px"}} onClick={() => history.push('/app')}>Sign up</button>

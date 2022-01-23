@@ -1,6 +1,6 @@
 import styles from "./catalogue.picker.module.css"
 // import ProfileCataloguePickerButton from "../../ButtonComp/Button.js"
-import { CataloguePickerButtons as buttons } from "./items";
+import { CataloguePickerButtons as buttons } from "./catalogue.picker.buttons";
 
 const ProfileCataloguePicker = ({setCatalogueState}) => {
 
