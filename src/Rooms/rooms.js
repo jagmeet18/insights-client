@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from "react"
 import { v4 as uuidv4 } from "uuid"
-import { getVSData } from "./server"
+import { getVSData } from "../VirtualSpace/server"
 // import axios from "axios"
 
 export default function Rooms({ roomList, setRoomData }) {
@@ -61,7 +61,7 @@ export default function Rooms({ roomList, setRoomData }) {
 						onChange={(e) => {
 							const text = e.target.value
 							// console.log("name: " + text)
-							setRoomName(text)
+							// setRoomName(text)
 						}}
 					/>
 				</label>
@@ -76,7 +76,7 @@ export default function Rooms({ roomList, setRoomData }) {
 						onChange={(e) => {
 							const text = e.target.value
 							// console.log("id: " + text)
-							setRoomId(text)
+							// setRoomId(text)
 						}}
 					/>
 				</label>
