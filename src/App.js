@@ -1,4 +1,12 @@
-import { useState } from "react"
+import React, { useState } from "react"
+// import { Switch, Route, Redirect } from "react-router-dom"
+import TextEditor from "./TextEditor"
+import VirtualSpaces from "./VirtualSpaces"
+import Navbar from "./BarComp/Navbar/Navbar"
+import Sidebar from "./BarComp/Sidebar/Sidebar"
+import Profile from './Profile';
+import "./App.css"
+import { CollabsList, CommunitiesList } from "./DummyData"
 import Rooms from "./Rooms"
 import VirtualSpace from "./VirtualSpace"
 import { Switch, Route } from "react-router-dom"
@@ -19,3 +27,4 @@ export default function App() {
 		</Switch>
 	)
 }
+
