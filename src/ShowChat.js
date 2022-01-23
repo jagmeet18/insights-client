@@ -4,8 +4,15 @@ import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 
 const ShowChat = () => {
-
-const socket = io.connect("http://localhost:3001");
+  const [socket, setSocket] = useState()
+  
+    useEffect(() => {
+      const socket = io.connect("http://localhost:3001");
+      setSocket(socket);
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
 
     const [username, setUsername] = useState("");
     const [room, setRoom] = useState("");
@@ -17,7 +24,6 @@ const socket = io.connect("http://localhost:3001");
         setShowChat(true);
     }
     };
-    
     return ( 
         <div className="show-chat">
             {!showChat ? (
