@@ -6,7 +6,7 @@ import NavBar from "./NavBar/bar";
 import Profile from "./Profile/page";
 // import "./App.css";
 // import { CollabsList, CommunitiesList } from "./DummyData";
-// import Rooms from "./Rooms";
+import Rooms from "./Rooms/page";
 // import VirtualSpace from "./VirtualSpace";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
@@ -19,10 +19,13 @@ export default function App({ match }) {
 		<UserProvider>
 			<NavBar />
 			<Route path={`${match.path}/`}>
-				<Redirect to={`${match.path}/profile`} />
+				<Redirect to={`${match.path}/rooms`} />
 			</Route>
 			<Route path={`${match.path}/profile`}>
 				<Profile />
+			</Route>
+			<Route path={`${match.path}/rooms`}>
+				<Rooms />
 			</Route>
 			{/* <Route path="/rooms" exact>
 				<Rooms

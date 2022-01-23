@@ -1,15 +1,12 @@
 import { useEffect, useState, useCallback } from "react"
-import { v4 as uuidv4 } from "uuid"
-import { getVSData } from "../VirtualSpace/server"
+// import { getVSData } from "../VirtualSpace/server"
 // import axios from "axios"
+import { useUser } from '../user.context'
 
-export default function Rooms({ roomList, setRoomData }) {
-	// const [roomId, setRoomId] = useState()
-	// const [formState, setFormState] = useState(null)
-	// const [roomName, setRoomName] = useState()
-	// const [data, setData] = useState()
-
-	console.log("Rooms component rendered!")
+export default function Rooms({ match, history }) {
+	const [newRoomId, setNewRoomId] = useState("");
+	const [newRoomName, setNewRoomName] = useState("");
+	const Rooms = useUser().roomsList
 
 	// useEffect(() => {
 	// 	if (!data) return
@@ -45,14 +42,12 @@ export default function Rooms({ roomList, setRoomData }) {
 
 	const handleJoinOldRoom = (e) => {
 		e.preventDefault()
-		setRoomData((data) => ({
-			
-		}))
 	}
 
 	return (
-		<>
+		<div style={{marginLeft: "125px"}}>
 			<br></br>
+			<h1>Create New Room</h1>
 			<form onSubmit={handleCreateNewRoom}>
 				<label>
 					Room Name:
@@ -61,13 +56,14 @@ export default function Rooms({ roomList, setRoomData }) {
 						onChange={(e) => {
 							const text = e.target.value
 							// console.log("name: " + text)
-							// setRoomName(text)
+							setNewRoomName(text)
 						}}
 					/>
 				</label>
 				<input type="submit" value="Create Room" />
 			</form>
 			<br></br>
+			<h1>Join New Room</h1>
 			<form onSubmit={handleJoinNewRoom}>
 				<label>
 					Room ID:
@@ -76,23 +72,23 @@ export default function Rooms({ roomList, setRoomData }) {
 						onChange={(e) => {
 							const text = e.target.value
 							// console.log("id: " + text)
-							// setRoomId(text)
+							setNewRoomId(text)
 						}}
 					/>
 				</label>
 				<input type="submit" value="Join Room" />
 			</form>
-			{roomList.map((room) => (
+			<h1>Join Old Room</h1>
+			{Rooms.map((room) => (
 				<>
-					<br></br>
 					<div>
 						<button onClick={handleJoinOldRoom} value={room.id}>
-							Join {room.name}
+							Join room: {room.name}
 						</button>
 					</div>
 				</>
 			))}
-		</>
+		</div>
 		// <Switch>
 		// 	<Route path="/" exact>
 		// 		<Redirect to={`/vs/create`} />

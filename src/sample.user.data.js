@@ -15,13 +15,25 @@ const CollabsList = [
 
 const CommunitiesList = []
 
+const RoomsList = [
+  {
+    id: 321,
+    name: "Best writers in uni"
+  },
+  {
+    id: 322,
+    name: "Science fiction lovers"
+  }
+]
+
 const UserData = {
   id: "123",
   username: "Farhan",
   email: "farhan@gmail.com",
   pfp: "https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200",
   collabsList: CollabsList,
-  communitiesList: CommunitiesList
+  communitiesList: CommunitiesList,
+  roomsList: RoomsList
 }
 
 export default UserData
