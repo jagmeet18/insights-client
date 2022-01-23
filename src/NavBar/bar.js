@@ -2,12 +2,6 @@ import React from "react";
 import { NavBarItems } from "./items";
 import styles from "./navbar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faUsers,
-  faBookmark,
-  faCompass,
-  faUserCircle,
-} from "@fortawesome/free-solid-svg-icons";
 
 export default class NavBar extends React.Component {
   constructor() {
@@ -27,7 +21,6 @@ export default class NavBar extends React.Component {
   }
 
   render() {
-    const icons = [faUsers, faBookmark, faCompass, faUserCircle];
     return (
       <nav className={styles.sidebar}>
         <ul className={styles["sidebar-items"]}>
@@ -60,7 +53,7 @@ export default class NavBar extends React.Component {
                   onMouseEnter={hoverHandler}
                   onMouseLeave={outHandler}
                 >
-                  <FontAwesomeIcon icon={icons[index]} size="2x" />
+                  <FontAwesomeIcon icon={item.fontClass} size="2x" />
                   {
                     // this.state.showText && (
                     this.state[item.title].showText &&

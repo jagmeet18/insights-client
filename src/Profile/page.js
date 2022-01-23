@@ -11,8 +11,8 @@ const Profile = () => {
 
     return ( 
         <>
-            {/* <AppBar /> */}
-            <div style={{ paddingBottom: "5%", position: "absolute", right: "0", width: "93vw" }}>
+            <AppBar />
+            <div style={{ border: "2px solid purple" }}>
                 {/** Entire top section above the buttons for the catalogue*/}
                 <div style={{
                         display:"flex",
