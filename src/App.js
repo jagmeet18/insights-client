@@ -1,3 +1,4 @@
+
 import { Route, Redirect } from "react-router-dom"
 // import TextEditor from "./TextEditor";
 // import VirtualSpaces from "./VirtualSpaces";
@@ -10,6 +11,8 @@ import Rooms from "./Rooms/page";
 // import VirtualSpace from "./VirtualSpace";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
+
+import ShowChat from "./ShowChat"
 
 export default function App({ match }) {
   	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
@@ -26,6 +29,7 @@ export default function App({ match }) {
 			</Route>
 			<Route path={`${match.path}/rooms`}>
 				<Rooms />
+        <ShowChat/>
 			</Route>
 			{/* <Route path="/rooms" exact>
 				<Rooms
@@ -39,4 +43,5 @@ export default function App({ match }) {
 			</Route> */}
 		</UserProvider>
   	);
+
 }
