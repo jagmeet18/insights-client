@@ -1,14 +1,13 @@
 .navbar {
     background-color: teal;
     display: flex;
-    justify-self: flex-start;
+    /* justify-self: flex-start; */
     height: 96px;
-    position: fixed;
+    /* position: sticky; */
     z-index: 0;
     width: 100%;
     font-size: 100px;
     color: #3b3b3b;
-    margin-left: 96px;
 }
 
 .navbar img {

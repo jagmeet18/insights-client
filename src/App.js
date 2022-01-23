@@ -1,5 +1,6 @@
 
 import { Route, Redirect } from "react-router-dom"
+import styles from './app.module.css'
 // import TextEditor from "./TextEditor";
 // import VirtualSpaces from "./VirtualSpaces";
 // import AppBar from "./AppBar/AppBar";
@@ -19,29 +20,34 @@ export default function App({ match }) {
   	//   const [activeRoom, setActiveRoom] = useState(null);
 	
 	return (
-		// <UserProvider>
-		// 	<NavBar />
-		// 	<Route path={`${match.path}/`}>
-		// 		<Redirect to={`${match.path}/rooms`} />
-		// 	</Route>
-		// 	<Route path={`${match.path}/profile`}>
-		// 		<Profile />
-		// 	</Route>
-		// 	<Route path={`${match.path}/rooms`}>
-		// 		<Rooms />
-        <ShowChat/>
-		// 	</Route>
-		// 	{/* <Route path="/rooms" exact>
-		// 		<Rooms
-		// 		roomList={roomList}
-		// 		setRoomData={setActiveRoom}
-		// 		userId={userId}
-		// 		/>
-		// 	</Route>
-		// 	<Route>
-		// 		<VirtualSpace data={activeRoom} />
-		// 	</Route> */}
-		// </UserProvider>
+
+		<div className={styles.app}>
+			<NavBar />
+			<UserProvider>
+				<div className={styles.page}>
+					<Route path={`${match.path}/`}>
+						<Redirect to={`${match.path}/rooms`} />
+					</Route>
+					<Route path={`${match.path}/profile`}>
+						<Profile />
+					</Route>
+					<Route path={`${match.path}/rooms`}>
+						<Rooms />
+					</Route>
+				</div>
+				{/* <Route path="/rooms" exact>
+					<Rooms
+					roomList={roomList}
+					setRoomData={setActiveRoom}
+					userId={userId}
+					/>
+				</Route>
+				<Route>
+					<VirtualSpace data={activeRoom} />
+				</Route> */}
+			</UserProvider>
+		</div>
+
   	);
 
 }
