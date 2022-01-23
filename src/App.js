@@ -19,29 +19,29 @@ export default function App({ match }) {
   	//   const [activeRoom, setActiveRoom] = useState(null);
 	
 	return (
-		<UserProvider>
-			<NavBar />
-			<Route path={`${match.path}/`}>
-				<Redirect to={`${match.path}/rooms`} />
-			</Route>
-			<Route path={`${match.path}/profile`}>
-				<Profile />
-			</Route>
-			<Route path={`${match.path}/rooms`}>
-				<Rooms />
-        {/* <ShowChat/> */}
-			</Route>
-			{/* <Route path="/rooms" exact>
-				<Rooms
-				roomList={roomList}
-				setRoomData={setActiveRoom}
-				userId={userId}
-				/>
-			</Route>
-			<Route>
-				<VirtualSpace data={activeRoom} />
-			</Route> */}
-		</UserProvider>
+		// <UserProvider>
+		// 	<NavBar />
+		// 	<Route path={`${match.path}/`}>
+		// 		<Redirect to={`${match.path}/rooms`} />
+		// 	</Route>
+		// 	<Route path={`${match.path}/profile`}>
+		// 		<Profile />
+		// 	</Route>
+		// 	<Route path={`${match.path}/rooms`}>
+		// 		<Rooms />
+        <ShowChat/>
+		// 	</Route>
+		// 	{/* <Route path="/rooms" exact>
+		// 		<Rooms
+		// 		roomList={roomList}
+		// 		setRoomData={setActiveRoom}
+		// 		userId={userId}
+		// 		/>
+		// 	</Route>
+		// 	<Route>
+		// 		<VirtualSpace data={activeRoom} />
+		// 	</Route> */}
+		// </UserProvider>
   	);
 
 }
