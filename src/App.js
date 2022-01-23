@@ -20,6 +20,7 @@ export default function App({ match }) {
   	//   const [activeRoom, setActiveRoom] = useState(null);
 	
 	return (
+
 		<div className={styles.app}>
 			<NavBar />
 			<UserProvider>
@@ -46,6 +47,7 @@ export default function App({ match }) {
 				</Route> */}
 			</UserProvider>
 		</div>
+
   	);
 
 }
