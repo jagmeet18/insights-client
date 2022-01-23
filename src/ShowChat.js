@@ -5,8 +5,6 @@ import React, { useEffect, useState } from "react";
 
 const ShowChat = () => {
 
- 
-
 const socket = io.connect("http://localhost:3001");
 
     const [username, setUsername] = useState("");
@@ -45,8 +43,6 @@ const socket = io.connect("http://localhost:3001");
         <Chat socket={socket} username={username} room={room} />
       )}
         </div>
-			
-
      );
 }
 
