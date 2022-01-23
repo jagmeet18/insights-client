@@ -7,11 +7,10 @@ import Sidebar from "./BarComp/Sidebar/Sidebar"
 import Profile from './Profile';
 import "./App.css"
 import { CollabsList, CommunitiesList } from "./DummyData"
+import ShowChat from "./ShowChat"
 
-import io from "socket.io-client";
 
 
-const socket = io.connect("http://localhost:3001");
 
 export default function App() {
 	// const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr")
@@ -19,17 +18,24 @@ export default function App() {
     
     // console.log("App component rendered!")
 
-	// Chat variables
-
-
     return (	
 		
 		<>
+
+			<ShowChat/>
+
 			{/* {
 				!roomData ? <VirtualSpaces setRoomData={setRoomData} userId={userId} /> : <TextEditor data={roomData} />
 			} */}
 			{/*<Profile img="https://www.westernunion.com/content/dam/wu/jm/responsive/send-money-in-person-from-jamaica-resp.png"
 			userName="Alex" collabsList={CollabsList} communitiesList={CommunitiesList}/>*/}
+
+
+
+		
+		
+		
+		
 		</>
 	)
 }
