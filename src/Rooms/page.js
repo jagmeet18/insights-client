@@ -1,0 +1,107 @@
+import { useEffect, useState, useCallback } from "react"
+// import { getVSData } from "../VirtualSpace/server"
+// import axios from "axios"
+import { useUser } from '../user.context'
+
+export default function Rooms({ match, history }) {
+	const [newRoomId, setNewRoomId] = useState("");
+	const [newRoomName, setNewRoomName] = useState("");
+	const Rooms = useUser().roomsList
+
+	// useEffect(() => {
+	// 	if (!data) return
+	// 	setRoomData(data)
+	// }, [data, setRoomData])
+
+	// useEffect(() => {
+	// 	if (!formState) return
+
+	// 	// if formState === "CREATE" : Name is provided and id needs to be generated
+	// 	// if formState === "JOIN" : No name is provided and id is provided
+	// 	getVSData(
+	// 		formState,
+	// 		{
+	// 			userId,
+	// 			roomId,
+	// 			roomName,
+	// 		},
+	// 		setData
+	// 	)
+	// }, [formState, roomId, roomName, userId])
+
+	const handleJoinNewRoom = (e) => {
+		e.preventDefault()
+		// setFormState("JOIN")
+	}
+
+	const handleCreateNewRoom = (e) => {
+		e.preventDefault()
+		// setRoomId(uuidv4())
+		// setFormState("CREATE")
+	}
+
+	const handleJoinOldRoom = (e) => {
+		e.preventDefault()
+	}
+
+	return (
+		<div style={{marginLeft: "125px"}}>
+			<br></br>
+			<h1>Create New Room</h1>
+			<form onSubmit={handleCreateNewRoom}>
+				<label>
+					Room Name:
+					<input
+						type="text"
+						onChange={(e) => {
+							const text = e.target.value
+							// console.log("name: " + text)
+							setNewRoomName(text)
+						}}
+					/>
+				</label>
+				<input type="submit" value="Create Room" />
+			</form>
+			<br></br>
+			<h1>Join New Room</h1>
+			<form onSubmit={handleJoinNewRoom}>
+				<label>
+					Room ID:
+					<input
+						type="text"
+						onChange={(e) => {
+							const text = e.target.value
+							// console.log("id: " + text)
+							setNewRoomId(text)
+						}}
+					/>
+				</label>
+				<input type="submit" value="Join Room" />
+			</form>
+			<h1>Join Old Room</h1>
+			{Rooms.map((room) => (
+				<>
+					<div>
+						<button onClick={handleJoinOldRoom} value={room.id}>
+							Join room: {room.name}
+						</button>
+					</div>
+				</>
+			))}
+		</div>
+		// <Switch>
+		// 	<Route path="/" exact>
+		// 		<Redirect to={`/vs/create`} />
+		// 	</Route>
+		// 	<Route path="/:id" exact>
+		// 		<Redirect to={`/vs/join/:id`} />
+		// 	</Route>
+		// 	<Route path="/vs/join/:id">
+		// 		<TextEditor />
+		// 	</Route>
+		// 	<Route path="/vs/create">
+		// 		<TextEditor />
+		// 	</Route>
+		// </Switch>
+	)
+}

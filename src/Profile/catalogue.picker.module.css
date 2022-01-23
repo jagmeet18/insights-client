@@ -1,15 +1,11 @@
 .button-container{
     display: flex;
     justify-content: center;
-    border-top: 2px solid crimson;
+    gap: 1vw;
+    /* border-top: 2px solid crimson; */
     padding-top: 10px;
     padding-bottom: 10px;
-}
-
-.profile-catalogue-button {
     margin-inline: 15px;
-    /* border: solid red; */
-    
 }
 
 .collab-comm {
