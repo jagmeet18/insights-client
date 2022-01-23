@@ -1,43 +1,53 @@
 import { useEffect, useState, useCallback } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { getVSData } from "./server"
-import axios from "axios"
+// import axios from "axios"
 
-export default function VirtualSpaces({ userId, setRoomData }) {
-	const [roomId, setRoomId] = useState()
-	const [formState, setFormState] = useState(null)
-	const [roomName, setRoomName] = useState()
-	const [data, setData] = useState()
+export default function Rooms({ roomList, setRoomData }) {
+	// const [roomId, setRoomId] = useState()
+	// const [formState, setFormState] = useState(null)
+	// const [roomName, setRoomName] = useState()
+	// const [data, setData] = useState()
 
-	console.log("Virtual Spaces component rendered!")
+	console.log("Rooms component rendered!")
 
-	useEffect(() => {
-		if (!data) return
-		setRoomData(data)
-	}, [data, setRoomData])
+	// useEffect(() => {
+	// 	if (!data) return
+	// 	setRoomData(data)
+	// }, [data, setRoomData])
 
-	useEffect(() => {
-		if (!formState) return
+	// useEffect(() => {
+	// 	if (!formState) return
 
-		// if formState === "CREATE" : Name is provided and id needs to be generated
-		// if formState === "JOIN" : No name is provided and id is provided
-		getVSData(formState,{
-			userId,
-			roomId,
-			roomName,
-		}, setData)
-		
-	}, [formState, roomId, roomName, userId])
+	// 	// if formState === "CREATE" : Name is provided and id needs to be generated
+	// 	// if formState === "JOIN" : No name is provided and id is provided
+	// 	getVSData(
+	// 		formState,
+	// 		{
+	// 			userId,
+	// 			roomId,
+	// 			roomName,
+	// 		},
+	// 		setData
+	// 	)
+	// }, [formState, roomId, roomName, userId])
 
 	const handleJoinNewRoom = (e) => {
 		e.preventDefault()
-		setFormState("JOIN")
+		// setFormState("JOIN")
 	}
 
 	const handleCreateNewRoom = (e) => {
 		e.preventDefault()
-		setRoomId(uuidv4())
-		setFormState("CREATE")
+		// setRoomId(uuidv4())
+		// setFormState("CREATE")
+	}
+
+	const handleJoinOldRoom = (e) => {
+		e.preventDefault()
+		setRoomData((data) => ({
+			
+		}))
 	}
 
 	return (
@@ -72,6 +82,16 @@ export default function VirtualSpaces({ userId, setRoomData }) {
 				</label>
 				<input type="submit" value="Join Room" />
 			</form>
+			{roomList.map((room) => (
+				<>
+					<br></br>
+					<div>
+						<button onClick={handleJoinOldRoom} value={room.id}>
+							Join {room.name}
+						</button>
+					</div>
+				</>
+			))}
 		</>
 		// <Switch>
 		// 	<Route path="/" exact>
