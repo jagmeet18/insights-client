@@ -1,5 +1,5 @@
-import Chat from "./Chat"
-import "./Chat.css"
+import Chat from "./chat"
+import styles from "./chat.module.css"
 import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 
@@ -25,9 +25,9 @@ const ShowChat = () => {
     }
     };
     return ( 
-        <div className="show-chat">
+        <div className={styles["show-chat"]}>
             {!showChat ? (
-        <div className="joinChatContainer">
+        <div className={styles["joinChatContainer"]}>
           <h3>Join A Chat</h3>
           <input
             type="text"

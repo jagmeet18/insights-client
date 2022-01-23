@@ -1,16 +1,16 @@
-import React from "react"
 // import logo from "../assets/logo.png"
 import styles from './appbar.module.css'
 
-class AppBar extends React.Component {
+const AppBar = ({ buttons }) => {
 
-    render() {
-        return(
-            <nav className={styles["navbar"]}>
-                <a className={styles["font-link logo"]} href="#">INSIGHTS</a>
-            </nav>
-        )
-    }
+    return(
+        <nav className={styles["navbar"]}>
+            {/* {buttons.map((button, index) => {
+                button.key = index;
+                return button
+            })} */}
+        </nav>
+    )
 }
 
 export default AppBar

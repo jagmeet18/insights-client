@@ -13,7 +13,7 @@ import Rooms from "./Rooms/page";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
 
-import ShowChat from "./ShowChat"
+import ShowChat from "./Chat/showchat"
 
 export default function App({ match }) {
   	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
@@ -26,7 +26,7 @@ export default function App({ match }) {
 			<UserProvider>
 				<div className={styles.page}>
 					<Route path={`${match.path}/`}>
-						<Redirect to={`${match.path}/rooms`} />
+						<Redirect to={`${match.path}/profile`} />
 					</Route>
 					<Route path={`${match.path}/profile`}>
 						<Profile />
