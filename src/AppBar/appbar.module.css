@@ -1,6 +1,8 @@
 .navbar {
     background-color: teal;
     display: flex;
+    justify-content: flex-end;
+    gap: 10px;
     /* justify-self: flex-start; */
     height: 100%;
     /* position: sticky; */
