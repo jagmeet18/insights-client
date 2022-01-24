@@ -21,7 +21,7 @@ const Profile = () => {
                         display:"flex",
                         justifyContent:"center",
                         // margin:"40px 0px",
-                        borderBottom: "1px solid grey",
+                        borderBottom: "3px solid #08183A",
                         padding: "2%",
                         gap:"4rem"
                         // border: "2px solid red"
@@ -41,11 +41,12 @@ const Profile = () => {
                             />
                     </div> */}
                     {/** Section on the right with profile info */}
-                    {/* <div style={{
-                        // border: "2px solid red",
-                        textAlign:"left",
-                        margin: "10px"
-                    }}> */}
+                    <div style={{
+                            // border: "2px solid red",
+                            textAlign:"left",
+                            margin: "10px",
+                            color: "white",
+                        }}>
                             {/** Just the username */}
                         {/* <h2>{userData.username}</h2> */}
                             {/** Rest of the info about the profile */}
@@ -76,9 +77,10 @@ const Profile = () => {
                         }
                     })()
                 }
-            </div> 
+                </div> 
+            </div>
         </>
      );
-
+                
 }
 export default Profile;
