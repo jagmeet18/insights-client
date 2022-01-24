@@ -1,3 +1,11 @@
+:root {
+    --page: #12254f;
+    --icons: #FC9C54;
+    --buttons: #4B3D60;
+    --bars: #08183A;
+    --cards: #172b57;
+    --forms: #172b57;
+}
 
 .app {
     margin: 0px;
