@@ -6,8 +6,8 @@ const ProfileCataloguePicker = ({setCatalogueState}) => {
 
     return ( 
         <div className={styles["button-container"]}>
-            {buttons.map(({title, icon}) => { 
-                return <button className={styles["collab-comm"]} value={title} onClick={(e) => setCatalogueState(e.target.value.toLowerCase())}>{icon} {title}</button>
+            {buttons.map(({title, icon: Icon}) => { 
+                return <button className={styles["collab-comm"]} value={title} onClick={(e) => setCatalogueState(e.target.value.toLowerCase())}><Icon/> {title}</button>
             })}
         </div>
     );

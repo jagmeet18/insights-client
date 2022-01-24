@@ -2,7 +2,7 @@
     background-color: teal;
     display: flex;
     /* justify-self: flex-start; */
-    height: 96px;
+    height: 100%;
     /* position: sticky; */
     z-index: 0;
     width: 100%;

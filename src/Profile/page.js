@@ -12,7 +12,7 @@ const Profile = () => {
     return ( 
         <>
             <AppBar />
-            <div style={{ border: "2px solid purple" }}>
+            <div>
                 {/** Entire top section above the buttons for the catalogue*/}
                 <div style={{
                         display:"flex",
