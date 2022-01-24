@@ -1,6 +1,14 @@
+:root {
+    --page: #152852;
+    --icons: #FC9C54;
+    --buttons: #4B3D60;
+    --bars: #08183A;
+    --cards: #172b57;
+    --forms: #172b57;
+}
 
 .sidebar {
-    background-color: teal;
+    background-color: var(--bars);
     /* height: 100vh; */
     width: 100%;
     /* position: sticky;  */
@@ -21,7 +29,7 @@
     bottom: 25px;
     left: 0;
     padding: 0;
-    font-size: 18px;
+    font-size: 14px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -36,7 +44,7 @@ ul {
 
 .sidebar-items a {
     text-decoration: none;
-    color: darkslategrey;
+    color: var(--icons);
 }
 
 .display-title {
@@ -46,6 +54,6 @@ ul {
 
 .side-links-profile-page {
     display: inline-block;
-    font-size: 30px;
+    font-size: 18px;
     margin-top: 5x;
 }

@@ -2,8 +2,10 @@ import React from "react";
 import { NavBarItems } from "./items";
 import styles from "./navbar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link, withRouter } from "react-router-dom";
+import PropTypes from "prop-types";
 
-export default class NavBar extends React.Component {
+class NavBar extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -17,10 +19,10 @@ export default class NavBar extends React.Component {
         showText: false,
       },
     };
-
   }
 
   render() {
+    const { history, location } = this.props
     return (
       <nav className={styles.sidebar}>
         <ul className={styles["sidebar-items"]}>
@@ -47,20 +49,18 @@ export default class NavBar extends React.Component {
             };
             return (
               <li key={index}>
-                <a
+                <Link
+                  to={`${this.props.match.path}${item.url}`}
                   className={styles[item.cName]}
-                  href={item.url}
                   onMouseEnter={hoverHandler}
                   onMouseLeave={outHandler}
                 >
                   <FontAwesomeIcon icon={item.fontClass} size="2x" />
                   {
-                    // this.state.showText && (
                     this.state[item.title].showText &&
-                    (<p className={styles["display-title"]}>{item.title}</p>)
-                    // )
+                    (<p className={styles["display-title"]}>{item.title}</p>) 
                   }
-                </a>
+                </Link>
               </li>
             );
           })}
@@ -69,3 +69,5 @@ export default class NavBar extends React.Component {
     );
   }
 }
+
+export default withRouter(NavBar)

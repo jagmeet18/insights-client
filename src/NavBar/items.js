@@ -7,19 +7,19 @@ import {
 export const NavBarItems = [
   {
     title: "communities",
-    url: "#", //route to communities page
+    url: '/communities',
     cName: "side-links-communities",
     fontClass: faUsers,
   },
   {
     title: "rooms",
-    url: "#", //route to virtualspace page
+    url: '/rooms',
     cName: "side-links-virtual-space",
     fontClass: faBookmark,
   },
   {
     title: "profile",
-    url: "#", //route to profile page
+    url: '/profile',
     cName: "side-links-profile-page",
     fontClass: faUserCircle,
   },
