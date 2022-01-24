@@ -17,9 +17,10 @@ export const RoomForm = () => {
     const handleSubmit = (e) =>{
         console.log('this works')
         try{
-            const id = uuidv4()
+            const collabId = uuidv4()
+            let docId = null
             addDoc(collection(db, "virtual-spaces"), {
-                collabId: id,
+                collabId: collabId,
                 name: RName,
                 communityName: CName,
                 readId: uuidv4(),
@@ -29,17 +30,46 @@ export const RoomForm = () => {
                 readers: []
             }).then(docRef => {
                 console.log("Document written with ID: ", docRef.id);
+                docId = docRef.id
                 history.push(`/app/rooms?name=${RName}`)
                 setFormSubmitted(true)
             })
 
-            updateDoc(doc(db, "users", user.id), {
-                previousRooms: arrayUnion(id)
-            });
+            // updateDoc(doc(db, "users", user.userData[1]), { ///get data from context
+            //     previousRooms: arrayUnion(docId)     //okay u got 2 options either: create doc with setDoc   ORRR   store the real id into user prev array fields
+            // });
+            console.log(user)
+            // console.log(user.userData[0].username)
+            // console.log(user.userData[1])
         } catch(e) {
             console.log("DIDNT WORK", e);
         }
     }
+
+    //ADD TO JOIN ROOM PART
+    // async function handleSubmit(e){
+    //     e.preventDefault()
+    //     try {
+    //         let id = null
+    //         const q = query(collection(db, "users"), where("writeId", "==", id.given));
+    //         const querySnapshot = await getDocs(q)
+    //         let data = null
+    //         querySnapshot.forEach(function (doc) {
+    //             data = doc.data()
+    //             id = doc.id
+    //         })
+    //         if (!data) throw {code:401, msg:"room doesn't exist"}
+
+    //         updateDoc(doc(db, "users", user.userData[1]), {
+    //             previousRooms: arrayUnion(id)    
+    //         });
+    //         history.push(`/app?username=${info.username}`)
+    //         setUser(data)
+                    
+    //     } catch (error) { 
+    //         error.code && (error.code === 401 && setDenied(true))
+    //     }
+    // }
 
     // const handleKeypress = e => {
     //     //it triggers by pressing the enter key

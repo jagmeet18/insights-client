@@ -61,7 +61,7 @@ const Profile = () => {
                 <div >
                         {/* <ProfileCataloguePicker setCatalogueState={setCatalogueState, buttons}/> */}
                 </div>
-                {
+                {/* {
                     (() => { 
                         if (catalogueState === "collabs") {
                             return <CollabCatalogue />
@@ -75,7 +75,7 @@ const Profile = () => {
                             )
                         }
                     })()
-                }
+                } */}
             </div> 
         </>
      );
