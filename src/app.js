@@ -15,14 +15,14 @@ import { UserProvider } from "./user.context";
 
 import ShowChat from "./Chat/showchat"
 
-export default function App({ match }) {
+export default function App({ match, location, history }) {
   	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
   	//   const [activeRoom, setActiveRoom] = useState(null);
 	return (
 
 		<div className={styles.app}>
 			<NavBar />
-			<UserProvider>
+			<UserProvider query={location.search}>
 				<div className={styles.page}>
 					<Route exact path={`${match.path}/`}>
 						<Redirect to={`${match.path}/rooms`} />

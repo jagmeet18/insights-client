@@ -1,15 +1,15 @@
 import { BsBook as CollabIcon } from "react-icons/bs";
 import { HiUserGroup as CommunityIcon } from "react-icons/hi";
 
-export const CataloguePickerButtons = [
+export const AppBarButtons = [
   {
-    text: "Collabs",
-    value: "collabs",
+    text: "Create Room",
+    value: "create-new-room",
     icon: CollabIcon,
   },
   {
-    text: "Communities",
-    value: "communities",
+    text: "Join Room",
+    value: "join-new-room",
     icon: CommunityIcon,
   },
 ];
