@@ -1,7 +1,7 @@
 
 .app {
     display: grid;
-    border: 5px solid black;
+    /* border: 5px solid black; */
     height: 100vh;
     grid-template-columns: 96px auto;
 }

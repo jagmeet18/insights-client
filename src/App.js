@@ -1,4 +1,3 @@
-
 import { Route, Redirect } from "react-router-dom"
 import styles from './app.module.css'
 // import TextEditor from "./TextEditor";
@@ -26,7 +25,7 @@ export default function App({ match }) {
 			<UserProvider>
 				<div className={styles.page}>
 					<Route path={`${match.path}/`}>
-						<Redirect to={`${match.path}/rooms`} />
+						<Redirect to={`${match.path}/profile`} />
 					</Route>
 					<Route path={`${match.path}/profile`}>
 						<Profile />
