@@ -1,7 +1,7 @@
-import { useState, useEffect, useContext } from "react";
+import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import db from "./Firebase/firebase";
-import { collection, addDoc, getDocs } from "firebase/firestore"; 
+import { doc, setDoc } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
 import styles from './Rooms/create.room.popup.module.css';
 
@@ -35,8 +35,8 @@ const SignUp = () => {
 
     async function postUser(fName,lName,email,username,password,pfp,bio){
         try{
-            const docRef = await addDoc(collection(db, "users"), {
-                id: uuidv4(),
+            const id = uuidv4()
+            await setDoc(doc(db, "users", id), {
                 fName: fName,
                 lName: lName,
                 email: email,
@@ -48,9 +48,9 @@ const SignUp = () => {
                 previousRooms: [],
                 previousCommunities: []
             })
-            console.log("Document written with ID: ", docRef.id);
+            // console.log("Document written with ID: ", docRef.id);
             setUser(
-                {"id": uuidv4(),
+                {"id":id,
                 "fName": fName,
                 "lName": lName,
                 "email": email,
@@ -63,9 +63,6 @@ const SignUp = () => {
                 "previousCommunities": []}
             )
             setSignedUp(true);
-            localStorage.setItem('user', JSON.stringify(user));
-            var loggingUser = JSON.parse(localStorage.getItem('user'));
-            console.log(loggingUser)
             history.push(`/app?username=${username}`)
         } catch(e) {
             console.log("DIDNT WORK", e);
@@ -74,23 +71,25 @@ const SignUp = () => {
         }
     }
 
-    useEffect(() => {
-        // history.push(`/profile/${user.username}`)
-    },[user]);
+    // useEffect(() => {
+    //     // history.push(`/profile/${user.username}`)
+    // },[user]);
 
     
 
     const UploadPic = (e) => {
         console.log('button to upload clicked')
+        const file = e.target.files[0]
         const reader = new FileReader(); 
-        console.log(reader)
-        reader.onload = () => {
+        reader.onload = (readerEvent) => {
+            console.log('file value: ', file)
             if(reader.readyState === 2){
                 setPfp(reader.result);
                 //console.log(reader.result)
             }
+            reader.abort()
         }
-        reader.readAsDataURL(e.target.files[0]);
+        file && reader.readAsDataURL(file);
     }
 
     const handleSubmit = (e) => {
@@ -101,6 +100,7 @@ const SignUp = () => {
         } else {
             setPasswordDiff(true);
         }
+        ///check if user already exists before pass check
     }
 
     return ( 
@@ -111,24 +111,24 @@ const SignUp = () => {
                 <div className={styles["form_group"]}>
                     <div className={styles["header"]}><h1>Create an account</h1></div>
                     <label htmlFor="First Name">Name</label>
-                    <input type="text" name="firstname" placeholder="First Name" value={fName} onChange={(e) => setFName(e.target.value)} className={styles["name_textBox"]}></input>
+                    <input type="text" name="firstname" placeholder="First Name" onChange={(e) => setFName(e.target.value)} className={styles["name_textBox"]}></input>
                     
-                    <input type="text" name="lastname" placeholder="Last Name" value={lName} onChange={(e) => setLName(e.target.value)} className={styles["name_textBox"]}></input>
+                    <input type="text" name="lastname" placeholder="Last Name" onChange={(e) => setLName(e.target.value)} className={styles["name_textBox"]}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Email
                     <br />
-                    <input type="text" name="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}></input>
+                    <input type="text" name="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Username
                     <br />
-                    <input type="text" name="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)}></input>
+                    <input type="text" name="username" placeholder="Username" onChange={(e) => setUsername(e.target.value)}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Password
                     <br />
-                    <input type="password" name="password" placeholder="Password" value={password}  onChange={(e) => setPassword(e.target.value)}></input>
+                    <input type="password" name="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Confirm Password

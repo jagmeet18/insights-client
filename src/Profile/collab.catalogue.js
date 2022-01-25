@@ -8,24 +8,24 @@ import { collection, doc, getDocs, query, where, updateDoc, arrayUnion } from "f
 const CollabCatalogue = () => {
     const [collabs, setCollabs] = useState([]);
     const { userData } = useUser();
-    
+    console.log("collabdata: ", userData);
     useEffect(() => { 
-        const collabIds = userData.previousCollabs;
-        // for every collab id, get the collab data from the collab collection
-        collabIds.forEach(collabId => {
-            const q = query(collection(db, "collab"), where("id", "==", collabId));
-            getDocs(q).then(snapshot => {
-                snapshot.forEach(function (doc) {
-                    const collab = doc.data()
-                    setCollabs(prevCollabs => [...prevCollabs, collab])
-                })
-            });
-        })
+        // const collabIds = userData.previousCollabs;
+        // // for every collab id, get the collab data from the collab collection
+        // collabIds.forEach(collabId => {
+        //     const q = query(collection(db, "collab"), where("id", "==", collabId));
+        //     getDocs(q).then(snapshot => {
+        //         snapshot.forEach(function (doc) {
+        //             const collab = doc.data()
+        //             setCollabs(prevCollabs => [...prevCollabs, collab])
+        //         })
+        //     });
+        // })
     },[])
 
     return ( 
         <div className={styles["all-collabs"]}>
-            {
+            {/* {
                 collabs.map(({displayPicture, name, ownerPic, communityPosted}) => {
                     return <CollabCard
                         img={displayPicture}
@@ -34,7 +34,7 @@ const CollabCatalogue = () => {
                         body={communityPosted}
                     />
                 })
-            }
+            } */}
         </div>
      );
 }

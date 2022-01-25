@@ -13,6 +13,7 @@ const Login = ({ history }) => {
     });
 
     const handleInfo = (event) =>{
+        if (denied) setDenied(false)
         const name = event.target.name;
         const value = event.target.value;
         setInfo({...info, [name] : value})

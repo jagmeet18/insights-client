@@ -57,8 +57,8 @@ const Profile = () => {
                             <h4>{userData.previousCollabs.length} Collabs</h4>
                             <h4>{userData.previousCommunities.length} Communities joined</h4>
                         </div> */}
-                    {/* </div> */}
-                </div>
+                    </div>
+                    </div>
                 <div >
                         {/* <ProfileCataloguePicker setCatalogueState={setCatalogueState, buttons}/> */}
                 </div>
@@ -77,7 +77,6 @@ const Profile = () => {
                         }
                     })()
                 }
-                </div> 
             </div>
         </>
      );

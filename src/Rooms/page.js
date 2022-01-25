@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react"
 import { useUser } from '../user.context'
 import AppBar from '../AppBar/bar'
 import CreateRoomPopup from "./create.room.popup";
+import JoinRoomPopup from "./join.room.popup";
 import { AppBarButtons } from "./appbar.buttons";
 
 export default function Rooms({ match, history }) {
@@ -59,7 +60,11 @@ export default function Rooms({ match, history }) {
 		<>
 			<AppBar onClickHandler={onStatusChange} buttons={AppBarButtons} />
 			<div>
-				{ appBarStatus === "create-new-room" && <CreateRoomPopup />}
+				{
+					appBarStatus === "create-new-room" ? <CreateRoomPopup /> : (
+						appBarStatus === "join-new-room" && <JoinRoomPopup />
+					)
+				}
 			</div>
 			{/* <div style={{marginLeft: "125px"}}>
 				<br></br>
