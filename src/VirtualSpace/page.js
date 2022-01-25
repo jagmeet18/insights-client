@@ -2,10 +2,10 @@ import React from "react"
 // import TextEditor from "./TextEditor"
 import AppBar from "../AppBar/bar"
 import ShowChat from "../Chat/showchat"
+import { profiles } from "./profiles"
 import styles from "./vspage.module.css"
 import { faExpandAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
 
 
 const expand = () => {
