@@ -1,16 +1,23 @@
-import React from "react"
 // import logo from "../assets/logo.png"
-import styles from './appbar.module.css'
+import appBarStyles from './appbar.module.css'
+import buttonStyles from '../Profile/catalogue.picker.module.css'
+import Create from '../Rooms/create.room.popup'
 
-class AppBar extends React.Component {
+const AppBar = ({ onClickHandler, buttons }) => {
 
-    render() {
-        return(
-            <nav className={styles["navbar"]}>
-                <a className={styles["font-link logo"]} href="#">INSIGHTS</a>
-            </nav>
-        )
-    }
+    return(
+        <nav className={appBarStyles["navbar"]}>
+            <div className={buttonStyles["button-container"]}>
+                {buttons && buttons.map(({text, value, icon: Icon}, index) => { 
+                    return <button key={index} className={buttonStyles["collab-comm"]} value={value} onClick={onClickHandler} ><Icon/>{text}</button>
+                })}
+                {/* {buttons.map((button, index) => {
+                    button.key = index;
+                    return <button value={button.value} onClick={button.onClick} key={index}>{button.text}</button>
+                })} */}
+            </div>
+        </nav>
+    )
 }
 
 export default AppBar

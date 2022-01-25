@@ -1,20 +1,18 @@
-import Chat from "./Chat"
-import "./Chat.css"
+import Chat from "./chat"
+import styles from "./chat.module.css"
 import io from "socket.io-client";
 import React, { useEffect, useState } from "react";
 
 const ShowChat = () => {
-
-
-const [socket, setSocket] = useState();
-useEffect(() => {
-  const socket = io.connect("http://localhost:3001");
-  setSocket(socket);
-  return () => {
-    socket.disconnect();
-  };
-}, []);
-
+  const [socket, setSocket] = useState()
+  
+    useEffect(() => {
+      const socket = io.connect("http://localhost:3001");
+      setSocket(socket);
+      return () => {
+        socket.disconnect();
+      };
+    }, []);
 
     const [username, setUsername] = useState("");
     const [room, setRoom] = useState("");
@@ -27,9 +25,9 @@ useEffect(() => {
     }
     };
     return ( 
-        <div className="show-chat">
+        <div className={styles["show-chat"]}>
             {!showChat ? (
-        <div className="joinChatContainer">
+        <div className={styles["joinChatContainer"]}>
           <h3>Join A Chat</h3>
           <input
             type="text"
@@ -51,8 +49,6 @@ useEffect(() => {
         <Chat socket={socket} username={username} room={room} />
       )}
         </div>
-			
-
      );
 }
 

@@ -1,8 +1,19 @@
+:root {
+    --page: #152852;
+    --icons: #FC9C54;
+    --buttons: #4B3D60;
+    --bars: #08183A;
+    --cards: #172b57;
+    --forms: #172b57;
+}
+
 .navbar {
-    background-color: teal;
+    background-color: var(--bars);
     display: flex;
+    justify-content: flex-end;
+    gap: 10px;
     /* justify-self: flex-start; */
-    height: 96px;
+    height: 100%;
     /* position: sticky; */
     z-index: 0;
     width: 100%;

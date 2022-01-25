@@ -4,28 +4,31 @@ import CollabCatalogue from './collab.catalogue';
 import CommunityCatalogue from './community.catalogue';
 import ProfileCataloguePicker from './catalogue.picker';
 import { useUser } from '../user.context'
+import { CataloguePickerButtons as buttons } from "./catalogue.picker.buttons";
 
 const Profile = () => {
     const [catalogueState, setCatalogueState] = useState("collabs");
-    const User = useUser();
+    
+    const { userData } = useUser()
+    console.log('from room/page.js', userData)
 
     return ( 
         <>
             <AppBar />
-            <div style={{ border: "2px solid purple" }}>
+            <div>
                 {/** Entire top section above the buttons for the catalogue*/}
                 <div style={{
                         display:"flex",
                         justifyContent:"center",
                         // margin:"40px 0px",
-                        borderBottom: "1px solid grey",
+                        borderBottom: "3px solid #08183A",
                         padding: "2%",
                         gap:"4rem"
                         // border: "2px solid red"
 
                 }}>
                     {/** Profile pic */}
-                    <div>
+                    {/* <div>
                             <img style={{
                                 // border: "2px solid blue",
                                 borderRadius: "50%",
@@ -33,30 +36,31 @@ const Profile = () => {
                                 height: "160px",
                                 margin: "10px"
                             }}
-                                src={User.pfp}
+                                src={userData.pfp}
                                 alt='Profile'
                             />
-                    </div>
+                    </div> */}
                     {/** Section on the right with profile info */}
                     <div style={{
                             // border: "2px solid red",
                             textAlign:"left",
-                            margin: "10px"
+                            margin: "10px",
+                            color: "white",
                         }}>
                             {/** Just the username */}
-                        <h2>{User.username}</h2>
+                        {/* <h2>{userData.username}</h2> */}
                             {/** Rest of the info about the profile */}
-                        <div style={{
+                        {/* <div style={{
                             width:"100%",
                             //    border: "2px solid blue"
                         }}>
-                            <h4>{User.collabsList.length} Collabs</h4>
-                            <h4>{User.communitiesList.length} Communities joined</h4>
-                        </div>
-                        </div>
-                </div>
+                            <h4>{userData.previousCollabs.length} Collabs</h4>
+                            <h4>{userData.previousCommunities.length} Communities joined</h4>
+                        </div> */}
+                    </div>
+                    </div>
                 <div >
-                        <ProfileCataloguePicker setCatalogueState={setCatalogueState}/>
+                        {/* <ProfileCataloguePicker setCatalogueState={setCatalogueState, buttons}/> */}
                 </div>
                 {
                     (() => { 
@@ -73,9 +77,9 @@ const Profile = () => {
                         }
                     })()
                 }
-            </div> 
+            </div>
         </>
      );
-
+                
 }
 export default Profile;
