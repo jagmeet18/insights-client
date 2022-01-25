@@ -45,12 +45,17 @@ ul {
 .sidebar-items a {
     text-decoration: none;
     color: var(--icons);
+    position: relative;
 }
 
 .display-title {
-    font-size: 12px;
+    font-size: 14px;
     color: darkslategrey;
-}
+    position: absolute;
+    left: 55px;
+    bottom: 7px;
+    background-color: var(--icons);
+    }
 
 .side-links-profile-page {
     display: inline-block;
