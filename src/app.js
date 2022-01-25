@@ -9,6 +9,7 @@ import Profile from "./Profile/page";
 // import "./App.css";
 // import { CollabsList, CommunitiesList } from "./DummyData";
 import Rooms from "./Rooms/page";
+import VirtualSpace from "./VirtualSpace/page";
 // import VirtualSpace from "./VirtualSpace";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
@@ -32,6 +33,10 @@ export default function App({ match, location, history }) {
 					</Route>
 					<Route path={`${match.path}/rooms`}>
 						<Rooms />
+					</Route>
+					<Route path={`${match.path}/vs/:id`}>
+						{/* <Rooms /> */}
+						<VirtualSpace />
 					</Route>
 				</div>
 				{/* <Route path="/rooms" exact>

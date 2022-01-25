@@ -18,7 +18,7 @@ async function getDataByUsername(username) {
   const querySnapshot = await getDocs(q)
   let data = null
   querySnapshot.forEach(function (doc) {
-    data = doc.data()
+    data = {...doc.data(), id: doc.id}
   })
   return data
 }
@@ -62,7 +62,7 @@ export const UserProvider = ({ query, children }) => {
   // }
 
   return (
-    <UserContext.Provider value={{userData}}>
+    <UserContext.Provider value={{userData,setUserData}}>
       {children}
     </UserContext.Provider>
   )

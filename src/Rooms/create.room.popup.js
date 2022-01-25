@@ -1,46 +1,70 @@
 import { useState} from "react";
 import { useHistory } from "react-router-dom";
 import db from "../Firebase/firebase";
-import { collection, addDoc, updateDoc, doc, arrayUnion } from "firebase/firestore"; 
+import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
-import Rooms from "../Rooms/page";
 import styles from './create.room.popup.module.css';
 import { useUser } from '../user.context'
 
-export const RoomForm = () => {
+function createRoom(options) {
+    const { RId, collabId, RName, CommName, Uid} = options
+    console.log("options when creating room: ",options)
+    const vsPromise = setDoc(doc(db, "virtual-spaces", RId), {
+        collabId,
+        name: RName,
+        communityName: CommName,
+        readId: uuidv4(),
+        writeId: uuidv4(),
+        editors: [],
+        owners: [Uid],
+        readers: []
+    })
+
+    const collabPromise = setDoc(doc(db, "collabs", collabId), {
+        name: "",
+        displayPic: "",
+        communityPosted: [],
+        content: {},
+        contributors: [],
+        owners: [Uid],
+        virtualSpaceId: RId // maybe could get rid of this
+    })
+
+    const userPromise = updateDoc(doc(db, "users", Uid), { ///get data from context
+        previousRooms: arrayUnion(RId),
+        previousCollabs: arrayUnion(collabId)     //okay u got 2 options either: create doc with setDoc   ORRR   store the real id into user prev array fields
+    });
+
+    return Promise.all([vsPromise, collabPromise, userPromise])
+}
+
+export const CreateRoomPopup = () => {
     const [RName, setRName] = useState('');
     const [CName, setCName] = useState('');
     const [formSubmitted, setFormSubmitted] = useState('');
     const history = useHistory();
-    const user = useUser();
- 
+    const {userData, setUserData} = useUser();
+    console.log("data from context", userData)
+    
     const handleSubmit = (e) =>{
         console.log('this works')
         try{
             const collabId = uuidv4()
-            let docId = null
-            addDoc(collection(db, "virtual-spaces"), {
-                collabId: collabId,
-                name: RName,
-                communityName: CName,
-                readId: uuidv4(),
-                writeId: uuidv4(),
-                editors: [],
-                owners: [],
-                readers: []
-            }).then(docRef => {
-                console.log("Document written with ID: ", docRef.id);
-                docId = docRef.id
-                history.push(`/app/rooms?name=${RName}`)
+            let RId = uuidv4()
+            createRoom({RId, collabId, RName, CommName: CName, Uid: userData.id}).catch((err) => { 
+                throw err
+            }).then(() => {
+                setUserData((prev) => {
+                    
+                    return {
+                        ...prev,
+                        previousRooms: [...new Set([...prev.previousRooms, RId])],
+                        previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
+                    }
+                })
+                // history.push(`/app/vs/${RName}`)
                 setFormSubmitted(true)
             })
-
-            // updateDoc(doc(db, "users", user.userData[1]), { ///get data from context
-            //     previousRooms: arrayUnion(docId)     //okay u got 2 options either: create doc with setDoc   ORRR   store the real id into user prev array fields
-            // });
-            console.log(user)
-            // console.log(user.userData[0].username)
-            // console.log(user.userData[1])
         } catch(e) {
             console.log("DIDNT WORK", e);
         }
@@ -104,4 +128,4 @@ export const RoomForm = () => {
      );
 }
 
-export default RoomForm;
+export default CreateRoomPopup;
