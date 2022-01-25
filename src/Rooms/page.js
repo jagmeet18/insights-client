@@ -3,12 +3,23 @@ import { useEffect, useState, useCallback } from "react"
 // import axios from "axios"
 import { useUser } from '../user.context'
 import AppBar from '../AppBar/bar'
+import CreateRoomPopup from "./create.room.popup";
+import JoinRoomPopup from "./join.room.popup";
+import { AppBarButtons } from "./appbar.buttons";
 
 export default function Rooms({ match, history }) {
 	const [newRoomId, setNewRoomId] = useState("");
 	const [newRoomName, setNewRoomName] = useState("");
-	const Rooms = useUser().roomsList
+	const [appBarStatus, setAppBarStatus] = useState(null);
+	const hookdata = useUser()
 
+	console.log('from room/page.js', hookdata)
+	
+	function onStatusChange(e) {
+		e.preventDefault()
+		const val = e.target.value
+		setAppBarStatus(val)
+	}
 	// useEffect(() => {
 	// 	if (!data) return
 	// 	setRoomData(data)
@@ -47,8 +58,15 @@ export default function Rooms({ match, history }) {
 
 	return (
 		<>
-			<AppBar />
-			<div style={{marginLeft: "125px"}}>
+			<AppBar onClickHandler={onStatusChange} buttons={AppBarButtons} />
+			<div>
+				{
+					appBarStatus === "create-new-room" ? <CreateRoomPopup /> : (
+						appBarStatus === "join-new-room" && <JoinRoomPopup />
+					)
+				}
+			</div>
+			{/* <div style={{marginLeft: "125px"}}>
 				<br></br>
 				<h1>Create New Room</h1>
 				<form onSubmit={handleCreateNewRoom}>
@@ -91,7 +109,7 @@ export default function Rooms({ match, history }) {
 						</div>
 					</>
 				))}
-			</div>
+			</div> */}
 			{/* // <Switch>
 			// 	<Route path="/" exact>
 			// 		<Redirect to={`/vs/create`} />

@@ -1,13 +1,24 @@
+:root {
+    --page: #12254f;
+    --icons: #FC9C54;
+    --buttons: #4B3D60;
+    --bars: #08183A;
+    --cards: #172b57;
+    --forms: #172b57;
+}
 
 .app {
+    margin: 0px;
     display: grid;
-    border: 5px solid black;
+    /* border: 5px solid black; */
+    width: 100vw;
     height: 100vh;
-    grid-template-columns: 96px auto;
+    grid-template-columns: 66px auto;
 }
 
 .page {
+    margin: 0px;
     display: grid;
     width: auto;
-    grid-template-rows: 96px auto;
+    grid-template-rows: 72px auto;
 }

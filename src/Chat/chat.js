@@ -5,9 +5,6 @@ function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
-
-
-
   const sendMessage = async () => {
     if (currentMessage !== "") {
       const messageData = {
@@ -18,11 +15,11 @@ function Chat({ socket, username, room }) {
           new Date(Date.now()).getHours() +
           ":" +
           new Date(Date.now()).getMinutes(),
-      };
+      }
 
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
-      setCurrentMessage("");
+      setCurrentMessage("")
     }
   };
 
@@ -39,11 +36,12 @@ function Chat({ socket, username, room }) {
       </div>
       <div className="chat-body">
         <ScrollToBottom className="message-container">
-          {messageList.map((messageContent) => {
+          {messageList.map((messageContent, index) => {
             return (
               <div
                 className="message"
                 id={username === messageContent.author ? "you" : "other"}
+                key={index}
               >
                 <div>
                   <div className="message-content">

@@ -9,23 +9,23 @@ import Profile from "./Profile/page";
 // import "./App.css";
 // import { CollabsList, CommunitiesList } from "./DummyData";
 import Rooms from "./Rooms/page";
+import VirtualSpace from "./VirtualSpace/page";
 // import VirtualSpace from "./VirtualSpace";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
 
-import ShowChat from "./ShowChat"
+import ShowChat from "./Chat/showchat"
 
-export default function App({ match }) {
+export default function App({ match, location, history }) {
   	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
   	//   const [activeRoom, setActiveRoom] = useState(null);
-	
 	return (
 
 		<div className={styles.app}>
 			<NavBar />
-			<UserProvider>
+			<UserProvider query={location.search}>
 				<div className={styles.page}>
-					<Route path={`${match.path}/`}>
+					<Route exact path={`${match.path}/`}>
 						<Redirect to={`${match.path}/rooms`} />
 					</Route>
 					<Route path={`${match.path}/profile`}>
@@ -33,6 +33,10 @@ export default function App({ match }) {
 					</Route>
 					<Route path={`${match.path}/rooms`}>
 						<Rooms />
+					</Route>
+					<Route path={`${match.path}/vs/:id`}>
+						{/* <Rooms /> */}
+						<VirtualSpace />
 					</Route>
 				</div>
 				{/* <Route path="/rooms" exact>
