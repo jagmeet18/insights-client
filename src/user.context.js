@@ -40,9 +40,9 @@ export const UserProvider = ({ query, children }) => {
     username: parseQuery(query).username,
   })
 
-  console.log('from context: ', userData)
-  
+  console.log('context outside effect: ', userData)
   useEffect(() => {
+    console.log('context getting data: ', userData)
     const dataPromise = getDataByUsername(userData.username)
     dataPromise.then(data => {
       setUserData(data)

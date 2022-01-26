@@ -28,7 +28,7 @@ const Profile = () => {
 
                 }}>
                     {/** Profile pic */}
-                    {/* <div>
+                    <div>
                             <img style={{
                                 // border: "2px solid blue",
                                 borderRadius: "50%",
@@ -39,24 +39,24 @@ const Profile = () => {
                                 src={userData.pfp}
                                 alt='Profile'
                             />
-                    </div> */}
+                    </div>
                     {/** Section on the right with profile info */}
                     <div style={{
                             // border: "2px solid red",
                             textAlign:"left",
                             margin: "10px",
-                            color: "white",
+                            color: "black",
                         }}>
                             {/** Just the username */}
-                        {/* <h2>{userData.username}</h2> */}
+                        <h2>{userData.username}</h2>
                             {/** Rest of the info about the profile */}
-                        {/* <div style={{
+                        <div style={{
                             width:"100%",
                             //    border: "2px solid blue"
                         }}>
-                            <h4>{userData.previousCollabs.length} Collabs</h4>
-                            <h4>{userData.previousCommunities.length} Communities joined</h4>
-                        </div> */}
+                            <h4>{userData.publishedCollabs && userData.publishedCollabs.length} Collabs</h4>
+                            <h4>{userData.previousCommunities && userData.previousCommunities.length} Communities joined</h4>
+                        </div>
                     </div>
                     </div>
                 <div >

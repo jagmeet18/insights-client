@@ -1,5 +1,4 @@
 import { useState} from "react";
-import { useHistory } from "react-router-dom";
 import db from "../Firebase/firebase";
 import { collection, query, where, getDocs, updateDoc, doc, arrayUnion } from "firebase/firestore"; 
 import styles from './create.room.popup.module.css';
@@ -9,10 +8,8 @@ export const JoinRoomPopup = () => {
     const [writeId, setWriteId] = useState('');
     const [formSubmitted, setFormSubmitted] = useState('');
     const [denied, setDenied] = useState(false);
-    const history = useHistory();
     const { userData, setUserData } = useUser();
  
-    //ADD TO JOIN ROOM PART
     async function handleSubmit(e){
         e.preventDefault()
         try {
@@ -37,7 +34,8 @@ export const JoinRoomPopup = () => {
                     previousCollabs: [...new Set([...prev.previousCollabs, data.collabId])]
                 }
             })
-            history.push(`/app/vs/${id}}`)        
+            setFormSubmitted(true)
+            // history.push(`/app/vs/${id}}`) //uncomment when vs room done        
         } catch (error) {
             error.code && (error.code === 404 && setDenied(true))
             throw error

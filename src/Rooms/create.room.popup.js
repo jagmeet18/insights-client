@@ -6,6 +6,7 @@ import {v4 as uuidv4} from 'uuid';
 import styles from './create.room.popup.module.css';
 import { useUser } from '../user.context'
 
+
 function createRoom(options) {
     const { RId, collabId, RName, CommName, Uid} = options
     console.log("options when creating room: ",options)
@@ -21,13 +22,14 @@ function createRoom(options) {
     })
 
     const collabPromise = setDoc(doc(db, "collabs", collabId), {
-        name: "",
-        displayPic: "",
-        communityPosted: [],
+        name: "", 
+        displayPic: require("../assets/default.images").default.collab,
+        communityPosted: [CommName],
         content: {},
         contributors: [],
         owners: [Uid],
-        virtualSpaceId: RId // maybe could get rid of this
+        virtualSpaceId: RId, // maybe could get rid of this
+        published: false,
     })
 
     const userPromise = updateDoc(doc(db, "users", Uid), { ///get data from context
@@ -42,9 +44,7 @@ export const CreateRoomPopup = () => {
     const [RName, setRName] = useState('');
     const [CName, setCName] = useState('');
     const [formSubmitted, setFormSubmitted] = useState('');
-    const history = useHistory();
     const {userData, setUserData} = useUser();
-    console.log("data from context", userData)
     
     const handleSubmit = (e) =>{
         console.log('this works')
@@ -55,14 +55,13 @@ export const CreateRoomPopup = () => {
                 throw err
             }).then(() => {
                 setUserData((prev) => {
-                    
                     return {
                         ...prev,
                         previousRooms: [...new Set([...prev.previousRooms, RId])],
                         previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
                     }
                 })
-                // history.push(`/app/vs/${RName}`)
+                // history.push(`/app/vs/${RName}`) //uncomment when vs room done
                 setFormSubmitted(true)
             })
         } catch(e) {
@@ -114,11 +113,11 @@ export const CreateRoomPopup = () => {
                     <h2>Create Room</h2>
                 </div>
                     <label htmlFor="Room Name">Room Name</label>
-                    <input type="text" name="roomname" placeholder="Room Name" value={RName} onChange={(e) => setRName(e.target.value)} className={styles["name_textBox"]}></input>
+                    <input type="text" name="roomname" placeholder="Room Name" onChange={(e) => setRName(e.target.value)} className={styles["name_textBox"]}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     <label htmlFor="Community Name">Community</label>
-                    <input type="text" name="community" placeholder="Community Name" value={CName} onChange={(e) => setCName(e.target.value)} className={styles["name_textBox"]}></input>
+                    <input type="text" name="community" placeholder="Community Name" onChange={(e) => setCName(e.target.value)} className={styles["name_textBox"]}></input>
                 </div>
                  <div className={styles["footer"]}>
                     <button onClick={handleSubmit} type="button" className={styles["b1"]} >Create Room</button>

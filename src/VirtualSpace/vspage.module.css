@@ -1,0 +1,95 @@
+:root {
+    --page: #12254f;
+    --icons: #FC9C54;
+    --buttons: #4B3D60;
+    --bars: #08183A;
+    --cards: #172b57;
+    --forms: #172b57;
+}
+
+.parent {
+    display: grid;
+    grid-template-areas:
+        "text-editor chat"
+        "publish-expand chat"
+        "online-collaborators chat" ;
+    grid-template-rows: 1fr 50px 80px;
+    grid-template-columns: 1fr 275px;
+}
+
+.parent > .text-editor {
+    grid-area: text-editor;
+    background-color: var(--page);
+}
+
+
+.parent > .publish-expand {
+    grid-area: publish-expand;
+    display: flex;
+    justify-content: space-between;
+    align-items: space-between;
+    padding: 7px 20px 5px 20px;
+    border-bottom: 1px solid #08183A;
+    background-color: var(--cards);
+}
+
+
+.parent > .online-collaborators {
+    grid-area: online-collaborators;
+    background-color: var(--bars);
+}
+
+.parent > .chat {
+    grid-area: chat;
+}
+
+.publish-button {
+    font-size: 15px;
+    background-color: tomato;
+    border-radius: 25%;
+    width: 5rem;
+}
+
+.publish-button:hover {
+    cursor: pointer;
+}
+
+.expand-button {
+    background-color: transparent;
+    border: 0px;
+}
+
+.expand-button:hover {
+    cursor: pointer;
+}
+
+.expand-icon {
+    color: var(--icons)
+}
+
+.invite-button {
+    background-color: transparent;
+    border: none;
+    font-size: 11px;
+}
+
+.invite-button:hover {
+    cursor: pointer;
+}
+
+.invite-icon {
+    color: var(--icons);
+}
+
+.online-collaborators {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    padding: 11px;
+}
+
+.images {
+    width: 58px;
+    border-radius: 50%;
+    margin-right: 18px;
+}

@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
+import styles from "./chat.module.css";
+
 
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
@@ -30,24 +32,24 @@ function Chat({ socket, username, room }) {
   }, [socket]);
 
   return (
-    <div className="chat-window">
-      <div className="chat-header">
+    <div className={styles["chat-window"]}>
+      <div className={styles["chat-header"]}>
         <p>Live Chat</p>
       </div>
-      <div className="chat-body">
-        <ScrollToBottom className="message-container">
+      <div className={styles["chat-body"]}>
+        <ScrollToBottom className={styles["message-container"]}>
           {messageList.map((messageContent, index) => {
             return (
               <div
-                className="message"
+                className={styles["message"]}
                 id={username === messageContent.author ? "you" : "other"}
                 key={index}
               >
                 <div>
-                  <div className="message-content">
+                  <div className={styles["message-content"]}>
                     <p>{messageContent.message}</p>
                   </div>
-                  <div className="message-meta">
+                  <div className={styles["message-meta"]}>
                     <p id="time">{messageContent.time}</p>
                     <p id="author">{messageContent.author}</p>
                   </div>
@@ -57,7 +59,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
-      <div className="chat-footer">
+      <div className={styles["chat-footer"]}>
         <input
           type="text"
           value={currentMessage}
