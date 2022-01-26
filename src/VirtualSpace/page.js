@@ -20,8 +20,8 @@ const publish = () => {
 	// publish the virtual space
 }
 
+
 const VirtualSpace = () => {
-	
     return (
 		<>
 			<AppBar/>
