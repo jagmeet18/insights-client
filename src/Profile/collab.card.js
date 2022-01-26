@@ -17,7 +17,12 @@ const CollabCard = (props) => {
                     {/** holds the title, community name, contributors icon, settings icon*/}
                     <div className={styles["card-header"]}>
                         <h3>{props.title}</h3>
-                        <p style={{ fontSize: "75%"}}>{props.body}</p>
+                        <p style={{ fontSize: "75%" }}>{props.body.map((comm, index) => {
+                            let comms = ""
+                            comms+=comm
+                            if (index !== comm.length - 1) comms+=", "
+                            return comms
+                        })}</p>
                     </div>
                     <div className={styles["card-footer"]}>
                         <ContributorsIcon />   

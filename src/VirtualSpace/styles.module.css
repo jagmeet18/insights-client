@@ -1,4 +1,4 @@
-*, *::before, *::after {
+/* *, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -54,4 +54,9 @@ body {
   .container .ql-toolbar.ql-snow {
     display: none;
   }
+ 
+} */
+
+.chat{
+  border: black solid 2px;
 }

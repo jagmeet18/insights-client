@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useHistory, Link } from "react-router-dom";
 import db from "./Firebase/firebase";
-import { doc, setDoc } from "firebase/firestore"; 
+import { doc, setDoc, getDocs, collection, where, query } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
 import styles from './Rooms/create.room.popup.module.css';
 
@@ -29,6 +29,7 @@ const SignUp = () => {
         previousCommunities: []
     })
 
+    // const [userExists, setUserExists] = useState();
     const [PasswordDiff, setPasswordDiff] = useState();
     const [signedUP, setSignedUp] = useState();
     const history = useHistory();
@@ -59,6 +60,7 @@ const SignUp = () => {
                 "pfp": pfp,
                 "bio": bio,
                 "previousCollabs": [],
+                "publishedCollabs": [],
                 "previousRooms": [],
                 "previousCommunities": []}
             )
@@ -75,7 +77,17 @@ const SignUp = () => {
     //     // history.push(`/profile/${user.username}`)
     // },[user]);
 
-    
+    async function checkUser() {
+        const q = query(collection(db, "users"), where("username", "==", username));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+            doc.data()
+            console.log(doc.data())
+            return doc.data()
+        });
+        // console.log("E1", existingUser)
+        return null
+    }    
 
     const UploadPic = (e) => {
         console.log('button to upload clicked')
@@ -94,7 +106,11 @@ const SignUp = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if(confirm === password) {
+        var existingUser = checkUser();
+        // if(checkUser()) setPasswordDiff(true)
+        // if(existingUser != null) setPasswordDiff(true)
+        console.log("E", existingUser)
+        if(confirm === password || existingUser == null) {
             postUser(fName, lName, email, username, password,pfp, bio);
             setPasswordDiff(false);
         } else {
