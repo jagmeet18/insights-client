@@ -28,6 +28,7 @@ const Login = ({ history }) => {
             querySnapshot.forEach(function (doc) {
                 data = doc.data()
             })
+            localStorage.setItem('userId', '?username='+data.username)
             if (!data) throw {code:401, msg:"unauthorized user"}
             history.push(`/app?username=${info.username}`)
             setUser(data)
