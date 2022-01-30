@@ -29,10 +29,12 @@ const Login = ({ history }) => {
                 data = doc.data()
             })
             if (!data) throw {code:401, msg:"unauthorized user"}
+            localStorage.setItem('userId', '?username='+data.username)
             history.push(`/app?username=${info.username}`)
             setUser(data)
                     
         } catch (error) { 
+            console.log(error)
             error.code && (error.code === 401 && setDenied(true))
         }
     }

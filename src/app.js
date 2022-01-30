@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react"
 import { Route, Redirect } from "react-router-dom"
 import styles from './app.module.css'
 // import TextEditor from "./TextEditor";
@@ -12,19 +13,37 @@ import VirtualSpace from "./VirtualSpace/page";
 // import VirtualSpace from "./VirtualSpace";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
+
 import Publish from "./publishform"
 import ShowChat from "./Chat/showchat"
 
 
+
+
+
+
 export default function App({ match, location, history }) {
+  const [queries, setQueries] = useState(location.search);
   	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
+
   	//   const [activeRoom, setActiveRoom] = useState(null);
+	useEffect(() => {
+		if (queries == '') {
+			setQueries(localStorage.getItem('userId'))
+		}
+	}, []);
+
+
+	console.log("went through app component", queries)
+		
 	return (
 
-		
+
 		<div className={styles.app}>
 			<NavBar />
-			<UserProvider query={location.search}>
+			{
+				queries &&
+				<UserProvider query={queries}>
 				<div className={styles.page}>
 					<Route exact path={`${match.path}/`}>
 						<Redirect to={`${match.path}/rooms`} />
@@ -54,9 +73,11 @@ export default function App({ match, location, history }) {
 				<Route>
 					<VirtualSpace data={activeRoom} />
 				</Route> */}
-			</UserProvider> 
 
-		</div> 
+				</UserProvider>
+			}
+		</div>
+
 
   	);
 

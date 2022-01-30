@@ -61,7 +61,7 @@ export const CreateRoomPopup = () => {
                         previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
                     }
                 })
-                // history.push(`/app/vs/${RName}`) //uncomment when vs room done
+                // history.push({pathname: `/app/vs/${RName}`, state: {detail: collabId}}) //uncomment when vs room done
                 setFormSubmitted(true)
             })
         } catch(e) {
