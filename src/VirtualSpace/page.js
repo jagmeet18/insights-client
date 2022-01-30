@@ -39,7 +39,7 @@ const VirtualSpace = () => {
 				<div className={styles["online-collaborators"]}>					
 						{profiles.map((user,index) => {
 							return(	
-								<img className= {styles["images"]}src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"/>
+								<img alt="User" className= {styles["images"]}src="https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260"/>
 							);
 						})}
 						<button className={styles["invite-button"]} onClick={sendInvite}>

@@ -1,8 +1,6 @@
 const CommunityCatalogue = () => {
     return ( 
-        <div >
-            Coming in part 3!
-        </div>
+        <div style={{padding: "25px", font: "Arial"}}> Coming in part 3 &#10024;</div>
      );
 }
 

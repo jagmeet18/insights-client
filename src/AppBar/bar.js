@@ -1,20 +1,14 @@
-// import logo from "../assets/logo.png"
-import appBarStyles from './appbar.module.css'
-import buttonStyles from '../Profile/catalogue.picker.module.css'
-import Create from '../Rooms/create.room.popup'
+import styles from './appbar.module.css'
 
 const AppBar = ({ onClickHandler, buttons }) => {
 
     return(
-        <nav className={appBarStyles["navbar"]}>
-            <div className={buttonStyles["button-container"]}>
-                {buttons && buttons.map(({text, value, icon: Icon}, index) => { 
-                    return <button key={index} className={buttonStyles["collab-comm"]} value={value} onClick={onClickHandler} ><Icon/>{text}</button>
+        <nav className={styles["navbar"]}>
+            <div className={styles["button-container"]}>
+                {buttons && buttons.map(({ text, value, icon: Icon }, index) => { 
+                    const childrenStyles = { pointerEvents: "none" }
+                    return <div key={index} className={styles["button"]} id={value} onClick={onClickHandler} ><Icon style={childrenStyles}/>{text && <p style={childrenStyles} >{text}</p>}</div>
                 })}
-                {/* {buttons.map((button, index) => {
-                    button.key = index;
-                    return <button value={button.value} onClick={button.onClick} key={index}>{button.text}</button>
-                })} */}
             </div>
         </nav>
     )

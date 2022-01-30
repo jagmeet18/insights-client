@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import db from "./Firebase/firebase";
 import { collection, getDocs, query, where } from "firebase/firestore"; 
 import styles from './Rooms/create.room.popup.module.css';
 
 const Login = ({ history }) => {
-    const [user, setUser] = useState();
     const [denied, setDenied] = useState(false);
     const [info, setInfo] = useState({
         username: "",
@@ -28,11 +27,9 @@ const Login = ({ history }) => {
             querySnapshot.forEach(function (doc) {
                 data = doc.data()
             })
-            if (!data) throw {code:401, msg:"unauthorized user"}
-            localStorage.setItem('userId', '?username='+data.username)
-            history.push(`/app?username=${info.username}`)
-            setUser(data)
-                    
+            if (!data) throw { code: 401, msg: "unauthorized user" }
+            // localStorage.setItem("pw", data.password)
+            history.push(`/app?username=${data.username}`)
         } catch (error) { 
             console.log(error)
             error.code && (error.code === 401 && setDenied(true))
@@ -40,9 +37,8 @@ const Login = ({ history }) => {
     }
 
     return ( 
+        // If session exists, redirect to /app, else continue
         <div className={styles["container"]}>
-            {/* <Link to="/vs" className={styles["links"]}>vs form</Link> */}
-            {/* <Link to="/popup" className={styles["links"]}>pop up</Link> */}
             <div className={styles["form"]}>
                 <div className={styles["header"]}>Login</div>
                {denied && <div className={styles["errorHandle"]}>denied</div>} 

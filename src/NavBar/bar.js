@@ -3,7 +3,6 @@ import { NavBarItems } from "./items";
 import styles from "./navbar.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, withRouter } from "react-router-dom";
-import PropTypes from "prop-types";
 
 class NavBar extends React.Component {
   constructor() {
@@ -22,7 +21,6 @@ class NavBar extends React.Component {
   }
 
   render() {
-    const { history, location } = this.props
     return (
       <nav className={styles.sidebar}>
         <ul className={styles["sidebar-items"]}>
@@ -54,6 +52,7 @@ class NavBar extends React.Component {
                   className={styles[item.cName]}
                   onMouseEnter={hoverHandler}
                   onMouseLeave={outHandler}
+                  onClick={() => console.clear()}
                 >
                   <FontAwesomeIcon icon={item.fontClass} size="2x" />
                   {
