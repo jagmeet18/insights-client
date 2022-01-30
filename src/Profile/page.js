@@ -10,7 +10,7 @@ const Profile = () => {
     const [catalogueState, setCatalogueState] = useState("collabs");
     
     const { userData } = useUser()
-    console.log('from room/page.js', userData)
+    console.log('from profile/page.js', userData)
 
     return ( 
         <>

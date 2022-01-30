@@ -26,7 +26,8 @@ const SignUp = () => {
         bio: "",
         previousCollabs: [],
         previousRooms: [],
-        previousCommunities: []
+        previousCommunities: [],
+        publishedCollabs: []
     })
 
     // const [userExists, setUserExists] = useState();
@@ -47,7 +48,8 @@ const SignUp = () => {
                 bio: bio,
                 previousCollabs: [],
                 previousRooms: [],
-                previousCommunities: []
+                previousCommunities: [],
+                publishedCollabs: []
             })
             // console.log("Document written with ID: ", docRef.id);
             setUser(
@@ -62,7 +64,8 @@ const SignUp = () => {
                 "previousCollabs": [],
                 "publishedCollabs": [],
                 "previousRooms": [],
-                "previousCommunities": []}
+                "previousCommunities": [],
+                "publishedCollabs": []}
             )
             setSignedUp(true);
             history.push(`/app?username=${username}`)
