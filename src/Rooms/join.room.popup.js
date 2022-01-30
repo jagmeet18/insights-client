@@ -1,4 +1,5 @@
-import { useState} from "react";
+import { useState } from "react";
+import { useHistory } from "react-router-dom";
 import db from "../Firebase/firebase";
 import { collection, query, where, getDocs, updateDoc, doc, arrayUnion } from "firebase/firestore"; 
 import styles from './create.room.popup.module.css';
@@ -9,6 +10,7 @@ export const JoinRoomPopup = () => {
     const [formSubmitted, setFormSubmitted] = useState('');
     const [denied, setDenied] = useState(false);
     const { userData, setUserData } = useUser();
+    const history = useHistory();
  
     async function handleSubmit(e){
         e.preventDefault()
@@ -35,7 +37,7 @@ export const JoinRoomPopup = () => {
                 }
             })
             setFormSubmitted(true)
-            // history.push(`/app/vs/${id}}`) //uncomment when vs room done        
+            history.push(`/app/vs/${id}`) //uncomment when vs room done        
         } catch (error) {
             error.code && (error.code === 404 && setDenied(true))
             throw error

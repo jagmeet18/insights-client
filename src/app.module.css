@@ -11,10 +11,7 @@
     margin: 0px;
     display: grid;
     /* border: 5px solid black; */
-<<<<<<< HEAD
-=======
     width: 100vw;
->>>>>>> 2c55fd0c01c34537b91d18efc87c74dbdeffc819
     height: 100vh;
     grid-template-columns: 66px auto;
 }

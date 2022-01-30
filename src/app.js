@@ -12,25 +12,22 @@ import VirtualSpace from "./VirtualSpace/page";
 // import VirtualSpace from "./VirtualSpace";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
-
+import Publish from "./publishform"
 import ShowChat from "./Chat/showchat"
+
 
 export default function App({ match, location, history }) {
   	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
   	//   const [activeRoom, setActiveRoom] = useState(null);
 	return (
 
+		
 		<div className={styles.app}>
 			<NavBar />
 			<UserProvider query={location.search}>
 				<div className={styles.page}>
-<<<<<<< HEAD:src/App.js
-					<Route path={`${match.path}/`}>
-						<Redirect to={`${match.path}/profile`} />
-=======
 					<Route exact path={`${match.path}/`}>
 						<Redirect to={`${match.path}/rooms`} />
->>>>>>> 2c55fd0c01c34537b91d18efc87c74dbdeffc819:src/app.js
 					</Route>
 					<Route path={`${match.path}/profile`}>
 						<Profile />
@@ -40,8 +37,12 @@ export default function App({ match, location, history }) {
 					</Route>
 					<Route path={`${match.path}/vs/:id`}>
 						{/* <Rooms /> */}
+						{/* <Publish /> */}
 						<VirtualSpace />
 					</Route>
+					{/* <Route path={`${match.path}/publishform`}>
+						<Publish/>
+					</Route> */}
 				</div>
 				{/* <Route path="/rooms" exact>
 					<Rooms
@@ -53,8 +54,9 @@ export default function App({ match, location, history }) {
 				<Route>
 					<VirtualSpace data={activeRoom} />
 				</Route> */}
-			</UserProvider>
-		</div>
+			</UserProvider> 
+
+		</div> 
 
   	);
 
