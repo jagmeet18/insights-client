@@ -14,8 +14,18 @@ import VirtualSpace from "./VirtualSpace/page";
 // import { Switch, Route } from "react-router-dom";
 import { UserProvider } from "./user.context";
 
-export default function App({ match, location }) {
-  	const [queries, setQueries] = useState(location.search);
+import Publish from "./publishform"
+import ShowChat from "./Chat/showchat"
+
+
+
+
+
+
+export default function App({ match, location, history }) {
+  const [queries, setQueries] = useState(location.search);
+  	//   const [userId] = useState("qlQpFvVmJoV0LDGV5Zjr");
+
   	//   const [activeRoom, setActiveRoom] = useState(null);
 	useEffect(() => {
 		if (queries == '') {
@@ -23,9 +33,12 @@ export default function App({ match, location }) {
 		}
 	}, []);
 
+
 	console.log("went through app component", queries)
 		
 	return (
+
+
 		<div className={styles.app}>
 			<NavBar />
 			{
@@ -43,8 +56,12 @@ export default function App({ match, location }) {
 					</Route>
 					<Route path={`${match.path}/vs/:id`}>
 						{/* <Rooms /> */}
+						{/* <Publish /> */}
 						<VirtualSpace />
 					</Route>
+					{/* <Route path={`${match.path}/publishform`}>
+						<Publish/>
+					</Route> */}
 				</div>
 				{/* <Route path="/rooms" exact>
 					<Rooms
@@ -56,9 +73,11 @@ export default function App({ match, location }) {
 				<Route>
 					<VirtualSpace data={activeRoom} />
 				</Route> */}
+
 				</UserProvider>
 			}
 		</div>
+
 
   	);
 
