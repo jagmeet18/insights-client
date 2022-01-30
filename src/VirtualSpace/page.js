@@ -6,6 +6,13 @@ import { profiles } from "./profiles"
 import styles from "./vspage.module.css"
 import { faExpandAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import Publish from "../publishform"
+
+import { Link } from "react-router-dom";
+
+import { useState } from "react";
+
+
 
 
 const expand = () => {
@@ -16,26 +23,50 @@ const sendInvite = () => {
 	// form to get invite id
 }
 
-const publish = () => {
-	// publish the virtual space
-}
+// const publish = () => {
+// 	// publish the virtual space
+// 	<Publish/>
+// 	console.log("hi")
+// 	setPublishupdate("Update");
+
+// }
 
 
 const VirtualSpace = () => {
+	const [publishupdate, setPublishupdate] = useState("Publish");
+	const [published, setPublished] = useState(false);
+
+	const publish = () => {
+		// publish the virtual space
+		console.log("hi")
+		setPublishupdate("Update");
+		setPublished(true);
+		if(publishupdate == "Update") {
+			alert("Yayy updated!")
+		}
+	
+	}
     return (
 		<>
 			<AppBar/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
-					
+
+				<div className={styles["container"]}>	
+					{published === true ? <Publish/> : null}
 				</div>
+
+				</div>
+
 				<div className={styles["publish-expand"]}>
-					<button className={styles["publish-button"]} onClick={publish}>Publish</button>
+					<button className={styles["publish-button"]} onClick={publish}>{publishupdate}</button>
+					
+					
 					<button className={styles["expand-button"]} onClick={expand}>
 						<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
 					</button>
-		
 				</div>
+
 				<div className={styles["online-collaborators"]}>					
 						{profiles.map((user,index) => {
 							return(	
@@ -47,7 +78,9 @@ const VirtualSpace = () => {
 						</button>
 				</div>
 				<div className={styles["chat"]}>
-					<ShowChat />
+				{/* <Chat socket={socket} username={"mahek"} room={"my room"} /> */}
+				<ShowChat/>
+				
 				</div>
 			</div>
 		</>

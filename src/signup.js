@@ -13,7 +13,7 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [confirm, setConfirmPassword] = useState('');
     const [password, setPassword] = useState('');
-    const [pfp, setPfp] = useState('');
+    const [pfp, setPfp] = useState(require("./assets/default.images").default.user);
     const [bio, setBio] = useState('');
 
     const [PasswordDiff, setPasswordDiff] = useState();

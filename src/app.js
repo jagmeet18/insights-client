@@ -7,10 +7,11 @@ import Profile from "./Profile/page";
 import Rooms from "./Rooms/page";
 import VirtualSpace from "./VirtualSpace/page";
 import Communities from "./Communities/page";
+import Publish from "./publishform"
+import ShowChat from "./Chat/showchat"
 
 export default function App({ match, location, history }) {
-	const [queries, setQueries] = useState(location.search);
-  	
+  const [queries, setQueries] = useState(location.search);
 	useEffect(() => {
 		if (queries === '') {
 			// either user reloaded, came to /app during an existing session, or tried to come here through browser search bar
@@ -40,6 +41,8 @@ export default function App({ match, location, history }) {
 	console.log("went through app component")
 		
 	return (
+
+
 		<div className={styles.app}>
 			<NavBar />
 			{
