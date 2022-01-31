@@ -42,6 +42,10 @@
     height: 4rem;
 }
 
+.card-header{
+    color: white;
+}
+
 h3,p{
     margin:0;
     padding: 0;

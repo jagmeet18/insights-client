@@ -1,5 +1,5 @@
 import { useState} from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import db from "../Firebase/firebase";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
@@ -61,7 +61,7 @@ export const CreateRoomPopup = () => {
                         previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
                     }
                 })
-                // history.push(`/app/vs/${RName}`) //uncomment when vs room done
+                // history.push({pathname: `/app/vs/${RName}`, state: {detail: collabId}}) //uncomment when vs room done
                 setFormSubmitted(true)
             })
         } catch(e) {

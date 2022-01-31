@@ -19,14 +19,16 @@ const ShowChat = () => {
     const [showChat, setShowChat] = useState(false);
     
     const joinRoom = () => {
-    if (username !== "" && room !== "") {
-        socket.emit("join_room", room);
-        setShowChat(true);
-    }
+      if (username !== "" && room !== "") {
+          socket.emit("join_room", room);
+          setShowChat(true);
+      }
     };
+
     return ( 
         <div className={styles["show-chat"]}>
-            {!showChat ? (
+
+           {/* {!showChat ? (
         <div className={styles["joinChatContainer"]}>
           <h3>Join A Chat</h3>
           <input
@@ -45,9 +47,9 @@ const ShowChat = () => {
           />
           <button onClick={joinRoom}>Join A Room</button>
         </div>
-      ) : (
-        <Chat socket={socket} username={username} room={room} />
-      )}
+      ) : ( 
+        )} */}
+        <Chat socket={socket} username={"mahek"} room={"my room"} />
         </div>
      );
 }

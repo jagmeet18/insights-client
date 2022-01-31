@@ -13,31 +13,16 @@ const SignUp = () => {
     const [username, setUsername] = useState('');
     const [confirm, setConfirmPassword] = useState('');
     const [password, setPassword] = useState('');
-    const [pfp, setPfp] = useState('');
+    const [pfp, setPfp] = useState(require("./assets/default.images").default.user);
     const [bio, setBio] = useState('');
 
-    const[user, setUser] = useState({
-        id: "",
-        fName: "",
-        lName: "",
-        email: "",
-        username: "",
-        password: "",
-        bio: "",
-        previousCollabs: [],
-        previousRooms: [],
-        previousCommunities: []
-    })
-
-    // const [userExists, setUserExists] = useState();
     const [PasswordDiff, setPasswordDiff] = useState();
-    const [signedUP, setSignedUp] = useState();
     const history = useHistory();
 
     async function postUser(fName,lName,email,username,password,pfp,bio){
         try{
             const id = uuidv4()
-            await setDoc(doc(db, "users", id), {
+            const data = {
                 fName: fName,
                 lName: lName,
                 email: email,
@@ -47,35 +32,16 @@ const SignUp = () => {
                 bio: bio,
                 previousCollabs: [],
                 previousRooms: [],
-                previousCommunities: []
-            })
-            // console.log("Document written with ID: ", docRef.id);
-            setUser(
-                {"id":id,
-                "fName": fName,
-                "lName": lName,
-                "email": email,
-                "username": username,
-                "password": password,
-                "pfp": pfp,
-                "bio": bio,
-                "previousCollabs": [],
-                "publishedCollabs": [],
-                "previousRooms": [],
-                "previousCommunities": []}
-            )
-            setSignedUp(true);
+                previousCommunities: [],
+                publishedCollabs: []
+            }
+            await setDoc(doc(db, "users", id), data)
+            // localStorage.setItem("pw", password)
             history.push(`/app?username=${username}`)
         } catch(e) {
             console.log("DIDNT WORK", e);
-            setUser('');
-            setSignedUp(false);
         }
     }
-
-    // useEffect(() => {
-    //     // history.push(`/profile/${user.username}`)
-    // },[user]);
 
     async function checkUser() {
         const q = query(collection(db, "users"), where("username", "==", username));
@@ -93,7 +59,7 @@ const SignUp = () => {
         console.log('button to upload clicked')
         const file = e.target.files[0]
         const reader = new FileReader(); 
-        reader.onload = (readerEvent) => {
+        reader.onload = () => {
             console.log('file value: ', file)
             if(reader.readyState === 2){
                 setPfp(reader.result);
@@ -120,6 +86,7 @@ const SignUp = () => {
     }
 
     return ( 
+        // If session exists, redirect to /app, else continue
         <div className={styles["container"]}>
             <div className={styles["form"]}>
                 <div className={styles["header"]}>Create an account</div>

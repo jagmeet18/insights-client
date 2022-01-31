@@ -1,21 +1,22 @@
-import { useEffect, useState, useCallback } from "react"
+import { useState } from "react"
 // import { getVSData } from "../VirtualSpace/server"
 // import axios from "axios"
 import { useUser } from '../user.context'
 import AppBar from '../AppBar/bar'
 import CreateRoomPopup from "./create.room.popup";
 import JoinRoomPopup from "./join.room.popup";
-import ShareRoomPopup from "./share.room.popup";
+// import ShareRoomPopup from "./share.room.popup";
 import { AppBarButtons } from "./appbar.buttons";
 
-export default function Rooms({ match, history }) {
+export default function Room () {
 	const [appBarStatus, setAppBarStatus] = useState(null);
 	const { userData } = useUser()
-	console.log("all rooms from context: ",userData)
+	console.log("Rooms component - context:",userData)
 
 	function onStatusChange(e) {
 		e.preventDefault()
-		const val = e.target.value
+		const val = e.target.id
+		console.log('appbar button clicked', val)
 		setAppBarStatus(val)
 	}
 	// useEffect(() => {
@@ -45,6 +46,7 @@ export default function Rooms({ match, history }) {
 	}
 
 	return (
+		userData.id ?
 		<>
 			<AppBar onClickHandler={onStatusChange} buttons={AppBarButtons} />
 			{/* <div> */}
@@ -58,11 +60,11 @@ export default function Rooms({ match, history }) {
 				{
 					userData.previousRooms && userData.previousRooms.map((roomId, index) => { 
 						return (
-							<button value={roomId} onClick={handleJoinOldRoom}>{roomId}</button>
+							<button key={index} value={roomId} onClick={handleJoinOldRoom}>{roomId}</button>
 						)
 					})
 				}
 			</div>
-		</>
+		</> : <h1 style={{padding:"50px"}}>Loading...</h1>
 	)
 }

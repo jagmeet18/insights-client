@@ -1,17 +1,8 @@
 import React, { useContext, useState, useEffect } from "react"
 import db from "./Firebase/firebase";
-import { collection, doc, getDocs, query, where, updateDoc, arrayUnion } from "firebase/firestore"; 
+import { collection, getDocs, query, where } from "firebase/firestore"; 
+import { parseQuery } from './utils'
 // import Data from "./sample.user.data";
-
-function parseQuery(query) { 
-  let res = {}
-  query.split("&").forEach(function (part) {
-    let item = part.split("=")
-    if(item[0] === "") return
-    res[item[0].slice(1)] = decodeURIComponent(item[1])
-  })
-  return res
-}
 
 async function getDataByUsername(username) {
   const q = query(collection(db, "users"), where("username", "==", username));
@@ -42,14 +33,17 @@ export const UserProvider = ({ query, children }) => {
 
   console.log('context outside effect: ', userData)
   useEffect(() => {
-    console.log('context getting data: ', userData)
+    console.log('context inside effect: ', userData)
+    if ("id" in userData) return
+    console.log('context getting data')
     const dataPromise = getDataByUsername(userData.username)
     dataPromise.then(data => {
       setUserData(data)
+      console.log('context got data: ', data)
     })
 
     // only time you'd need a cleanup function for this is when the user logs out
-  }, [])
+  }, [userData])
 
   // async function publishCollab({ id }) { 
   //   // adding the doc to the user's collabs array

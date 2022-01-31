@@ -14,6 +14,7 @@ const CollabCatalogue = () => {
     const [collabs, setCollabs] = useState([]);
     const { userData } = useUser();
 
+    console.log("Collab Catalogue component - context: ", userData)
     useEffect(() => { 
         // for every collab id, get the collab data from the collab collection
         const q = query(collection(db, "collabs"), where("published", "==", true), where("owners", "array-contains", userData.id))
@@ -22,6 +23,7 @@ const CollabCatalogue = () => {
                 setCollabs(prevCollabs => [...prevCollabs, doc.data()])
             });
         })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     },[])
 
     return ( 
