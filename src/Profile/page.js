@@ -6,7 +6,7 @@ import CommunityCatalogue from './community.catalogue';
 import { auth } from "../firebase"
 import { signOut } from 'firebase/auth'
 // import ProfileCataloguePicker from './catalogue.picker';
-import { useUser } from '../user.context'
+import { useUser } from '../context/user'
 import { AppBarButtons } from './appbar.buttons'
 // import { CataloguePickerButtons as buttons } from "./catalogue.picker.buttons";
 

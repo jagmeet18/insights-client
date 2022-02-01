@@ -3,11 +3,11 @@ import { Link } from "react-router-dom";
 import {
     // db,
     auth
-} from "./firebase";
+} from "../firebase";
 import { signInWithEmailAndPassword } from 'firebase/auth'
 // import { collection, getDocs, query, where } from "firebase/firestore";
-import { onError } from "./utils"
-import styles from './Rooms/create.room.popup.module.css';
+import { onError } from "../utils"
+import styles from '../Rooms/create.room.popup.module.css';
 
 const Login = ({ history }) => {
     // const [denied, setDenied] = useState(false);
@@ -32,12 +32,13 @@ const Login = ({ history }) => {
         throw { code: "auth/empty-fields" }
     }
 
-    function handleSubmit(e){
+    async function handleSubmit(e){
         e.preventDefault()
 
         try {
             checkFieldsEmpty()
-            signInWithEmailAndPassword(auth, info.email, info.password)
+            await signInWithEmailAndPassword(auth, info.email, info.password)
+            console.clear()
             history.push("/app")
         } catch (e) {
             console.log(e.code || e)

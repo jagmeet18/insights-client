@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { db } from "../firebase";
 import { collection, query, where, getDocs, updateDoc, doc, arrayUnion } from "firebase/firestore"; 
 import styles from './create.room.popup.module.css';
-import { useUser } from '../user.context'
+import { useUser } from '../context/user'
 
 export const JoinRoomPopup = () => {
     const [writeId, setWriteId] = useState('');
@@ -11,7 +11,11 @@ export const JoinRoomPopup = () => {
     const [denied, setDenied] = useState(false);
     const { userData, setUserData } = useUser();
     const history = useHistory();
- 
+
+    // async function handleSubmit(e) {
+    //     console.log(userData)
+    // }
+
     async function handleSubmit(e){
         e.preventDefault()
         try {
@@ -34,13 +38,17 @@ export const JoinRoomPopup = () => {
             setUserData((prev) => { 
                 return {
                     ...prev,
-                    previousRooms: [...new Set([...prev.previousRooms, id])],
-                    previousCollabs: [...new Set([...prev.previousCollabs, data.collabId])]
+                    data: {
+                        ...prev.data,
+                        previousRooms: [...new Set([...prev.data.previousRooms, id])],
+                        previousCollabs: [...new Set([...prev.data.previousCollabs, data.collabId])]
+                    },
                 }
             })
 
-            setFormSubmitted(true)
-            history.push({pathname: `/app/vs/${id}`, state: { detail: data }}) //uncomment when vs room done
+            // setFormSubmitted(true)
+            console.clear()
+            history.push(`/app/vs/${id}`) //uncomment when vs room done
         } catch (error) {
             error.code && (error.code === 404 && setDenied(true))
             throw error

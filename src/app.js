@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react"
 import { Route, Redirect } from "react-router-dom"
 // import { auth } from "./firebase";
 // import { onAuthStateChanged } from 'firebase/auth'
-import { useAuth } from "./auth.context";
+import { useAuth } from "./context/auth";
 
 import styles from './app.module.css'
-import { UserProvider } from "./user.context";
+import { UserProvider } from "./context/user";
 import NavBar from "./NavBar/bar";
 import Profile from "./Profile/page";
 import Rooms from "./Rooms/page";
@@ -40,17 +40,20 @@ export default function App() {
 							<Route exact path={`/app/`}>
 								<Rooms />
 							</Route>
-							<Route path={`/app/profile`}>
-								<Profile />
-							</Route>
-							<Route path={`/app/rooms`}>
+							<Route exact path={`/app/vs/`}>
 								<Rooms />
 							</Route>
 							<Route path={`/app/vs/:id`}>
 								<VirtualSpace />
 							</Route>
+							<Route path={`/app/rooms`}>
+								<Rooms />
+							</Route>
 							<Route path={`/app/communities`}>
 								<Communities />
+							</Route>
+							<Route path={`/app/profile`}>
+								<Profile />
 							</Route>
 						</div>
 					</UserProvider> 

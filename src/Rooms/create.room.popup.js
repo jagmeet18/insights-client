@@ -4,7 +4,7 @@ import { db } from "../firebase";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
 import styles from './create.room.popup.module.css';
-import { useUser } from '../user.context'
+import { useUser } from '../context/user'
 
 
 function createRoom(options) {
@@ -43,7 +43,6 @@ function createRoom(options) {
 export const CreateRoomPopup = () => {
     const [RName, setRName] = useState('');
     const [CName, setCName] = useState('');
-    // const [formSubmitted, setFormSubmitted] = useState(false);
     const {userData, setUserData} = useUser();
     const history = useHistory()
 
@@ -59,52 +58,21 @@ export const CreateRoomPopup = () => {
                 setUserData((prev) => {
                     return {
                         ...prev,
-                        previousRooms: [...new Set([...prev.previousRooms, RId])],
-                        previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
+                        data: {
+                            ...prev.data,
+                            previousRooms: [...new Set([...prev.data.previousRooms, RId])],
+                            previousCollabs: [...new Set([...prev.data.previousCollabs, collabId])]
+                        }
                     }
                 })
                 // setFormSubmitted(true)
-                history.push({pathname: `/app/vs/${RId}`, state: { detail: {roomId: RId, collabId, name: RName, communityName: CName, editors: [], owners: [userData.id]}, readId, writeId, readers:[] }}) //uncomment when vs room done
+                console.clear()
+                history.push(`/app/vs/${RId}`) //uncomment when vs room done
             })
         } catch(e) {
             console.log("DIDNT WORK", e);
         }
     }
-
-    //ADD TO JOIN ROOM PART
-    // async function handleSubmit(e){
-    //     e.preventDefault()
-    //     try {
-    //         let id = null
-    //         const q = query(collection(db, "users"), where("writeId", "==", id.given));
-    //         const querySnapshot = await getDocs(q)
-    //         let data = null
-    //         querySnapshot.forEach(function (doc) {
-    //             data = doc.data()
-    //             id = doc.id
-    //         })
-    //         if (!data) throw {code:401, msg:"room doesn't exist"}
-
-    //         updateDoc(doc(db, "users", user.userData[1]), {
-    //             previousRooms: arrayUnion(id)    
-    //         });
-    //         history.push(`/app?username=${info.username}`)
-    //         setUser(data)
-                    
-    //     } catch (error) { 
-    //         error.code && (error.code === 401 && setDenied(true))
-    //     }
-    // }
-
-    // const handleKeypress = e => {
-    //     //it triggers by pressing the enter key
-    //   if (e.keyCode === 13) {
-    //     console.log("heyy")
-    //   }
-    // };
-    // state = {
-    //     message: ""
-    // };
 
     return (
         <div className={styles["container"]}>

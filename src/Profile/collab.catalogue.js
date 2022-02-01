@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CollabCard from "./collab.card"
 import styles from './collab.catalogue.module.css'
-import { useUser } from '../user.context'
+import { useUser } from '../context/user'
 import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore"; 
 
@@ -35,8 +35,8 @@ const CollabCatalogue = () => {
                 // })
                 collabs.map(({ displayPic, name, communityPosted }, index) => {
                     const ownerpic = require("../assets/default.images").default.user
-                    console.log("ownerpic: ", ownerpic);
                     return <CollabCard
+                        key={index}
                         img={displayPic}
                         title={name}
                         ownerIcon={ownerpic}

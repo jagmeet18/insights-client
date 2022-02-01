@@ -3,15 +3,15 @@ import {
     // useHistory,
     Link
 } from "react-router-dom";
-import { db, auth } from "./firebase";
+import { db, auth } from "../firebase";
 import {
     doc, setDoc,
     // getDocs, collection, where, query
 } from "firebase/firestore"; 
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 // import { v4 as uuidv4 } from 'uuid';
-import { onError } from "./utils"
-import styles from './Rooms/create.room.popup.module.css';
+import { onError } from "../utils"
+import styles from '../Rooms/create.room.popup.module.css';
 
 async function postUser({uid, email, username, pfp}){
     try{
@@ -63,7 +63,7 @@ const SignUp = ({ history }) => {
     const [error, setError] = useState({code: "", msg: ""});
     const [password, setPassword] = useState('');
     const [confirmedPassword, setConfirmedPassword] = useState('');
-    const [pfp, setPfp] = useState(require("./assets/default.images").default.user);
+    const [pfp, setPfp] = useState(require("../assets/default.images").default.user);
     // const [bio, setBio] = useState('');
 
     // const [PasswordDiff, setPasswordDiff] = useState();
@@ -101,6 +101,7 @@ const SignUp = ({ history }) => {
             const { user } = await createUserWithEmailAndPassword(auth, email, password)
             const uid = user.uid
             postUser({ uid, username, email, pfp });
+            console.clear()
             history.push("/app")
         } catch (e) {
             console.log(e.code || e)

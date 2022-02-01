@@ -1,11 +1,11 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import { BrowserRouter as Router, Route, Redirect, Switch } from "react-router-dom"
-import { AuthProvider } from "./auth.context"
-import ProtectedRoute from "./ProtectedRoute"
+import { AuthProvider } from "./context/auth"
+import ProtectedRoute from "./authentication/protected.route"
 import "./index.css"
-import Login from "./login"
-import SignUp from "./signup"
+import Login from "./authentication/login"
+import SignUp from "./authentication/signup"
 import App from "./app"
 
 ReactDOM.render(
