@@ -1,54 +1,62 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import db from "./Firebase/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore"; 
+import {
+    // db,
+    auth
+} from "./firebase";
+import { signInWithEmailAndPassword } from 'firebase/auth'
+// import { collection, getDocs, query, where } from "firebase/firestore";
+import { onError } from "./utils"
 import styles from './Rooms/create.room.popup.module.css';
 
 const Login = ({ history }) => {
-    const [denied, setDenied] = useState(false);
+    // const [denied, setDenied] = useState(false);
+    const [error, setError] = useState({code: "", msg: ""});
     const [info, setInfo] = useState({
-        username: "",
+        email: "",
         password: ""
     });
 
-    const handleInfo = (event) =>{
-        if (denied) setDenied(false)
+    console.log(info)
+
+    const handleInputChange = (event) => {
+        if(error.code) setError({code: "", msg: ""})
         const name = event.target.name;
         const value = event.target.value;
         setInfo({...info, [name] : value})
     }
 
-    async function handleSubmit(e){
+    function checkFieldsEmpty() {
+        if (info.email && info.password) return
+        // eslint-disable-next-line no-throw-literal
+        throw { code: "auth/empty-fields" }
+    }
+
+    function handleSubmit(e){
         e.preventDefault()
-        try { 
-            const q = query(collection(db, "users"), where("username", "==", info.username), where("password", "==", info.password));
-            const querySnapshot = await getDocs(q)
-            let data = null
-            querySnapshot.forEach(function (doc) {
-                data = doc.data()
-            })
-            if (!data) throw { code: 401, msg: "unauthorized user" }
-            // localStorage.setItem("pw", data.password)
-            history.push(`/app?username=${data.username}`)
-        } catch (error) { 
-            console.log(error)
-            error.code && (error.code === 401 && setDenied(true))
+
+        try {
+            checkFieldsEmpty()
+            signInWithEmailAndPassword(auth, info.email, info.password)
+            history.push("/app")
+        } catch (e) {
+            console.log(e.code || e)
+            onError(e, setError)
         }
     }
 
     return ( 
-        // If session exists, redirect to /app, else continue
         <div className={styles["container"]}>
             <div className={styles["form"]}>
-                <div className={styles["header"]}>Login</div>
-               {denied && <div className={styles["errorHandle"]}>denied</div>} 
+                <div className={styles["header"]}><h1>Login</h1></div>
+                <div className={styles["errorHandle"]}>{error.msg}</div>
                 <div className={styles["form_group"]}>
-                    <label htmlFor="Username">Username</label>
-                    <input onChange={handleInfo} type="text" name="username" placeholder="Username"></input>                    
+                    <label htmlFor="Email">E-mail</label>
+                    <input onChange={handleInputChange} type="email" name="email" placeholder="Enter your e-mail address"></input>
                 </div>
                 <div className={styles["form_group"]}>
                     <label htmlFor="Password">Password</label>
-                    <input onChange={handleInfo} type="password" name="password" placeholder="Password"></input>
+                    <input onChange={handleInputChange} type="password" name="password" placeholder="Enter your password"></input>
                 </div>
                 <div className={styles["footer"]}>
                     <Link to="/signup" className={styles["links"]}>Create an account?</Link>

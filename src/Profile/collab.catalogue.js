@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import CollabCard from "./collab.card"
 import styles from './collab.catalogue.module.css'
 import { useUser } from '../user.context'
-import db from "../Firebase/firebase";
+import { db } from "../firebase";
 import { collection, getDocs, query, where } from "firebase/firestore"; 
 
 // ==== PUBLISH COLLAB ====

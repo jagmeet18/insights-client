@@ -1,49 +1,46 @@
 import React, { useContext, useState, useEffect } from "react"
-import db from "./Firebase/firebase";
-import { collection, getDocs, query, where } from "firebase/firestore"; 
-import { parseQuery } from './utils'
+import { db } from "./firebase";
+import {
+  collection,
+  // getDocs, query, where,
+  getDoc, doc
+} from "firebase/firestore"; 
+// import { parseQuery } from './utils'
 // import Data from "./sample.user.data";
 
-async function getDataByUsername(username) {
-  const q = query(collection(db, "users"), where("username", "==", username));
-  const querySnapshot = await getDocs(q)
-  let data = null
-  querySnapshot.forEach(function (doc) {
-    data = {...doc.data(), id: doc.id}
-  })
-  return data
-}
-
-// async function getDataById(id) {
-//   const q = query(collection(db, "users"), where("id", "==", id));
+// async function getDataByUsername(username) {
+//   const q = query(collection(db, "users"), where("username", "==", username));
 //   const querySnapshot = await getDocs(q)
 //   let data = null
 //   querySnapshot.forEach(function (doc) {
-//     data = doc.data()
+//     data = {...doc.data(), id: doc.id}
 //   })
 //   return data
 // }
 
+async function getUserDataById(id) {
+  const snap = await getDoc(doc(db, "users", id))
+  return snap.data();
+}
+
 const UserContext = React.createContext()
 
-export const UserProvider = ({ query, children }) => {
-  const [userData, setUserData] = useState({
-    username: parseQuery(query).username,
-  })
+export const UserProvider = ({ id, children }) => {
+  const [userData, setUserData] = useState({ id })
 
   console.log('context outside effect: ', userData)
   useEffect(() => {
-    console.log('context inside effect: ', userData)
-    if ("id" in userData) return
     console.log('context getting data')
-    const dataPromise = getDataByUsername(userData.username)
+    const dataPromise = getUserDataById(userData.id)
     dataPromise.then(data => {
-      setUserData(data)
-      console.log('context got data: ', data)
+      setUserData((prev) => {
+        const newData = { ...prev, data }
+        console.log('context got data: ', newData)
+        return newData
+      })
     })
-
     // only time you'd need a cleanup function for this is when the user logs out
-  }, [userData])
+  }, [])
 
   // async function publishCollab({ id }) { 
   //   // adding the doc to the user's collabs array
@@ -56,8 +53,8 @@ export const UserProvider = ({ query, children }) => {
   // }
 
   return (
-    <UserContext.Provider value={{userData,setUserData}}>
-      {children}
+    <UserContext.Provider value={{ userData, setUserData }}>
+      {userData.data && children}
     </UserContext.Provider>
   )
 }

@@ -3,6 +3,8 @@ import { useHistory } from 'react-router-dom';
 import AppBar from '../AppBar/bar'
 import CollabCatalogue from './collab.catalogue';
 import CommunityCatalogue from './community.catalogue';
+import { auth } from "../firebase"
+import { signOut } from 'firebase/auth'
 // import ProfileCataloguePicker from './catalogue.picker';
 import { useUser } from '../user.context'
 import { AppBarButtons } from './appbar.buttons'
@@ -16,9 +18,7 @@ const Profile = () => {
 
     const onLogOut = (e) => { 
         e.preventDefault()
-        console.log('logging out')
-        localStorage.removeItem('signin-queries')
-        history.push('/')
+        signOut(auth)
     }
 
     return ( 
@@ -48,7 +48,7 @@ const Profile = () => {
                                     height: "160px",
                                     margin: "10px"
                                 }}
-                                    src={userData.pfp}
+                                    src={userData.data.pfp}
                                     alt='Profile'
                                 />
                             </div>
@@ -60,14 +60,14 @@ const Profile = () => {
                                 color: "black",
                             }}>
                                 {/** Just the username */}
-                                <h2>{userData.username}</h2>
+                                <h2>{userData.data.username}</h2>
                                 {/** Rest of the info about the profile */}
                                 <div style={{
                                     width: "100%",
                                     //    border: "2px solid blue"
                                 }}>
-                                    <h4>{userData.publishedCollabs && userData.publishedCollabs.length} Collabs</h4>
-                                    <h4>{userData.previousCommunities && userData.previousCommunities.length} Communities joined</h4>
+                                    <h4>{userData.data.publishedCollabs && userData.data.publishedCollabs.length} Collabs</h4>
+                                    <h4>{userData.data.previousCommunities && userData.data.previousCommunities.length} Communities joined</h4>
                                 </div>
                             </div>
                         </div>

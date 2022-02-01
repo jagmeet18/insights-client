@@ -19,6 +19,17 @@ export default function TextEditor({ data }) {
 	const [socket, setSocket] = useState()
 	const [quill, setQuill] = useState()
 
+	// try {
+	// 	// this is getting their passwords as well, maybe not a good idea
+	// 	getDoc(doc(db, "collabs", location.state.detail.collabId)).then(async (snapshot) => { 
+	// 		const collab = snapshot.data()
+	// 		const { content } = collab
+	// 		// setOwners([...owners, { pfp, id, username }])
+	// 	})
+	// } catch (error) {
+	// 	throw error
+	// }
+
 	console.log("Text Editor component rendered!")
 
 	// useEffect(() => {

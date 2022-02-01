@@ -1,6 +1,6 @@
 // import { useParams } from "react-router-dom"
 import { useState, useEffect } from "react";
-import db from "../Firebase/firebase";
+import { db } from "../Firebase/firebase";
 import { getDoc, doc } from "firebase/firestore"; 
 import styles from './create.room.popup.module.css';
 

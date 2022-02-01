@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import db from "../Firebase/firebase";
+import { db } from "../firebase";
 import { collection, query, where, getDocs, updateDoc, doc, arrayUnion } from "firebase/firestore"; 
 import styles from './create.room.popup.module.css';
 import { useUser } from '../user.context'
@@ -23,12 +23,14 @@ export const JoinRoomPopup = () => {
                 data = doc.data()
                 id = doc.id
             })
+            // eslint-disable-next-line no-throw-literal
             if (!data) throw {code:404, msg:"Room doesn't exist"}
 
             updateDoc(doc(db, "users", userData.id), {
                 previousRooms: arrayUnion(id),
                 previousCollabs: arrayUnion(data.collabId)
             })
+
             setUserData((prev) => { 
                 return {
                     ...prev,
@@ -36,8 +38,9 @@ export const JoinRoomPopup = () => {
                     previousCollabs: [...new Set([...prev.previousCollabs, data.collabId])]
                 }
             })
+
             setFormSubmitted(true)
-            history.push(`/app/vs/${id}`) //uncomment when vs room done        
+            history.push({pathname: `/app/vs/${id}`, state: { detail: data }}) //uncomment when vs room done
         } catch (error) {
             error.code && (error.code === 404 && setDenied(true))
             throw error

@@ -1,6 +1,6 @@
 import { useState} from "react";
-// import { useHistory } from "react-router-dom";
-import db from "../Firebase/firebase";
+import { useHistory } from "react-router-dom";
+import { db } from "../firebase";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
 import styles from './create.room.popup.module.css';
@@ -8,14 +8,14 @@ import { useUser } from '../user.context'
 
 
 function createRoom(options) {
-    const { RId, collabId, RName, CommName, Uid} = options
+    const { RId, collabId, readId, writeId, RName, CommName, Uid} = options
     console.log("options when creating room: ",options)
     const vsPromise = setDoc(doc(db, "virtual-spaces", RId), {
         collabId,
         name: RName,
         communityName: CommName,
-        readId: uuidv4(),
-        writeId: uuidv4(),
+        readId,
+        writeId,
         editors: [],
         owners: [Uid],
         readers: []
@@ -43,15 +43,17 @@ function createRoom(options) {
 export const CreateRoomPopup = () => {
     const [RName, setRName] = useState('');
     const [CName, setCName] = useState('');
-    const [formSubmitted, setFormSubmitted] = useState('');
+    // const [formSubmitted, setFormSubmitted] = useState(false);
     const {userData, setUserData} = useUser();
-    
+    const history = useHistory()
+
     const handleSubmit = (e) =>{
-        console.log('this works')
         try{
             const collabId = uuidv4()
             let RId = uuidv4()
-            createRoom({RId, collabId, RName, CommName: CName, Uid: userData.id}).catch((err) => { 
+            const readId = uuidv4()
+            const writeId = uuidv4()
+            createRoom({RId, collabId, RName, readId, writeId, CommName: CName, Uid: userData.id}).catch((err) => { 
                 throw err
             }).then(() => {
                 setUserData((prev) => {
@@ -61,8 +63,8 @@ export const CreateRoomPopup = () => {
                         previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
                     }
                 })
-                // history.push({pathname: `/app/vs/${RName}`, state: {detail: collabId}}) //uncomment when vs room done
-                setFormSubmitted(true)
+                // setFormSubmitted(true)
+                history.push({pathname: `/app/vs/${RId}`, state: { detail: {roomId: RId, collabId, name: RName, communityName: CName, editors: [], owners: [userData.id]}, readId, writeId, readers:[] }}) //uncomment when vs room done
             })
         } catch(e) {
             console.log("DIDNT WORK", e);
@@ -105,7 +107,6 @@ export const CreateRoomPopup = () => {
     // };
 
     return (
-        !formSubmitted ?
         <div className={styles["container"]}>
             <div className={styles["form"]}>
                 <div className={styles["form_group"]}>
@@ -123,7 +124,7 @@ export const CreateRoomPopup = () => {
                     <button onClick={handleSubmit} type="button" className={styles["b1"]} >Create Room</button>
                 </div>
             </div>
-        </div> : <></>
+        </div>
      );
 }
 
