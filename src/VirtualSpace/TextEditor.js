@@ -18,8 +18,7 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
 ]
 
-export default function TextEditor({ socket: s, roomId }) {
-	const [socket, setSocket] = useState(s)
+export default function TextEditor({ socket, roomId }) {
 	const [collabId, setCollabId] = useState(null);
 	const [quill, setQuill] = useState()
 

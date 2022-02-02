@@ -60,8 +60,8 @@ export const CreateRoomPopup = () => {
                         ...prev,
                         data: {
                             ...prev.data,
-                            previousRooms: [...new Set([...prev.data.previousRooms, RId])],
-                            previousCollabs: [...new Set([...prev.data.previousCollabs, collabId])]
+                            previousRooms: [...new Set([...prev.data?.previousRooms, RId])],
+                            previousCollabs: [...new Set([...prev.data?.previousCollabs, collabId])]
                         }
                     }
                 })

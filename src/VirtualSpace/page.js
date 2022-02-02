@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react"
-import { useParams, useLocation } from "react-router-dom";
+import {
+	useParams,
+	// useLocation
+} from "react-router-dom";
 import { getDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 import { io } from "socket.io-client"
 import { useUser } from "../context/user";
 import AppBar from "../AppBar/bar"
 import TextEditor from "./TextEditor"
-import Chat from "../Chat/chat"
+// import Chat from "../Chat/chat"
 import Publish from "./publish.popup"
 import styles from "./vspage.module.css"
 import { faExpandAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons"
@@ -19,10 +22,20 @@ const VirtualSpace = () => {
 
 	const { userData } = useUser()
 	const { id: userId } = userData
-	const { username, pfp } = userData.data
-	const [participants, setParticipants] = useState([{pfp, username, userId}]);
+	const [participants, setParticipants] = useState([{pfp: userData.data?.pfp, username: userData.data?.username, userId}]);
 	const { id: roomId } = useParams()
-	
+
+	// updates state when received from context
+	useEffect(() => {
+		const i = participants.findIndex(user => user.userId === userId)
+		if (i === -1) return
+		setParticipants((prev) => { 
+			prev[i].pfp = userData.data?.pfp
+			prev[i].username = userData.data?.username
+			return prev
+		})
+	}, [userData.data?.pfp, userData.data?.username, userId]);
+
 	useEffect(() => {
 
 		const s = io("http://localhost:3000")
@@ -43,7 +56,7 @@ const VirtualSpace = () => {
 			// acknowledge that the user has joined the room
 			s.emit("user-joined ack", socketid, {
 				userId,
-				username,
+				username: userData.data?.username,
 				roomId,
 			})
 			// get the newly joined user's pfp from firebase and then add it to the list of owners
@@ -61,7 +74,7 @@ const VirtualSpace = () => {
 		// request the server to join the room
 		s.emit("join-room", {
 			userId,
-			username,
+			username: userData.data?.username,
 			roomId,
 		})
 
@@ -70,8 +83,7 @@ const VirtualSpace = () => {
 			console.log("Disconnected from Virtual Space")
 		}
 		
-	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [roomId])
+	}, [roomId, userData.data?.username, userId])
 
 	const expand = () => {
 		// some css to expand text editor to full screen
@@ -92,14 +104,11 @@ const VirtualSpace = () => {
 
     return (
 		<>
-			<AppBar styles={{position: "sticky", top: 0}}/>
+			{published === true && <Publish/>}
+			<AppBar style={{border: "2px solid green",position: "sticky", top: 0}}/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
 					<TextEditor roomId={roomId} socket={socket} />
-				</div>
-
-				<div className={styles["container"]}>	
-					{published === true ? <Publish/> : null}
 				</div>
 
 				<div className={styles["publish-expand"]}>
@@ -113,6 +122,7 @@ const VirtualSpace = () => {
 
 				<div className={styles["online-collaborators"]}>				
 					{participants.map(({ pfp, username }, index) => {
+						if (!pfp || !username) return undefined
 						return(	
 							<img key={index} alt={`User ${username}`} className= {styles["images"]} src={pfp}/>
 						);

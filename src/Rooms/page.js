@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { useHistory } from "react-router-dom";
-import { db } from "../firebase";
-import { doc, getDoc } from "firebase/firestore";
+// import { db } from "../firebase";
+// import { doc, getDoc } from "firebase/firestore";
 import { useUser } from '../context/user'
 import AppBar from '../AppBar/bar'
 import CreateRoomPopup from "./create.room.popup";
@@ -24,7 +24,7 @@ export default function Rooms () {
 		e.preventDefault()
 		const roomId = e.target.value;
 		console.clear()
-		const room = (await getDoc(doc(db, "virtual-spaces", roomId))).data()
+		// const room = (await getDoc(doc(db, "virtual-spaces", roomId))).data()
 		console.clear()
 		history.push(`/app/vs/${roomId}`) //uncomment when vs room done
 	}
@@ -39,7 +39,7 @@ export default function Rooms () {
 			}
 			<div>
 				{
-					userData.data.previousRooms && userData.data.previousRooms.map((roomId, index) => {
+					userData.data?.previousRooms.map((roomId, index) => {
 						return (
 							<button key={index} value={roomId} onClick={handleJoinOldRoom}>{roomId}</button>
 						)

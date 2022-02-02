@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react"
-import { Route, Redirect } from "react-router-dom"
+// import React, { useState, useEffect } from "react"
+import {
+	Route,
+	// Redirect
+} from "react-router-dom"
 // import { auth } from "./firebase";
 // import { onAuthStateChanged } from 'firebase/auth'
 import { useAuth } from "./context/auth";
@@ -31,7 +34,7 @@ export default function App() {
 	// 	}
 	// }, [])
 	return (
-		<div className={styles.app}>
+		<div className={styles.app} >
 			{
 				<>
 					<NavBar />

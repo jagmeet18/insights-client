@@ -40,8 +40,8 @@ export const JoinRoomPopup = () => {
                     ...prev,
                     data: {
                         ...prev.data,
-                        previousRooms: [...new Set([...prev.data.previousRooms, id])],
-                        previousCollabs: [...new Set([...prev.data.previousCollabs, data.collabId])]
+                        previousRooms: [...new Set([...prev.data?.previousRooms, id])],
+                        previousCollabs: [...new Set([...prev.data?.previousCollabs, data.collabId])]
                     },
                 }
             })

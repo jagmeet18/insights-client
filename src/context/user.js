@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react"
 import { db } from "../firebase";
 import {
-  collection,
+  // collection,
   // getDocs, query, where,
   getDoc, doc
 } from "firebase/firestore"; 
@@ -40,7 +40,7 @@ export const UserProvider = ({ id, children }) => {
       })
     })
     // only time you'd need a cleanup function for this is when the user logs out
-  }, [])
+  }, [userData.id])
 
   // async function publishCollab({ id }) { 
   //   // adding the doc to the user's collabs array
@@ -54,7 +54,7 @@ export const UserProvider = ({ id, children }) => {
 
   return (
     <UserContext.Provider value={{ userData, setUserData }}>
-      {userData.data && children}
+      {children}
     </UserContext.Provider>
   )
 }

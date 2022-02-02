@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from 'firebase/auth'
 
@@ -8,7 +8,7 @@ const AuthContext = React.createContext();
 export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [pending, setPending] = useState(true);
-    const history = useHistory();
+    // const history = useHistory();
     console.log("went thru auth provider")
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
