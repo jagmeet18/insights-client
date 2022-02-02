@@ -15,10 +15,18 @@
         "online-collaborators chat" ;
     grid-template-rows: 1fr 50px 80px;
     grid-template-columns: 1fr 275px;
+    border: 3px solid yellow;
+    z-index: 1;
+    position: sticky;
+    top: 0;
 }
 
 .parent > .text-editor {
     grid-area: text-editor;
+    border: 2px solid red;
+    /* position: sticky;
+    top: 0; */
+    z-index: 0;
     /* background-color: var(--page); */
 }
 
@@ -31,12 +39,16 @@
     padding: 7px 20px 5px 20px;
     border-bottom: 1px solid #08183A;
     background-color: var(--cards);
+    border: 2px solid red;
 }
 
 
 .parent > .online-collaborators {
     grid-area: online-collaborators;
     background-color: var(--bars);
+    position: sticky;
+    bottom: 0;
+    border: 2px solid red;
 }
 
 .parent > .chat {

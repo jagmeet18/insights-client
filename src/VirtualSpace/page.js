@@ -92,10 +92,10 @@ const VirtualSpace = () => {
 
     return (
 		<>
-			<AppBar/>
+			<AppBar styles={{position: "sticky", top: 0}}/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
-					{(roomId && socket) ? <TextEditor roomId={roomId} socket={socket} /> : <h1>Loading editor...</h1>}
+					<TextEditor roomId={roomId} socket={socket} />
 				</div>
 
 				<div className={styles["container"]}>	

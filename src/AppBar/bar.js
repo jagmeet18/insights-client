@@ -1,9 +1,9 @@
 import styles from './appbar.module.css'
 
-const AppBar = ({ onClickHandler, buttons }) => {
+const AppBar = ({ styles: s, onClickHandler, buttons }) => {
 
     return(
-        <nav className={styles["navbar"]}>
+        <nav className={styles["navbar"]} style={{...s}} >
             <div className={styles["button-container"]}>
                 {buttons && buttons.map(({ text, value, icon: Icon }, index) => { 
                     const childrenStyles = { pointerEvents: "none" }
