@@ -19,7 +19,7 @@
 
 .parent > .text-editor {
     grid-area: text-editor;
-    background-color: var(--page);
+    /* background-color: var(--page); */
 }
 
 

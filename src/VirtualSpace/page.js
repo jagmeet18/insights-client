@@ -22,38 +22,15 @@ const VirtualSpace = () => {
 	const { username, pfp } = userData.data
 	const [participants, setParticipants] = useState([{pfp, username, userId}]);
 	const { id: roomId } = useParams()
-	const location = useLocation()
-
+	
 	useEffect(() => {
-
-		// location.state.detail.owners.forEach((id) => { 
-		// 	try {
-		// 		// this is getting their passwords as well, maybe not a good idea
-		// 		getDoc(doc(db, "users", id)).then(async (snapshot) => { 
-		// 			const owner = snapshot.data()
-		// 			const { pfp, username } = owner
-		// 			setOwners([...owners, { pfp, id, username }])
-		// 		})
-		// 	} catch (error) {
-		// 		throw error
-		// 	}
-		// })
 
 		const s = io("http://localhost:3000")
 		setSocket(s)
-		
-		// request the server to join the room
-		s.emit("join-room", {
-			// pfp: userData.pfp,
-			userId,
-			username,
-			roomId,
-		})
 
-		let i = 0
 		// data received upon joining the room
 		s.on("join-room ack", ({userId: uid, roomId: rid, username: uname}) => {
-			console.log(++i + ") data from user: ", uname)
+			console.log("Data from user: ", uname)
 			getDoc(doc(db, "users", uid)).then((snapshot) => {
 				const { pfp } = snapshot.data()
 				setParticipants((prev) => [...prev, { pfp, userId: uid, username: uname }])
@@ -74,6 +51,18 @@ const VirtualSpace = () => {
 				const { pfp } = snapshot.data()
 				setParticipants((prev) => [...prev, { pfp, userId: uid, username: uname }])
 			})
+		})
+
+		s.on('user-disconnected', (data) => {
+			console.log("User disconnected: ", data.username)
+			setParticipants((prev) => prev.filter((p) => p.userId !== data.userId))
+		})
+
+		// request the server to join the room
+		s.emit("join-room", {
+			userId,
+			username,
+			roomId,
 		})
 
 		return () => {
@@ -106,7 +95,7 @@ const VirtualSpace = () => {
 			<AppBar/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
-					{/* <TextEditor /> */}
+					{(roomId && socket) ? <TextEditor roomId={roomId} socket={socket} /> : <h1>Loading editor...</h1>}
 				</div>
 
 				<div className={styles["container"]}>	

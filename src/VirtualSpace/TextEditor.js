@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useState } from "react"
+import debounce from 'lodash.debounce'
+import { getDoc, setDoc, doc } from "firebase/firestore"
+import { db } from "../firebase"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
-import { io } from "socket.io-client"
+import "./text.editor.css"
 
 const TOOLBAR_OPTIONS = [
 	[{ header: [1, 2, 3, 4, 5, 6, false] }],
@@ -15,115 +18,118 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
 ]
 
-export default function TextEditor({ data }) {
-	const [socket, setSocket] = useState()
+export default function TextEditor({ socket: s, roomId }) {
+	const [socket, setSocket] = useState(s)
+	const [collabId, setCollabId] = useState(null);
 	const [quill, setQuill] = useState()
 
-	// try {
-	// 	// this is getting their passwords as well, maybe not a good idea
-	// 	getDoc(doc(db, "collabs", location.state.detail.collabId)).then(async (snapshot) => { 
-	// 		const collab = snapshot.data()
-	// 		const { content } = collab
-	// 		// setOwners([...owners, { pfp, id, username }])
-	// 	})
-	// } catch (error) {
-	// 	throw error
-	// }
-
 	console.log("Text Editor component rendered!")
+	
+	useEffect(() => {
+		getDoc(doc(db, "virtual-spaces", roomId)).then(snap => { 
+			const { collabId } = snap.data()
+			setCollabId(collabId)
+		})
+	}, [roomId]);
 
 	// useEffect(() => {
-	// 	const s = io("http://localhost:3000")
-	// 	const close = (s) => s.close()
-	// 	window.onbeforeunload = (e) => close(s)
-	// 	window.addEventListener("beforeunload", (e) => close(s))
+	// 	console.log("Attempting to populate document...")
+	// 	console.log("Quill: ", quill)
+	// 	if (!quill) return
+		// getDoc(doc(db, "virtual-spaces", roomId)).then(snap => { 
+		// 	const { collabId } = snap.data()
+		// 	getDoc(doc(db, "collabs", collabId)).then(snap => { 
+		// 		const { content } = snap.data()
+		// 		quill.setContents(content)
+		// 		quill.enable()
+		// 	})
+		// });
 	// 	return () => {
-	// 		window.removeEventListener("beforeunload", (e) => close(s))
-	// 		window.onbeforeunload = null
-	// 		close(s)
+	// 		console.log("Document cleanup...")
+	// 		if (!quill) return
+	// 		quill.deleteText(0, quill.getLength())
+	// 		quill.disable()
 	// 	}
-	// })
-
-	useEffect(() => {
-		console.log("Attempting to populate document...")
-		console.log("Quill: ", quill)
-		console.log("Data: ", data.collab)
-		if (!data.collab || !quill) return
-		const documentData = data.collab.content.arrayValue.values
-		quill.setContents(documentData)
-		quill.enable()
-		return () => {
-			console.log("Document cleanup...")
-			console.log("Quill during cleanup: ", quill)
-			if (!quill) return
-			quill.deleteText(0, quill.getLength())
-			quill.disable()
-		}
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [
-		/**
-		 * We want to repopulate the document if the collab content
-		 * was changed before the last render.
-		 */
-		data.collab.content.arrayValue.values,
-		/**
-		 * We want to repopulate the document if the quill instance
-		 * was changed before the last render.
-		 */
-		quill,
-	])
+	
+	// }, [quill, roomId])
 
 	// this inits a websocket connection w server
-	useEffect(() => {
-	    if (!data) return
-		const s = io("http://localhost:3000")
-		setSocket(s)
-		s.emit("join-room", {
-			userId: data.room.id,
-			roomId: data.room.id,
-		})
-	}, [data])
-
+	// useEffect(() => {
+	//     if (!data) return
+	// 	const s = io("http://localhost:3000")
+	// 	setSocket(s)
+	// 	s.emit("join-room", {
+	// 		userId: data.room.id,
+	// 		roomId: data.room.id,
+	// 	})
+	// }, [data])
+	
 	// this requests collab data and sets it to quill when it arrives
-	//   useEffect(() => {
-	//     if (socket == null || quill == null) return
+	  useEffect(() => {
+	    if (socket == null || quill == null) return
 
-	//     socket.once("load-document", document => {
-	//       quill.setContents(document)
-	//       quill.enable()
-	//     })
+		  socket.once("load-document", document => {
+	      	quill.setContents(document)
+	      	quill.enable()
+	    })
 
-	//     socket.emit("get-document", documentId)
-	//   }, [socket, quill, documentId])
+	    // socket.emit("get-document", roomId)
+	  }, [socket, quill, roomId])
+	
+	// useEffect(() => {
+		// getDoc(doc(db, "virtual-spaces", roomId)).then(snap => { 
+		// 	const { collabId } = snap.data()
+		// });
+	// 	const interval_id = setInterval(() => {
+	// 		console.log("Interval...")
+	// 		if (!quill ) return
+	// 		console.log("old contents and new contents the same? ", contents.current.ops , quill.getContents().ops)
+	// 		contents.current = quill.getContents()
+			// setDoc(doc(db, "collabs", collabId), quill.getContents())
+	// 	},3000)
+	
+	// 	return () => {
+	// 		console.log("Clearing interval with id: ", interval_id)
+	// 		clearInterval(interval_id)
+	// 	};
+	// }, [quill, roomId]);
 
 	// this updates the document when the server sends changes
-	// useEffect(() => {
-	// 	if (socket == null || quill == null) return
+	useEffect(() => {
+		if (socket == null || quill == null) return
 
-	// 	const handler = (delta) => {
-	// 		quill.updateContents(delta)
-	// 	}
-	// 	socket.on("receive-changes", handler)
+		const handler = (delta) => {
+			quill.updateContents(delta)
+		}
+		socket.on("receive-changes", handler)
 
-	// 	return () => {
-	// 		socket.off("receive-changes", handler)
-	// 	}
-	// }, [socket, quill])
+		return () => {
+			socket.off("receive-changes", handler)
+		}
+	}, [socket, quill])
+
+	const saveCollabDebounced = debounce(async () => { 
+		if (!collabId) return
+		const data = await setDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
+		console.log("saving document ["+collabId+"]: ", data)
+	}, 1000)
 
 	// this sends changes to the server everytime there is a change
-	// useEffect(() => {
-	// 	if (socket == null || quill == null) return
+	useEffect(() => {
+		if (socket == null || quill == null) return
 
-	// 	const handler = (delta, oldDelta, source) => {
-	// 		if (source !== "user") return
-	// 		socket.emit("send-changes", delta)
-	// 	}
-	// 	quill.on("text-change", handler)
+		const handler = async (delta, oldDelta, source) => {
+			if (source !== "user") return
+			socket.emit("send-changes", delta, { roomId })
+			saveCollabDebounced()
+			// setDoc(doc(db, "collabs", collabId), quill.getContents())
+		}
+		quill.on("text-change", handler)
 
-	// 	return () => {
-	// 		quill.off("text-change", handler)
-	// 	}
-	// }, [socket, quill])
+		return () => {
+			quill.off("text-change", handler)
+		}
+	}, [socket, quill, roomId, saveCollabDebounced])
 
 	const quillInitializerRef = useCallback((containerDiv) => {
 		if (containerDiv == null) return
@@ -139,5 +145,6 @@ export default function TextEditor({ data }) {
 		q.setText("Loading...")
 		setQuill(q)
 	}, [])
+
 	return <div className="container" ref={quillInitializerRef}></div>
 }
