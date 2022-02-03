@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 // import { useHistory } from "react-router-dom";
 import { auth } from "../firebase";
 import { onAuthStateChanged } from 'firebase/auth'
+import { loadingMessages } from '../utils'
 
 const AuthContext = React.createContext();
 
@@ -19,14 +20,14 @@ export const AuthProvider = ({ children }) => {
         });
     }, []);
 
-  if(pending){
+  if (pending){
       return <div style={{
           font: "1.5rem 'Roboto', sans-serif",
           position: 'absolute',
           top: '50%',
           left: '50%',
           transform: 'translate(-50%, -50%)'
-      }}><h1>Loading...</h1></div>
+      }}><h1>{loadingMessages[Math.floor(Math.random() * loadingMessages.length)]}</h1></div>
   }
 
   return (

@@ -11,7 +11,7 @@ import {
 import { createUserWithEmailAndPassword } from 'firebase/auth'
 // import { v4 as uuidv4 } from 'uuid';
 import { onError } from "../utils"
-import styles from '../Rooms/create.room.popup.module.css';
+import styles from './auth.module.css';
 
 async function postUser({uid, email, username, pfp}){
     try{
@@ -26,7 +26,6 @@ async function postUser({uid, email, username, pfp}){
             previousCollabs: [],
             previousRooms: [],
             previousCommunities: [],
-            publishedCollabs: []
         }
         setDoc(doc(db, "users", uid), data)
         // localStorage.setItem("pw", password)

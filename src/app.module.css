@@ -10,7 +10,6 @@
 .app {
     margin: 0px;
     display: grid;
-    /* border: 5px solid black; */
     width: 100vw;
     height: 100vh;
     grid-template-columns: 66px auto;

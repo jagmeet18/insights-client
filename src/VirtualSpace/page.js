@@ -8,7 +8,7 @@ import { db } from "../firebase";
 import { io } from "socket.io-client"
 import { useUser } from "../context/user";
 import AppBar from "../AppBar/bar"
-import TextEditor from "./TextEditor"
+import TextEditor from "./text.editor"
 // import Chat from "../Chat/chat"
 import Publish from "./publish.popup"
 import styles from "./vspage.module.css"
@@ -17,13 +17,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const VirtualSpace = () => {
 	const [socket, setSocket] = useState()
-	const [publishupdate, setPublishupdate] = useState("Publish");
-	const [published, setPublished] = useState(false);
+	const [published, setPublished] = useState(null);
+	const [publishFormVisible, setPublishFormVisible] = useState(false);
+	const [collabId, setCollabId] = useState();
 
 	const { userData } = useUser()
 	const { id: userId } = userData
 	const [participants, setParticipants] = useState([{pfp: userData.data?.pfp, username: userData.data?.username, userId}]);
 	const { id: roomId } = useParams()
+
+	useEffect(() => {
+		getDoc(doc(db, "virtual-spaces", roomId)).then(docSnap => {
+			// eslint-disable-next-line no-throw-literal
+			if (!docSnap.data()) throw {code:404, msg:"Room doesn't exist"}
+			const collabId = docSnap.data().collabId
+			setCollabId(collabId)
+		})
+	}, [roomId]);
 
 	// updates state when received from context
 	useEffect(() => {
@@ -37,12 +47,13 @@ const VirtualSpace = () => {
 	}, [userData.data?.pfp, userData.data?.username, userId]);
 
 	useEffect(() => {
-
+		if (!collabId) return
+		
 		const s = io("http://localhost:3000")
 		setSocket(s)
 
 		// data received upon joining the room
-		s.on("join-room ack", ({userId: uid, roomId: rid, username: uname}) => {
+		s.on("join-room ack", ({userId: uid , username: uname}) => {
 			console.log("Data from user: ", uname)
 			getDoc(doc(db, "users", uid)).then((snapshot) => {
 				const { pfp } = snapshot.data()
@@ -51,13 +62,12 @@ const VirtualSpace = () => {
 		})
 	
 		// data received when a new user joins the room
-		s.on('user-joined', (socketid, { userId: uid, username: uname, roomId: rid }) => {
+		s.on('user-joined', (socketid, { userId: uid, username: uname }) => {
 			console.log("User joined: ", uname)
 			// acknowledge that the user has joined the room
 			s.emit("user-joined ack", socketid, {
 				userId,
-				username: userData.data?.username,
-				roomId,
+				username: userData.data?.username
 			})
 			// get the newly joined user's pfp from firebase and then add it to the list of owners
 			getDoc(doc(db, "users", uid)).then((snapshot) => {
@@ -75,15 +85,17 @@ const VirtualSpace = () => {
 		s.emit("join-room", {
 			userId,
 			username: userData.data?.username,
-			roomId,
+			collabId,
+			roomId
 		})
 
 		return () => {
+			if (!collabId) return
 			s.disconnect()
 			console.log("Disconnected from Virtual Space")
 		}
 		
-	}, [roomId, userData.data?.username, userId])
+	}, [collabId, roomId, userData.data?.username, userId])
 
 	const expand = () => {
 		// some css to expand text editor to full screen
@@ -93,28 +105,35 @@ const VirtualSpace = () => {
 		// form to get invite id
 	}
 
-	const publish = () => {
-		// publish the virtual space
-		setPublishupdate("Update");
-		setPublished(true);
-		if(publishupdate === "Update") {
-			alert("Yayy updated!")
-		}
+	const showForm = (e) => { 
+		setPublishFormVisible(true)
+	}
+
+	const hideForm = (e) => { 
+		setPublishFormVisible(false)
+	}
+
+	const filterByPublishStatus = (x,y,z) => { 
+		if (published === true) return x
+		if (published === false) return y
+		if (published === null) return z
 	}
 
     return (
 		<>
-			{published === true && <Publish/>}
-			<AppBar style={{border: "2px solid green",position: "sticky", top: 0}}/>
+			{publishFormVisible && <Publish onSubmit={(e) => { hideForm(e); setPublished(true) }} collabId={collabId} onCancel={hideForm}/>}
+			<AppBar style={{ border: "2px solid green", position: "sticky", top: 0 }}/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
-					<TextEditor roomId={roomId} socket={socket} />
+					<TextEditor onDocumentLoad={setPublished} roomId={roomId} collabId={collabId} socket={socket} />
 				</div>
 
 				<div className={styles["publish-expand"]}>
-					<button className={styles["publish-button"]} onClick={publish}>{publishupdate}</button>
-					
-					
+					<div
+						className={ filterByPublishStatus(styles["publish-button-published"], styles["publish-button-not-published"], styles["publish-button-not-published"]) }
+						onClick={filterByPublishStatus(() => { }, showForm, () => { })}>
+						<p>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
+					</div>
 					<button className={styles["expand-button"]} onClick={expand}>
 						<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
 					</button>

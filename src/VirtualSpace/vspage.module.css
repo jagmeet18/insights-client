@@ -15,15 +15,16 @@
         "online-collaborators chat" ;
     grid-template-rows: 1fr 50px 80px;
     grid-template-columns: 1fr 275px;
-    border: 3px solid yellow;
+    /* border: 3px solid yellow; */
     z-index: 0;
     /* position: sticky;
     top: 0; */
+    border: 1px solid black;
 }
 
 .parent > .text-editor {
     grid-area: text-editor;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     /* position: sticky;
     top: 0; */
     z-index: 0;
@@ -35,40 +36,61 @@
     grid-area: publish-expand;
     display: flex;
     justify-content: space-between;
-    align-items: space-between;
-    padding: 7px 20px 5px 20px;
-    border-bottom: 1px solid #08183A;
-    background-color: var(--cards);
-    border: 2px solid red;
+    align-items: center;
+    /* padding: 7px 20px 5px 20px; */
+    padding-inline: 10px;
+    background-color: white;
+    border-top: 1px solid black;
 }
 
 
 .parent > .online-collaborators {
     grid-area: online-collaborators;
-    background-color: var(--bars);
+    background-color: white;
     position: sticky;
     bottom: 0;
-    border: 2px solid red;
+    border-top: 1px solid black;
 }
 
 .parent > .chat {
     grid-area: chat;
 }
 
-.publish-button {
+.publish-button-not-published {
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
     font-size: 15px;
-    background-color: tomato;
-    border-radius: 25%;
-    width: 5rem;
+    padding: 10px;
+    border-radius: 100px;
+    width: fit-content;
+    background-color: crimson;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
-.publish-button:hover {
-    cursor: pointer;
+.publish-button-published {
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    font-size: 15px;
+    padding: 10px;
+    border-radius: 100px;
+    width: fit-content;
+    background-color: rgba(220, 20, 60, 0.541);
+    white-space: nowrap;
+    pointer-events: fill;
+}
+
+.publish-button-published:hover {
+    cursor: not-allowed;
 }
 
 .expand-button {
     background-color: transparent;
-    border: 0px;
+    padding-top: 5px;
 }
 
 .expand-button:hover {
@@ -76,6 +98,8 @@
 }
 
 .expand-icon {
+    height: 100%;
+    padding-top: 12.5px;
     color: var(--icons)
 }
 

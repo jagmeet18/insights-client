@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react"
 import debounce from 'lodash.debounce'
-import { getDoc, setDoc, doc } from "firebase/firestore"
+import { updateDoc, doc } from "firebase/firestore"
 import { db } from "../firebase"
 import Quill from "quill"
 import "quill/dist/quill.snow.css"
@@ -18,18 +18,11 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
 ]
 
-export default function TextEditor({ socket, roomId }) {
-	const [collabId, setCollabId] = useState(null);
+export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 	const [quill, setQuill] = useState()
 
 	console.log("Text Editor component rendered!")
-	
-	useEffect(() => {
-		getDoc(doc(db, "virtual-spaces", roomId)).then(snap => { 
-			const { collabId } = snap.data()
-			setCollabId(collabId)
-		})
-	}, [roomId]);
+
 
 	// useEffect(() => {
 	// 	console.log("Attempting to populate document...")
@@ -67,13 +60,14 @@ export default function TextEditor({ socket, roomId }) {
 	  useEffect(() => {
 	    if (socket == null || quill == null) return
 
-		  socket.once("load-document", document => {
-	      	quill.setContents(document)
+		  socket.once("load-document", ({ content, published }) => {
+			onDocumentLoad(published)
+	      	quill.setContents(content)
 	      	quill.enable()
 	    })
 
 	    // socket.emit("get-document", roomId)
-	  }, [socket, quill, roomId])
+	  }, [socket, quill, onDocumentLoad])
 	
 	// useEffect(() => {
 		// getDoc(doc(db, "virtual-spaces", roomId)).then(snap => { 
@@ -109,8 +103,8 @@ export default function TextEditor({ socket, roomId }) {
 
 	const saveCollabDebounced = debounce(async () => { 
 		if (!collabId) return
-		const data = await setDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
-		console.log("saving document ["+collabId+"]: ", data)
+		const data = await updateDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
+		console.log("saved document ["+collabId+"]: ", data)
 	}, 1000)
 
 	// this sends changes to the server everytime there is a change
@@ -119,7 +113,7 @@ export default function TextEditor({ socket, roomId }) {
 
 		const handler = async (delta, oldDelta, source) => {
 			if (source !== "user") return
-			socket.emit("send-changes", delta, { roomId })
+			socket.emit("send-changes", delta, { collabId })
 			saveCollabDebounced()
 			// setDoc(doc(db, "collabs", collabId), quill.getContents())
 		}
@@ -128,7 +122,7 @@ export default function TextEditor({ socket, roomId }) {
 		return () => {
 			quill.off("text-change", handler)
 		}
-	}, [socket, quill, roomId, saveCollabDebounced])
+	}, [socket, quill, collabId, saveCollabDebounced])
 
 	const quillInitializerRef = useCallback((containerDiv) => {
 		if (containerDiv == null) return

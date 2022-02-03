@@ -7,7 +7,7 @@ import {
 import { signInWithEmailAndPassword } from 'firebase/auth'
 // import { collection, getDocs, query, where } from "firebase/firestore";
 import { onError } from "../utils"
-import styles from '../Rooms/create.room.popup.module.css';
+import styles from './auth.module.css';
 
 const Login = ({ history }) => {
     // const [denied, setDenied] = useState(false);

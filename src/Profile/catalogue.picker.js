@@ -1,12 +1,20 @@
 import styles from "./catalogue.picker.module.css"
-// import ProfileCataloguePickerButton from "../../ButtonComp/Button.js"
 
-const ProfileCataloguePicker = ({setCatalogueState, buttons}) => {
+const ProfileCataloguePicker = ({ active, onPick, buttons }) => {
     return ( 
         <div className={styles["button-container"]}>
-            {buttons?.map(({text, value, icon: Icon}, index) => { 
-                return <button key={index} className={styles["collab-comm"]} value={value} onClick={(e) => setCatalogueState(e.target.value)}><Icon/><p>{text}</p></button>
-            })}
+            {
+                buttons.map(({ text, icon: Icon }, index) => {
+                    let style = styles["collab-comm"]
+                    if (index === active) style += " " + styles["collab-comm-active"]
+                    // can use onMouseOver and onMouseOut to control hover behavior
+                    return <button key={index} onClick={(e) => {
+                        e.preventDefault()
+                        console.log(index)
+                        onPick(index)
+                    }} className={style}><Icon/><p>{text}</p></button>
+                })
+            }
         </div>
     );
 }

@@ -18,10 +18,13 @@ const CollabCard = (props) => {
                     <div className={styles["card-header"]}>
                         <h3>{props.title}</h3>
                         <p style={{ fontSize: "75%" }}>{props.body.map((comm, index) => {
-                            let comms = ""
-                            comms+=comm
-                            if (index !== comm.length - 1) comms+=", "
-                            return comms
+                            // return a comma separated list of community names if there are more than one, where the last one is not followed by a comma
+                            return (index === props.body.length - 1) ? comm : comm + ', '
+
+                            // let comms = ""
+                            // comms+=comm
+                            // if (index !== comm.length - 1) comms+=", "
+                            // return comms
                         })}</p>
                     </div>
                     <div className={styles["card-footer"]}>
@@ -35,9 +38,7 @@ const CollabCard = (props) => {
            
             <div className={styles["btn"]}>
                 <button>
-                    <a href="/">
-                        View Collab
-                    </a>
+                    View Collab
                 </button>
             </div>
         </div>

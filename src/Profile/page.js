@@ -7,10 +7,12 @@ import { signOut } from 'firebase/auth'
 import ProfileCataloguePicker from './catalogue.picker';
 import { useUser } from '../context/user'
 import { AppBarButtons } from './appbar.buttons'
-import { CataloguePickerButtons as buttons } from "./catalogue.picker.buttons";
+import { CataloguePickerButtons } from "./catalogue.picker.buttons";
+import pickerStyles from "./catalogue.picker.module.css"
 
 const Profile = () => {
-    const [catalogueState, setCatalogueState] = useState("collabs");
+    const [catalogueState, setCatalogueState] = useState(0);
+    const [collabData, setCollabData] = useState([]);
     const { userData } = useUser()
 	console.log("Profile component - context:",userData)
 
@@ -18,25 +20,22 @@ const Profile = () => {
         e.preventDefault()
         signOut(auth)
     }
+
     return ( 
         <>
             <AppBar onClickHandler={onLogOut} buttons={AppBarButtons}/>
-            <div>
+            <div style={{border: "1px solid black"}}>
                     {/** Entire top section above the buttons for the catalogue*/}
                     <div style={{
                         display: "flex",
                         justifyContent: "center",
-                        // margin:"40px 0px",
                         borderBottom: "3px solid #08183A",
                         padding: "2%",
                         gap: "4rem"
-                        // border: "2px solid red"
-
                     }}>
                         {/** Profile pic */}
                         <div>
                             <img style={{
-                                // border: "2px solid blue",
                                 borderRadius: "50%",
                                 width: "160px",
                                 height: "160px",
@@ -48,7 +47,6 @@ const Profile = () => {
                         </div>
                         {/** Section on the right with profile info */}
                         <div style={{
-                            // border: "2px solid red",
                             textAlign: "left",
                             margin: "10px",
                             color: "black",
@@ -58,34 +56,38 @@ const Profile = () => {
                             {/** Rest of the info about the profile */}
                             <div style={{
                                 width: "100%",
-                                //    border: "2px solid blue"
                             }}>
                             { userData.data ?
                                 <>
-                                    <h4>{userData.data.publishedCollabs.length} Collabs</h4>
+                                    <h4>{userData.data.publishedCollabs.length} Collabs published</h4>
                                     <h4>{userData.data.previousCommunities.length} Communities joined</h4>
                                 </> : <h4>Loading stats...</h4>
                             }
                             </div>
                         </div>
                     </div>
-                    <div >
-                        <ProfileCataloguePicker setCatalogueState={setCatalogueState} buttons={buttons}/>
+                    <div>
+                        {/* <div className={pickerStyles["button-container"]}>
+                            {
+                                CataloguePickerButtons.map(({ text, value, icon: Icon }, index) => {
+                                    let style = pickerStyles["collab-comm"]
+                                    if (value === catalogueState) style += " " + pickerStyles["collab-comm-active"]
+                                    return <button key={index} value={value} onClick={e => {
+                                        e.preventDefault()
+                                        const val = e.target.value
+                                        console.log(val)
+                                        setCatalogueState(val)
+                                    }} className={style}>{text}</button>
+                                })
+                            }
+                        </div> */}
+                        <ProfileCataloguePicker active={catalogueState} onPick={setCatalogueState} buttons={CataloguePickerButtons} />
                     </div>
                     {
-                        (() => {
-                            if (catalogueState === "collabs") {
-                                return <CollabCatalogue />
-                            } else if (catalogueState === "communities") {
-                                return <CommunityCatalogue />
-                            } else {
-                                return (
-                                    <div>
-                                        <h1>You should not be here</h1>
-                                    </div>
-                                )
-                            }
-                        })()
+                        catalogueState == 0 ?
+                        <CollabCatalogue data={collabData} onDataLoad={setCollabData}/>
+                        : 
+                            <CommunityCatalogue />
                     }
             </div>
         </>

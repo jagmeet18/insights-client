@@ -23,9 +23,19 @@
     gap: 10px;
 }
 
-.collab-comm:hover {
+.collab-comm-active {
     background-color: crimson;
     color: white;
+    /* cursor:default; */
+}
+
+/* .collab-comm-inactive {
+    cursor: pointer;
+} */
+
+.collab-comm:hover {
+    color: black;
+    background-color: rgb(199, 187, 190);
 }
 
 /* .collab-comm:hover{

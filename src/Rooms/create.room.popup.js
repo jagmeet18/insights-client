@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import { db } from "../firebase";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
-import styles from './create.room.popup.module.css';
+import styles from '../styles/form.module.css';
 import { useUser } from '../context/user'
 
 
@@ -40,7 +40,7 @@ function createRoom(options) {
     return Promise.all([vsPromise, collabPromise, userPromise])
 }
 
-export const CreateRoomPopup = () => {
+export const CreateRoomPopup = ({ onCancel }) => {
     const [RName, setRName] = useState('');
     const [CName, setCName] = useState('');
     const {userData, setUserData} = useUser();
@@ -76,21 +76,18 @@ export const CreateRoomPopup = () => {
 
     return (
         <div className={styles["container"]}>
-            <div className={styles["form"]}>
-                <div className={styles["form_group"]}>
-                <div className={styles["header"]}>
-                    <h2>Create Room</h2>
-                </div>
-                    <label htmlFor="Room Name">Room Name</label>
-                    <input type="text" name="roomname" placeholder="Room Name" onChange={(e) => setRName(e.target.value)} className={styles["name_textBox"]}></input>
-                </div>
-                <div className={styles["form_group"]}>
-                    <label htmlFor="Community Name">Community</label>
-                    <input type="text" name="community" placeholder="Community Name" onChange={(e) => setCName(e.target.value)} className={styles["name_textBox"]}></input>
-                </div>
-                 <div className={styles["footer"]}>
-                    <button onClick={handleSubmit} type="button" className={styles["b1"]} >Create Room</button>
-                </div>
+            <h2>Create Room</h2>
+            <div className={styles["form_group"]}>
+                <label htmlFor="roomname">Room Name</label>
+                <input type="text" name="roomname" placeholder="Room Name" onChange={(e) => setRName(e.target.value)} className={styles["name_textBox"]}></input>
+            </div>
+            <div className={styles["form_group"]}>
+                <label htmlFor="Community Name">Community</label>
+                <input type="text" name="community" placeholder="Community Name" onChange={(e) => setCName(e.target.value)} className={styles["name_textBox"]}></input>
+            </div>
+                <div className={styles["footer"]}>
+                <button onClick={handleSubmit} type="button" className={styles["submit"]}>Create Room</button>
+                <button type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
             </div>
         </div>
      );

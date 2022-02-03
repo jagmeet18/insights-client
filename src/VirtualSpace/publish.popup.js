@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 import { db } from "../firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore"; 
-import styles from '../Rooms/create.room.popup.module.css';
+import { doc, updateDoc, arrayUnion } from "firebase/firestore"; 
+import styles from '../styles/form.module.css';
+import { useUser } from "../context/user";
 
 
-const Publish = () => {
-
-    const [pfp, setPfp] = useState(require("../assets/default.images").default.user);
+const Publish = ({ collabId, onSubmit, onCancel }) => {
+    const [pfp, setPfp] = useState(require("../assets/default.images").default.collab);
     const [name, setName] = useState('');
-    const { id } = useParams()
-    const [publishForm, setpublishForm] = useState('');
+    const [error, setError] = useState('');
+    const { userData } = useUser();
 
     const UploadPic = (e) => {
         console.log('button to upload clicked')
@@ -26,60 +25,56 @@ const Publish = () => {
         file && reader.readAsDataURL(file);
     }
 
-    async function handleSubmit(e) {
+    async function publishCollab(e) {
         e.preventDefault();
 
         try {
-            const docSnap = await getDoc(doc(db, "virtual-spaces", id));
-            
             // eslint-disable-next-line no-throw-literal
-            if (!docSnap.data()) throw {code:404, msg:"Room doesn't exist"}
-            const collabId = docSnap.data().collabId
-            console.log(collabId);
-        
-            updateDoc(doc(db, "collabs", collabId), {
+            if(name === '') throw "Please enter a name for your collab"
+            
+            const updateCollabPromise = updateDoc(doc(db, "collabs", collabId), {
                 name: name,
                 displayPic: pfp,
                 published: true
             });
-            setpublishForm(true);
+
+            const updateUserCollabsPromise = updateDoc(doc(db, "users", userData.id), {
+                publishedCollabs: arrayUnion(collabId)
+            })
+
+            await Promise.all([updateCollabPromise, updateUserCollabsPromise])
+            
+            onSubmit(e);
             
         } catch (error) {
-            console.log(error)
+            setError(error)
         }
 
     }
 
-    return ( 
-        !publishForm ?
+    return (
         <div className={styles["container"]}>
             <div className={styles["form"]}>
-
+                <h1>PUBLISH</h1>
                 <div className={styles["form_group"]}>
-                    <div className={styles["header"]}><h1>PUBLISH</h1></div>
-                </div>
-
-                {/* <div className={styles["form_group"]}> */}
-                <div className={styles["form_group"]}>
+                    {error && <div className={styles["error-handle"]}>{error}</div>}
                     Name your Collab
-                    <input type="text" name="bio" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)}></input>
+                    <input type="text" name="bio" placeholder="Name" value={name} onChange={(e) => {
+                        setName(e.target.value);
+                        if (!error) return
+                        setError('')
+                    }}></input>
                 </div>
-                {/* </div> */}
-
                 <div className={styles["pfp"]}>
                     <p>Add a cover image</p>
                     <input type="file" accept="image/*" name="image-upload" id="input" onChange={UploadPic}></input>
-                    {/* need to add the functionallity for uploading poic ture will do later after finishing the resty of the work */}
                 </div>
-
-                
-
                 <div className={styles["footer"]}>
-                    <button onClick={handleSubmit} type="button" className={styles["b1"]}>PUBLISH</button>
+                    <button onClick={publishCollab} type="button" className={styles["submit"]}>Publish</button>
+                    <button type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
                 </div>
-
             </div>
-        </div> : <></>
+        </div>
      );
 }
  
