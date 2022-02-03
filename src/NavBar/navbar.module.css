@@ -61,7 +61,6 @@ ul {
 }
 
 .side-links-profile-page {
-    display: inline-block;
+    /* display: inline-block; */
     font-size: 18px;
-    margin-top: 5px;
 }

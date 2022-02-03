@@ -8,13 +8,16 @@ class NavBar extends React.Component {
   constructor() {
     super();
     this.state = {
-      communities: {
+      Communities: {
         showText: false,
       },
-      rooms: {
+      Rooms: {
         showText: false,
       },
-      profile: {
+      Profile: {
+        showText: false,
+      },
+      Settings: {
         showText: false,
       },
     };
