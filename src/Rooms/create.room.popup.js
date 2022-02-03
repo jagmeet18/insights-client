@@ -1,21 +1,21 @@
 import { useState} from "react";
-// import { useHistory } from "react-router-dom";
-import db from "../Firebase/firebase";
+import { useHistory } from "react-router-dom";
+import { db } from "../firebase";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"; 
 import {v4 as uuidv4} from 'uuid';
-import styles from './create.room.popup.module.css';
-import { useUser } from '../user.context'
+import styles from '../styles/form.module.css';
+import { useUser } from '../context/user'
 
 
 function createRoom(options) {
-    const { RId, collabId, RName, CommName, Uid} = options
+    const { RId, collabId, readId, writeId, RName, CommName, Uid} = options
     console.log("options when creating room: ",options)
     const vsPromise = setDoc(doc(db, "virtual-spaces", RId), {
         collabId,
         name: RName,
         communityName: CommName,
-        readId: uuidv4(),
-        writeId: uuidv4(),
+        readId,
+        writeId,
         editors: [],
         owners: [Uid],
         readers: []
@@ -40,90 +40,56 @@ function createRoom(options) {
     return Promise.all([vsPromise, collabPromise, userPromise])
 }
 
-export const CreateRoomPopup = () => {
+export const CreateRoomPopup = ({ onCancel }) => {
     const [RName, setRName] = useState('');
     const [CName, setCName] = useState('');
-    const [formSubmitted, setFormSubmitted] = useState('');
     const {userData, setUserData} = useUser();
-    
+    const history = useHistory()
+
     const handleSubmit = (e) =>{
-        console.log('this works')
         try{
             const collabId = uuidv4()
             let RId = uuidv4()
-            createRoom({RId, collabId, RName, CommName: CName, Uid: userData.id}).catch((err) => { 
+            const readId = uuidv4()
+            const writeId = uuidv4()
+            createRoom({RId, collabId, RName, readId, writeId, CommName: CName, Uid: userData.id}).catch((err) => { 
                 throw err
             }).then(() => {
                 setUserData((prev) => {
                     return {
                         ...prev,
-                        previousRooms: [...new Set([...prev.previousRooms, RId])],
-                        previousCollabs: [...new Set([...prev.previousCollabs, collabId])]
+                        data: {
+                            ...prev.data,
+                            previousRooms: [...new Set([...prev.data?.previousRooms, RId])],
+                            previousCollabs: [...new Set([...prev.data?.previousCollabs, collabId])]
+                        }
                     }
                 })
-                // history.push({pathname: `/app/vs/${RName}`, state: {detail: collabId}}) //uncomment when vs room done
-                setFormSubmitted(true)
+                // setFormSubmitted(true)
+                console.clear()
+                history.push(`/app/vs/${RId}`) //uncomment when vs room done
             })
         } catch(e) {
             console.log("DIDNT WORK", e);
         }
     }
 
-    //ADD TO JOIN ROOM PART
-    // async function handleSubmit(e){
-    //     e.preventDefault()
-    //     try {
-    //         let id = null
-    //         const q = query(collection(db, "users"), where("writeId", "==", id.given));
-    //         const querySnapshot = await getDocs(q)
-    //         let data = null
-    //         querySnapshot.forEach(function (doc) {
-    //             data = doc.data()
-    //             id = doc.id
-    //         })
-    //         if (!data) throw {code:401, msg:"room doesn't exist"}
-
-    //         updateDoc(doc(db, "users", user.userData[1]), {
-    //             previousRooms: arrayUnion(id)    
-    //         });
-    //         history.push(`/app?username=${info.username}`)
-    //         setUser(data)
-                    
-    //     } catch (error) { 
-    //         error.code && (error.code === 401 && setDenied(true))
-    //     }
-    // }
-
-    // const handleKeypress = e => {
-    //     //it triggers by pressing the enter key
-    //   if (e.keyCode === 13) {
-    //     console.log("heyy")
-    //   }
-    // };
-    // state = {
-    //     message: ""
-    // };
-
     return (
-        !formSubmitted ?
         <div className={styles["container"]}>
-            <div className={styles["form"]}>
-                <div className={styles["form_group"]}>
-                <div className={styles["header"]}>
-                    <h2>Create Room</h2>
-                </div>
-                    <label htmlFor="Room Name">Room Name</label>
-                    <input type="text" name="roomname" placeholder="Room Name" onChange={(e) => setRName(e.target.value)} className={styles["name_textBox"]}></input>
-                </div>
-                <div className={styles["form_group"]}>
-                    <label htmlFor="Community Name">Community</label>
-                    <input type="text" name="community" placeholder="Community Name" onChange={(e) => setCName(e.target.value)} className={styles["name_textBox"]}></input>
-                </div>
-                 <div className={styles["footer"]}>
-                    <button onClick={handleSubmit} type="button" className={styles["b1"]} >Create Room</button>
-                </div>
+            <h2>Create Room</h2>
+            <div className={styles["form_group"]}>
+                <label htmlFor="roomname">Room Name</label>
+                <input type="text" name="roomname" placeholder="Room Name" onChange={(e) => setRName(e.target.value)} className={styles["name_textBox"]}></input>
             </div>
-        </div> : <></>
+            <div className={styles["form_group"]}>
+                <label htmlFor="Community Name">Community</label>
+                <input type="text" name="community" placeholder="Community Name" onChange={(e) => setCName(e.target.value)} className={styles["name_textBox"]}></input>
+            </div>
+                <div className={styles["footer"]}>
+                <button onClick={handleSubmit} type="button" className={styles["submit"]}>Create Room</button>
+                <button type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
+            </div>
+        </div>
      );
 }
 

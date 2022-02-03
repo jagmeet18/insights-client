@@ -4,12 +4,12 @@ import { HiUserGroup as CommunityIcon } from "react-icons/hi";
 export const CataloguePickerButtons = [
   {
     text: "Collabs",
-    value: "collabs",
+    value: 0,
     icon: CollabIcon,
   },
   {
     text: "Communities",
-    value: "communities",
+    value: 1,
     icon: CommunityIcon,
   },
 ];

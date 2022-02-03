@@ -1,96 +1,94 @@
 import { useState } from 'react'
-import { useHistory } from 'react-router-dom';
 import AppBar from '../AppBar/bar'
 import CollabCatalogue from './collab.catalogue';
 import CommunityCatalogue from './community.catalogue';
-// import ProfileCataloguePicker from './catalogue.picker';
-import { useUser } from '../user.context'
+import { auth } from "../firebase"
+import { signOut } from 'firebase/auth'
+import ProfileCataloguePicker from './catalogue.picker';
+import { useUser } from '../context/user'
 import { AppBarButtons } from './appbar.buttons'
-// import { CataloguePickerButtons as buttons } from "./catalogue.picker.buttons";
+import { CataloguePickerButtons } from "./catalogue.picker.buttons";
+import pickerStyles from "./catalogue.picker.module.css"
 
 const Profile = () => {
-    const [catalogueState, setCatalogueState] = useState("collabs");
-    const history = useHistory();
+    const [catalogueState, setCatalogueState] = useState(0);
+    const [collabData, setCollabData] = useState([]);
     const { userData } = useUser()
 	console.log("Profile component - context:",userData)
 
     const onLogOut = (e) => { 
         e.preventDefault()
-        console.log('logging out')
-        localStorage.removeItem('signin-queries')
-        history.push('/')
+        signOut(auth)
     }
 
     return ( 
         <>
             <AppBar onClickHandler={onLogOut} buttons={AppBarButtons}/>
-            <div>
-                {
-                    userData.id ?
-                    <>
-                        {/** Entire top section above the buttons for the catalogue*/}
+            <div style={{border: "1px solid black"}}>
+                    {/** Entire top section above the buttons for the catalogue*/}
+                    <div style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        borderBottom: "3px solid #08183A",
+                        padding: "2%",
+                        gap: "4rem"
+                    }}>
+                        {/** Profile pic */}
+                        <div>
+                            <img style={{
+                                borderRadius: "50%",
+                                width: "160px",
+                                height: "160px",
+                                margin: "10px"
+                            }}
+                                src={userData.data ? userData.data.pfp : require('../assets/default.images').default.user}
+                                alt='Profile'
+                            />
+                        </div>
+                        {/** Section on the right with profile info */}
                         <div style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            // margin:"40px 0px",
-                            borderBottom: "3px solid #08183A",
-                            padding: "2%",
-                            gap: "4rem"
-                            // border: "2px solid red"
-
+                            textAlign: "left",
+                            margin: "10px",
+                            color: "black",
                         }}>
-                            {/** Profile pic */}
-                            <div>
-                                <img style={{
-                                    // border: "2px solid blue",
-                                    borderRadius: "50%",
-                                    width: "160px",
-                                    height: "160px",
-                                    margin: "10px"
-                                }}
-                                    src={userData.pfp}
-                                    alt='Profile'
-                                />
-                            </div>
-                            {/** Section on the right with profile info */}
+                            {/** Just the username */}
+                            <h2>{userData.data ? userData.data.username : "Loading username..."}</h2>
+                            {/** Rest of the info about the profile */}
                             <div style={{
-                                // border: "2px solid red",
-                                textAlign: "left",
-                                margin: "10px",
-                                color: "black",
+                                width: "100%",
                             }}>
-                                {/** Just the username */}
-                                <h2>{userData.username}</h2>
-                                {/** Rest of the info about the profile */}
-                                <div style={{
-                                    width: "100%",
-                                    //    border: "2px solid blue"
-                                }}>
-                                    <h4>{userData.publishedCollabs && userData.publishedCollabs.length} Collabs</h4>
-                                    <h4>{userData.previousCommunities && userData.previousCommunities.length} Communities joined</h4>
-                                </div>
+                            { userData.data ?
+                                <>
+                                    <h4>{userData.data.publishedCollabs.length} Collabs published</h4>
+                                    <h4>{userData.data.previousCommunities.length} Communities joined</h4>
+                                </> : <h4>Loading stats...</h4>
+                            }
                             </div>
                         </div>
-                        <div >
-                            {/* <ProfileCataloguePicker setCatalogueState={setCatalogueState, buttons}/> */}
-                        </div>
-                        {
-                            (() => {
-                                if (catalogueState === "collabs") {
-                                    return <CollabCatalogue />
-                                } else if (catalogueState === "communities") {
-                                    return <CommunityCatalogue />
-                                } else {
-                                    return (
-                                        <div>
-                                            <h1>You should not be here</h1>
-                                        </div>
-                                    )
-                                }
-                            })()
-                        }
-                    </> : <h1 style={{padding:"50px"}}>Loading...</h1>
-                }
+                    </div>
+                    <div>
+                        {/* <div className={pickerStyles["button-container"]}>
+                            {
+                                CataloguePickerButtons.map(({ text, value, icon: Icon }, index) => {
+                                    let style = pickerStyles["collab-comm"]
+                                    if (value === catalogueState) style += " " + pickerStyles["collab-comm-active"]
+                                    return <button key={index} value={value} onClick={e => {
+                                        e.preventDefault()
+                                        const val = e.target.value
+                                        console.log(val)
+                                        setCatalogueState(val)
+                                    }} className={style}>{text}</button>
+                                })
+                            }
+                        </div> */}
+                        <ProfileCataloguePicker active={catalogueState} onPick={setCatalogueState} buttons={CataloguePickerButtons} />
+                    </div>
+                    {
+                        catalogueState == 0 ?
+                        <CollabCatalogue data={collabData} onDataLoad={setCollabData}/>
+                        : 
+                            <CommunityCatalogue />
+                    }
             </div>
         </>
      );

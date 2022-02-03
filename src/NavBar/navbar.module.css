@@ -8,7 +8,7 @@
 }
 
 .sidebar {
-    background-color: var(--bars);
+    background-color: white;
     /* height: 100vh; */
     width: 100%;
     /* position: sticky;  */
@@ -44,21 +44,24 @@ ul {
 
 .sidebar-items a {
     text-decoration: none;
-    color: var(--icons);
+    color: crimson;
     position: relative;
 }
 
 .display-title {
     font-size: 14px;
-    color: darkslategrey;
+    color: black;
     position: absolute;
-    left: 55px;
-    bottom: 7px;
-    background-color: var(--icons);
-    }
+    left: 52px;
+    bottom: 1px;
+    padding: 5px;
+    border-radius: 2.5px;
+    border: 2px solid crimson;
+    background-color: white;
+}
 
 .side-links-profile-page {
     display: inline-block;
     font-size: 18px;
-    margin-top: 5x;
+    margin-top: 5px;
 }

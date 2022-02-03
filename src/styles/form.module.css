@@ -1,0 +1,80 @@
+.container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    max-width: 75vw;
+    height: fit-content;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    background-color: white;
+    /* border: #333 solid 2px; */
+    box-shadow: 0px 5px 4px 6px rgba(42, 42, 42, 0.116);
+}
+
+.form_group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: fit-content;
+}
+
+input {
+    margin-top: 6px;
+    min-width: 18em;
+    height: 37px;
+    padding: 0px 10px;
+    font-size: 16px;
+    background-color: #f3f3f3;
+    border: 0;
+    border-radius: 3px;
+    margin-bottom: 31px;
+    outline: none;
+    box-shadow: 0px 2.5px 4px 0.2px crimson;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    /* justify-content: center; */
+    /* gap: 90%; */
+    /* padding: 1rem; */
+    width: 100%;
+    /* border: 1px solid black; */
+}
+
+.cancel {
+    color: crimson;
+    cursor: pointer;
+    font-size: 15px;
+    border: none;
+    background-color: transparent;
+}
+
+.cancel:hover {
+    text-decoration: underline;
+}
+
+.submit {
+    border-radius: 4px;
+    font-size: 20px;
+    background-color: white;
+    border: 2px solid crimson;
+    color: crimson;
+    transition: all 125ms ease-in-out;
+    cursor: pointer;
+}
+
+.submit:hover {
+    background-color: crimson;
+    color: white;
+}
+
+.error-handle {
+    color: red;
+    font-size: smaller;
+}

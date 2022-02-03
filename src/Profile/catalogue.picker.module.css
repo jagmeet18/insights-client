@@ -1,7 +1,7 @@
 .button-container{
     display: flex;
     justify-content: center;
-    gap: 1vw;
+    gap: 3vw;
     /* border-top: 2px solid crimson; */
     padding-top: 20px;
     padding-bottom: 10px;
@@ -9,17 +9,33 @@
 }
 
 .collab-comm {
-    /* position: relative; */
     padding: 10px;
     padding-inline: 20px;
     border-radius: 100px;
     font-size: 17px;
-    color: #FFE373;
+    color: black;
     font-weight: 250;
     cursor: pointer;
-    transition: 1.5s;
+    transition: 0.25s;
     background-color: transparent;
     border: none;
+    display: flex;
+    gap: 10px;
+}
+
+.collab-comm-active {
+    background-color: crimson;
+    color: white;
+    /* cursor:default; */
+}
+
+/* .collab-comm-inactive {
+    cursor: pointer;
+} */
+
+.collab-comm:hover {
+    color: black;
+    background-color: rgb(199, 187, 190);
 }
 
 /* .collab-comm:hover{

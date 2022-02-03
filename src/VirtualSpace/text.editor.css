@@ -1,4 +1,4 @@
-/* *, *::before, *::after {
+*, *::before, *::after {
   box-sizing: border-box;
 }
 
@@ -10,13 +10,16 @@ body {
 .container .ql-editor {
   width: 8.5in;
   min-height: 11in;
+  /* max-height: 6in; */
   padding: 1in;
   margin: 1rem;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .5);
   background-color: white;
+  overflow-y: scroll;
 }
 
 .container .ql-container.ql-snow {
+  /* max-height: 6in; */
   border: none;
   display: flex;
   justify-content: center;
@@ -25,7 +28,7 @@ body {
 .container .ql-toolbar.ql-snow {
   display: flex;
   justify-content: center;
-  position: sticky;
+  position: relative;
   top: 0;
   z-index: 1;
   background-color: #F3F3F3;
@@ -54,9 +57,4 @@ body {
   .container .ql-toolbar.ql-snow {
     display: none;
   }
- 
-} */
-
-.chat{
-  border: black solid 2px;
 }
