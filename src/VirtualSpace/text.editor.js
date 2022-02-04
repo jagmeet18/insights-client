@@ -21,7 +21,7 @@ const TOOLBAR_OPTIONS = [
 export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 	const [quill, setQuill] = useState()
 
-	console.log("Text Editor component rendered!")
+	console.log(" Text Editor Component rendered!")
 
 
 	// useEffect(() => {
@@ -103,8 +103,8 @@ export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 
 	const saveCollabDebounced = debounce(async () => { 
 		if (!collabId) return
-		const data = await updateDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
-		console.log("saved document ["+collabId+"]: ", data)
+		await updateDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
+		console.log("saved document ["+collabId+"]")
 	}, 1000)
 
 	// this sends changes to the server everytime there is a change

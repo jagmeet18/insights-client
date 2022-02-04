@@ -24,12 +24,12 @@ const Profile = () => {
     return ( 
         <>
             <AppBar onClickHandler={onLogOut} buttons={AppBarButtons}/>
-            <div style={{border: "1px solid black"}}>
+            <div >
                     {/** Entire top section above the buttons for the catalogue*/}
                     <div style={{
                         display: "flex",
                         justifyContent: "center",
-                        borderBottom: "3px solid #08183A",
+                        borderBottom: "3px solid black",
                         padding: "2%",
                         gap: "4rem"
                     }}>
@@ -84,7 +84,7 @@ const Profile = () => {
                         <ProfileCataloguePicker active={catalogueState} onPick={setCatalogueState} buttons={CataloguePickerButtons} />
                     </div>
                     {
-                        catalogueState == 0 ?
+                        catalogueState === 0 ?
                         <CollabCatalogue data={collabData} onDataLoad={setCollabData}/>
                         : 
                             <CommunityCatalogue />

@@ -19,7 +19,7 @@
     z-index: 0;
     /* position: sticky;
     top: 0; */
-    border: 1px solid black;
+    /* border: 1px solid black; */
 }
 
 .parent > .text-editor {
@@ -49,6 +49,7 @@
     background-color: white;
     position: sticky;
     bottom: 0;
+    z-index: 3;
     border-top: 1px solid black;
 }
 
@@ -56,7 +57,7 @@
     grid-area: chat;
 }
 
-.publish-button-not-published {
+.publish-button-active {
     display: flex;
     color: white;
     justify-content: center;
@@ -70,7 +71,7 @@
     white-space: nowrap;
 }
 
-.publish-button-published {
+.publish-button-inactive {
     display: flex;
     color: white;
     justify-content: center;
@@ -84,7 +85,7 @@
     pointer-events: fill;
 }
 
-.publish-button-published:hover {
+.publish-button-inactive:hover {
     cursor: not-allowed;
 }
 
@@ -115,6 +116,7 @@
 
 .invite-icon {
     color: var(--icons);
+    pointer-events: none;
 }
 
 .online-collaborators {

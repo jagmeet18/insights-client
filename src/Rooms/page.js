@@ -59,7 +59,7 @@ export default function Rooms() {
 			<div className={styles["rooms-container"]}>
 				{
 					userData.data?.previousRooms.map((roomId, index) => {
-						if (!roomData[roomId]) return <p>Loading...</p>
+						if (!roomData[roomId]) return <p key={index} >Loading...</p>
 						const randomRoom = roomCovers[Math.floor(Math.random() * roomCovers.length)]
 						const roomSize = roomData[roomId]?.owners.length
 						const subheading = `${roomSize} member` + ( roomSize > 1 ? "s" : "")

@@ -71,7 +71,7 @@ const Publish = ({ collabId, onSubmit, onCancel }) => {
                 </div>
                 <div className={styles["footer"]}>
                     <button onClick={publishCollab} type="button" className={styles["submit"]}>Publish</button>
-                    <button type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
+                    <button value="publish" type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
                 </div>
             </div>
         </div>
