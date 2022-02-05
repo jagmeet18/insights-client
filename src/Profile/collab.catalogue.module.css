@@ -3,8 +3,9 @@
     /* top: 100px; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(23rem, 14rem));
-    grid-template-rows: repeat(auto-fit, 25rem);
+    grid-template-rows: repeat(auto-fit, fit-content);
     /* gap: 7rem; */
+    row-gap: 3rem;
     justify-content: center;
     /* align-items: center; */
     /* padding-right: 90px; */

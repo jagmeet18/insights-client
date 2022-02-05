@@ -8,7 +8,6 @@ import ProfileCataloguePicker from './catalogue.picker';
 import { useUser } from '../context/user'
 import { AppBarButtons } from './appbar.buttons'
 import { CataloguePickerButtons } from "./catalogue.picker.buttons";
-import styles from "./profile.module.css"
 
 const Profile = () => {
     const [catalogueState, setCatalogueState] = useState(0);

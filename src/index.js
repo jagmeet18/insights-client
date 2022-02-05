@@ -11,16 +11,18 @@ import App from "./app"
 ReactDOM.render(
 	<React.StrictMode>
 		<AuthProvider>
-			<Router>
-				<Switch>
-					<Route path="/login" component={Login}/>
-					<Route path="/signup" component={SignUp}/>
-					<ProtectedRoute path="/app" component={App}/>
-					<Route path="/">
-						<Redirect to="/app"/>
-					</Route>
-				</Switch>
-			</Router>
+			<div className="index">
+				<Router>
+					<Switch>
+						<Route path="/login" component={Login}/>
+						<Route path="/signup" component={SignUp}/>
+						<ProtectedRoute path="/app" component={App}/>
+						<Route path="/">
+							<Redirect to="/app"/>
+						</Route>
+					</Switch>
+				</Router>
+			</div>
 		</AuthProvider>
 	</React.StrictMode>,
 	document.getElementById("root")

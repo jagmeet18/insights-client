@@ -5,9 +5,20 @@ html, body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100vh;
+  /* height: 100%; */
+  overflow: hidden;
   background-color: #F3F3F3;
   margin: 0;
   /* background-color: #12254f; */
+}
+
+.index {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
 }
 
 p {
@@ -16,6 +27,7 @@ p {
 
 h4 {
   line-height: 1rem;
+  font-weight: lighter;
 }
 
 code {
@@ -37,4 +49,9 @@ code {
 
 button {
   border: none;
+}
+
+
+::-webkit-scrollbar {
+  /* display: none; */
 }

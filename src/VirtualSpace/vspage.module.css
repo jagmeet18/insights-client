@@ -14,7 +14,9 @@
         "footer chat";
     grid-template-rows: 1fr 130px;
     grid-template-columns: 1fr 275px;
+    /* border: solid 5px red; */
     z-index: 0;
+    height: 100%;
 }
 
 .parent > .text-editor {
@@ -31,7 +33,7 @@
     padding-inline: 10px;
     width: 100%;
     background-color: white;
-    border-top: 1px solid black;
+    border-top: 1px solid #ccc;
 }
 
 .parent > .footer {
@@ -42,13 +44,14 @@
     width: 100%;
     bottom: 0;
     position: sticky;
+    box-shadow: 0 0 7.5px 0 rgba(0, 0, 0, .5);
 }
 
 .online-collaborators {
     width: 100%;
     background-color: white;
     z-index: 3;
-    border-top: 1px solid black;
+    border-top: 1px solid #ccc;
     height: 62%;
 }
 
