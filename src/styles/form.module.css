@@ -70,6 +70,7 @@ input {
     color: crimson;
     transition: all 125ms ease-in-out;
     cursor: pointer;
+    text-transform: capitalize;
 }
 
 .submit:hover {

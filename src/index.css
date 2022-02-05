@@ -1,15 +1,36 @@
-html, body, h4 {
+html, body {
   font-family: 'Roboto','Oxygen',
   'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   font-weight: 500;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100%;
-  margin: 0px;
+  height: 100vh;
+  background-color: #F3F3F3;
+  margin: 0;
   /* background-color: #12254f; */
+}
+
+p {
+  text-overflow: ellipsis;
+}
+
+h4 {
+  line-height: 1rem;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@media (max-width: 745px) {
+    :root {
+        font-size: 25px;
+    }
+}
+
+@media (max-width: 1060px) {
+    :root {
+        font-size: 20px;
+    }
 }

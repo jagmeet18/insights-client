@@ -16,14 +16,11 @@ import styles from './auth.module.css';
 async function postUser({uid, email, username, pfp}){
     try{
         const data = {
-            // fName: fName,
-            // lName: lName,
             email,
             username,
-            // password: password,
             pfp,
-            // bio: bio,
             previousCollabs: [],
+            publishedCollabs: [],
             previousRooms: [],
             previousCommunities: [],
         }

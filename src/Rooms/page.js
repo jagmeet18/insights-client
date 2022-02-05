@@ -69,11 +69,11 @@ export default function Rooms() {
 								<div className={styles['image']}><img alt="Room cover" src={randomRoom}></img></div>
 								<div className={styles['title']}>
 									{/* <h2>{roomData[roomId] ? `${roomData[roomId].owners[0]}'s Room` : "Loading..."}</h2> */}
-									<p style={{color: "grey", fontSize: "smaller", fontWeight: "lighter"}}>Room</p>
-									<p style={{fontWeight: "bolder"}}>{roomData[roomId] ? roomData[roomId].name : "Loading..."}</p>
-									<p style={{color: "grey"}}>{roomData[roomId] ? subheading : "Loading..."}</p>
+									<p className={styles['card-header']} >Room</p>
+									<p className={styles['card-title']} >{roomData[roomId].name}</p>
+									<p className={styles['card-subheader']} >{subheading}</p>
 								</div>
-								<div className={styles['button']}><button  value={roomId} onClick={handleJoinOldRoom}>Join Room</button></div>
+								<div className={styles['button']}><button className={styles['card-action']} value={roomId} onClick={handleJoinOldRoom}>Join Room</button></div>
 							</div>
 						)
 					})
