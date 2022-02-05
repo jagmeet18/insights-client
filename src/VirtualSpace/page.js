@@ -140,29 +140,30 @@ const VirtualSpace = () => {
 				<div className={styles["text-editor"]}>
 					<TextEditor onDocumentLoad={setPublished} roomId={roomId} collabId={roomData.collabId} socket={socket} />
 				</div>
-
-				<div className={styles["publish-expand"]}>
-					<div
-						value="publish"
-						className={ filterByPublishStatus(styles["publish-button-inactive"], styles["publish-button-active"], styles["publish-button-inactive"]) }
-						onClick={filterByPublishStatus(undefined, showForm, undefined)}>
-						<p>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
+				<div className={styles["footer"]}>
+					<div className={styles["publish-expand"]}>
+						<div
+							value="publish"
+							className={ filterByPublishStatus(styles["publish-button-inactive"], styles["publish-button-active"], styles["publish-button-inactive"]) }
+							onClick={filterByPublishStatus(undefined, showForm, undefined)}>
+							<p>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
+						</div>
+						<button className={styles["expand-button"]} onClick={expand}>
+							<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
+						</button>
 					</div>
-					<button className={styles["expand-button"]} onClick={expand}>
-						<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
-					</button>
-				</div>
 
-				<div className={styles["online-collaborators"]}>				
-					{participants.map(({ pfp, username }, index) => {
-						if (!pfp || !username) return undefined
-						return(	
-							<img key={index} alt={`User ${username}`} className= {styles["images"]} src={pfp}/>
-						);
-					})}
-					<button className={styles["invite-button"]} value="share-code" onClick={showForm}>
-						<FontAwesomeIcon className={styles["invite-icon"]} size="3x" icon={faUserPlus}/>
-					</button>
+					<div className={styles["online-collaborators"]}>				
+						{participants.map(({ pfp, username }, index) => {
+							if (!pfp || !username) return undefined
+							return(	
+								<img key={index} alt={`User ${username}`} className= {styles["images"]} src={pfp}/>
+							);
+						})}
+						<button className={styles["invite-button"]} value="share-code" onClick={showForm}>
+							<FontAwesomeIcon className={styles["invite-icon"]} size="3x" icon={faUserPlus}/>
+						</button>
+					</div>
 				</div>
 				<div className={styles["chat"]}>
 					{/* <Chat socket={socket} username={userData.username} room={roomId} /> */}
