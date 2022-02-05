@@ -40,15 +40,12 @@
   position: relative;
 }
 
-.container {
-  /* border: 4px solid blue; */
-  /* height: 100%; */
-}
-
 .ql-container.ql-snow {
   /* border: 4px solid green; */
   overflow-y: scroll;
   height: 548px;
+  border: none;
+
 }
 
 @page {

@@ -54,4 +54,16 @@ button {
 
 ::-webkit-scrollbar {
   /* display: none; */
+  width: 7.5px;
+  height: 7.5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: hsl(0, 0%, 79%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+  border: 1px solid rgba(204, 204, 204, 0.377);
+  border-radius: 10px;
 }
