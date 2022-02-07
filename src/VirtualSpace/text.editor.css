@@ -38,6 +38,7 @@
   /* border: 4px solid purple; */
   z-index: 0;
   position: relative;
+  overflow-y: hidden;
 }
 
 .ql-container.ql-snow {
