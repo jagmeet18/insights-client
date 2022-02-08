@@ -126,6 +126,7 @@ const VirtualSpace = () => {
 
 	const hideForm = (e) => {
 		const target = e.target
+		console.log('target: ',target)
 		target.value === "publish" && setPublishFormVisible(false)
 		target.name === "share-code" && setShareFormVisible(false)
 	}
