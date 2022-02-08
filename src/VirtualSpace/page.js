@@ -9,14 +9,15 @@ import { io } from "socket.io-client"
 import { useUser } from "../context/user";
 import AppBar from "../AppBar/bar"
 import TextEditor from "./text.editor"
-// import Chat from "../Chat/chat"
+import Chat from "../Chat/chat"
 import Publish from "./publish.popup"
 import ShareCode from "./share.room.popup"
+import { AppBarButtons } from "./appbar.buttons"
 
 import styles from "./vspage.module.css"
 import { faExpandAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
+import { useHistory } from "react-router-dom";
 import { useTraceUpdate } from '../utils'
 
 const VirtualSpace = () => {
@@ -32,6 +33,7 @@ const VirtualSpace = () => {
 	const { id: userId } = userData
 	const [participants, setParticipants] = useState([{pfp: userData.data?.pfp, username: userData.data?.username, userId}]);
 	const { id: roomId } = useParams()
+	const history = useHistory();
 
 	useTraceUpdate({socket,published,publishFormVisible,shareFormVisible,roomData,userData,userId,participants,roomId})
 
@@ -58,7 +60,7 @@ const VirtualSpace = () => {
 	useEffect(() => {
 		if (!roomData.collabId) return
 		
-		const s = io("http://localhost:3000")
+		const s = io("https://insights--server.herokuapp.com")
 		setSocket(s)
 
 		// data received upon joining the room
@@ -90,6 +92,11 @@ const VirtualSpace = () => {
 			setParticipants((prev) => prev.filter((p) => p.userId !== data.userId))
 		})
 
+		console.log('ROOM ID: ', roomData.collabId)
+		console.log('COllab ID: ', roomId)
+		console.log('username: ', userData.data?.username)
+		console.log('user ID: ', userId)
+
 		// request the server to join the room
 		s.emit("join-room", {
 			userId,
@@ -100,8 +107,8 @@ const VirtualSpace = () => {
 
 		return () => {
 			if (!roomData.collabId) return
+			console.log("Disconnecting from Virtual Space with socket: ", s)
 			s.disconnect()
-			console.log("Disconnected from Virtual Space")
 		}
 		
 	}, [roomData.collabId, roomId, userData.data?.username, userId])
@@ -124,30 +131,32 @@ const VirtualSpace = () => {
 	}
 
 	const filterByPublishStatus = (x, y, z) => {
-		if (published === undefined) return z
 		if (published === true) return x
 		if (published === false) return y
+		if (published === undefined) return z
 	}
 
-	// console.log("published: ",published)
+	const onLeaveRoom = () => { 
+		history.push("/app/rooms")
+	}
 
     return (
 		<>
 			{publishFormVisible && <Publish onSubmit={(e) => { hideForm(e); setPublished(true) }} collabId={roomData.collabId} onCancel={hideForm}/>}
 			{shareFormVisible && <ShareCode onCopy={hideForm} id={roomData.writeId} onCancel={hideForm}/>}
-			<AppBar style={{ position: "sticky", top: 0 }}/>
+			<AppBar onClickHandler={onLeaveRoom} buttons={AppBarButtons}/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
 					<TextEditor onDocumentLoad={setPublished} roomId={roomId} collabId={roomData.collabId} socket={socket} />
 				</div>
 				<div className={styles["footer"]}>
 					<div className={styles["publish-expand"]}>
-						<div
+						<button
 							value="publish"
-							className={ filterByPublishStatus(styles["publish-button-inactive"], styles["publish-button-active"], styles["publish-button-inactive"]) }
+							className={filterByPublishStatus(styles["publish-button-inactive"], styles["publish-button-active"], styles["publish-button-inactive"]) }
 							onClick={filterByPublishStatus(undefined, showForm, undefined)}>
-							<p>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
-						</div>
+							<p style={{pointerEvents: "none"}}>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
+						</button>
 						<button className={styles["expand-button"]} onClick={expand}>
 							<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
 						</button>
@@ -166,7 +175,7 @@ const VirtualSpace = () => {
 					</div>
 				</div>
 				<div className={styles["chat"]}>
-					{/* <Chat socket={socket} username={userData.username} room={roomId} /> */}
+					<Chat socket={socket} username={userData.data?.username} roomId={roomId}/>
 				</div>
 			</div>
 		</>

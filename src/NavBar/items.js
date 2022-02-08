@@ -2,7 +2,7 @@ import {
   faUsers,
   faBookmark,
   faUserCircle,
-  faCog
+  faCog,
 } from "@fortawesome/free-solid-svg-icons";
 
 export const NavBarItems = [

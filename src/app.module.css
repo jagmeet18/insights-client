@@ -11,4 +11,5 @@
     display: grid;
     width: 100%;
     grid-template-rows: 72px auto;
+    /* overflow: hidden; */
 }

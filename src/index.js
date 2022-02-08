@@ -11,7 +11,7 @@ import App from "./app"
 ReactDOM.render(
 	<React.StrictMode>
 		<AuthProvider>
-			<div className="index">
+			<main className="index">
 				<Router>
 					<Switch>
 						<Route path="/login" component={Login}/>
@@ -22,7 +22,7 @@ ReactDOM.render(
 						</Route>
 					</Switch>
 				</Router>
-			</div>
+			</main>
 		</AuthProvider>
 	</React.StrictMode>,
 	document.getElementById("root")

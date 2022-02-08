@@ -18,7 +18,7 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
 ]
 
-export default function TextEditor({ socket, collabId, onDocumentLoad }) {
+export default function TextEditor({ socket, roomId, collabId, onDocumentLoad }) {
 	const [quill, setQuill] = useState()
 
 	console.log(" Text Editor Component rendered!")
@@ -92,6 +92,7 @@ export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 		if (socket == null || quill == null) return
 
 		const handler = (delta) => {
+			console.log(delta)
 			quill.updateContents(delta)
 		}
 		socket.on("receive-changes", handler)
@@ -113,7 +114,7 @@ export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 
 		const handler = async (delta, oldDelta, source) => {
 			if (source !== "user") return
-			socket.emit("send-changes", delta, { collabId })
+			socket.emit("send-changes", delta, { roomId })
 			saveCollabDebounced()
 			// setDoc(doc(db, "collabs", collabId), quill.getContents())
 		}

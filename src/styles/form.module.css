@@ -12,8 +12,8 @@
     align-items: center;
     padding: 50px;
     background-color: white;
-    /* border: #333 solid 2px; */
-    box-shadow: 0px 5px 4px 6px rgba(42, 42, 42, 0.116);
+    border-radius: 20px;
+    box-shadow: 0px 5px 4px 5000px rgba(42, 42, 42, 0.329);
 }
 
 .form_group{

@@ -65,7 +65,7 @@ export default function Rooms() {
 						const subheading = `${roomSize} member` + ( roomSize > 1 ? "s" : "")
 						console.log(roomData[roomId], roomSize, subheading)
 						return (
-							<div className={styles['rooms-item-container']} key={index} value={roomId} onClick={handleJoinOldRoom}>
+							<div className={styles['rooms-item-container']} key={index} >
 								<div className={styles['image']}><img alt="Room cover" src={randomRoom}></img></div>
 								<div className={styles['title']}>
 									{/* <h2>{roomData[roomId] ? `${roomData[roomId].owners[0]}'s Room` : "Loading..."}</h2> */}
@@ -73,7 +73,7 @@ export default function Rooms() {
 									<p className={styles['card-title']} >{roomData[roomId].name}</p>
 									<p className={styles['card-subheader']} >{subheading}</p>
 								</div>
-								<div className={styles['button']}><button className={styles['card-action']} value={roomId} onClick={handleJoinOldRoom}>Join Room</button></div>
+								<div className={styles['button']}><button value={roomId} onClick={handleJoinOldRoom} className={styles['card-action']} >Join Room</button></div>
 							</div>
 						)
 					})
