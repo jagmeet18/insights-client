@@ -3,19 +3,20 @@
     /* top: 100px; */
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(23rem, 14rem));
-    grid-template-rows: repeat(auto-fit, 25rem);
+    grid-template-rows: repeat(auto-fit, fit-content);
     /* gap: 7rem; */
+    row-gap: 3rem;
     justify-content: center;
     /* align-items: center; */
     /* padding-right: 90px; */
     padding: 30px;
     /* padding-top: 0px; */
 }
-
+/* 
 html, body {
     max-width: 100%;
     overflow-x: hidden;
-}
+} */
 
 .card-container {
     justify-self: center;
@@ -36,6 +37,7 @@ html, body {
 }
 
 .image-container {
+    height: 200px;
     overflow: hidden;
 }
 
@@ -68,7 +70,7 @@ h3,p{
     justify-content: center;
 }
 
-button {
+.card-action {
     padding: 0.5rem;
     background-color: white;
     border: none;
@@ -78,11 +80,12 @@ button {
     text-transform: uppercase;
     color: crimson;
     text-decoration: none;
+    text-transform: capitalize;
     font-weight: bold;
     cursor: pointer;
 }
 
-button:hover{
+.card-action:hover{
     background: rgba(27, 156, 252, 0.1);
 }
 

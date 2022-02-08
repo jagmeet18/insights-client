@@ -1,24 +1,36 @@
 .rooms-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(20rem, 18rem));
-    grid-template-rows: repeat(auto-fit, minmax(15rem, 15rem));
-    /* gap: 4rem; */
+    grid-template-columns: repeat(auto-fit, minmax(0, 18rem));
+    grid-template-rows: repeat(auto-fit, minmax(0,10rem));
+    row-gap: 2rem;
+    column-gap: 2rem;
     justify-content: start;
-    /* padding: 50px; */
-    border: 1px solid black;
-    padding: 40px;
+    /* align-items: start; */
+    padding: 2rem;
+    /* border: 3px solid red; */
+    /* padding: 40px; */
+    /* width: 100vw; */
+    /* min-height: 0; */
+}
+
+@media (max-width: 1060px) {
+    .rooms-container {
+        justify-content: center;
+    }
 }
 
 .rooms-item-container {
-    cursor: pointer;
+    /* cursor: pointer; */
     overflow: hidden;
     box-shadow: 0px 0px 15px -5px;
     transition: 0.3s;
-    animation: ease-in;
-    border-radius: 10%;
+    /* animation: ease-in; */
+    border-radius: 1rem;
     background-color: white;
-    height: 150px;
-    width: 85%;
+    height: 100%;
+    /* min-width: 0; */
+    width: 100%;
+    /* margin: 40px; */
     /* padding: 2px; */
     /* padding-right: 2rem; */
     display: grid;
@@ -26,9 +38,13 @@
     align-self: start;
     grid-template-areas: "image title"
                         "image button";
-    grid-template-rows: 1fr 33%;
+    grid-template-rows: 1fr 28%;
     grid-template-columns: 1fr 1fr;
 }
+
+/* .image .title .button {
+    pointer-events: none;
+} */
 
 .rooms-item-container:hover {
     transform: scale(1.1);
@@ -43,12 +59,12 @@
     width: 104%;
     height: 105%;
     /* border: solid 1px black; */
-    overflow: hidden;
+    /* overflow: hidden; */
 }
 
 .rooms-item-container > .title {
     grid-area: title;
-    padding: 10px;
+    padding: 1rem;
     display: flex;
     text-overflow: ellipsis;
     flex-direction: column;
@@ -63,9 +79,19 @@
     color: black; */
 }
 
-p {
+.card-header {
+    color: grey; 
+    font-size: smaller;
+    font-weight: lighter;
+}
+
+.card-title {
+    font-weight: bolder;
     text-overflow: ellipsis;
-    white-space: nowrap;
+}
+
+.card-subheader {
+    color: grey; 
 }
 
 .rooms-item-container > .button {
@@ -73,7 +99,7 @@ p {
     /* border: solid 1px black; */
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     /* justify-self: center;
     align-self: center;
     font-size: 1.5rem;
@@ -82,26 +108,28 @@ p {
     cursor: pointer; */
 }
 
-button {
-    /* padding: 0.5rem; */
+.card-action {
+    padding: 0.5rem;
+    font-size: 1rem;
     background-color: white;
     border: none;
     transition: 0.2s;
     /* margin-bottom: 0.5rem; */
     border-radius: 3px;
-    text-transform: uppercase;
+    text-transform: capitalize;
     color: crimson;
     text-decoration: none;
     font-weight: bold;
     cursor: pointer;
 }
 
-button:hover{
+.card-action:hover{
     background: rgba(27, 156, 252, 0.1);
 }
 
 img {
+
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
 }

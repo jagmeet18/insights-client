@@ -16,14 +16,11 @@ import styles from './auth.module.css';
 async function postUser({uid, email, username, pfp}){
     try{
         const data = {
-            // fName: fName,
-            // lName: lName,
             email,
             username,
-            // password: password,
             pfp,
-            // bio: bio,
             previousCollabs: [],
+            publishedCollabs: [],
             previousRooms: [],
             previousCommunities: [],
         }
@@ -109,7 +106,9 @@ const SignUp = ({ history }) => {
 
     }
 
-    console.log("new render")
+    const keyPressHandler = (e) => { 
+        e.key === "Enter" && handleSubmit(e);
+    }
 
     return ( 
         // If session exists, redirect to /app, else continue
@@ -127,22 +126,22 @@ const SignUp = ({ history }) => {
                 <div className={styles["form_group"]}>
                     Email
                     <br />
-                    <input type="email" name="email" placeholder="Enter an e-mail" onChange={(e) => setEmail(e.target.value)}></input>
+                    <input onKeyPress={keyPressHandler} type="email" name="email" placeholder="Enter an e-mail" onChange={(e) => setEmail(e.target.value)}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Username
                     <br />
-                    <input type="username" name="username" placeholder="Enter a username" onChange={(e) => setUsername(e.target.value)}></input>
+                    <input onKeyPress={keyPressHandler} type="username" name="username" placeholder="Enter a username" onChange={(e) => setUsername(e.target.value)}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Password
                     <br />
-                    <input type="password" name="password" placeholder="Enter a password" onChange={(e) => setPassword(e.target.value)}></input>
+                    <input onKeyPress={keyPressHandler} type="password" name="password" placeholder="Enter a password" onChange={(e) => setPassword(e.target.value)}></input>
                 </div>
                 <div className={styles["form_group"]}>
                     Confirm Password
                     <br />
-                    <input type="password" name="confirm-password" placeholder="Confirm your password" onChange={(e) => {
+                    <input onKeyPress={keyPressHandler} type="password" name="confirm-password" placeholder="Confirm your password" onChange={(e) => {
                         // setErrors((prev) => prev.filter(msg => msg !== errorCodes.match))
                         if (e.target.value === password || e.target.value === '' || error.code === "auth/password-mismatch") setError('')
                         setConfirmedPassword(e.target.value)

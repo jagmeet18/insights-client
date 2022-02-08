@@ -9,29 +9,40 @@ import { io } from "socket.io-client"
 import { useUser } from "../context/user";
 import AppBar from "../AppBar/bar"
 import TextEditor from "./text.editor"
-// import Chat from "../Chat/chat"
+import Chat from "../Chat/chat"
 import Publish from "./publish.popup"
+import ShareCode from "./share.room.popup"
+import { AppBarButtons } from "./appbar.buttons"
+
 import styles from "./vspage.module.css"
 import { faExpandAlt, faUserPlus } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useHistory } from "react-router-dom";
+import { useTraceUpdate } from '../utils'
 
 const VirtualSpace = () => {
 	const [socket, setSocket] = useState()
-	const [published, setPublished] = useState(null);
+	
+	const [published, setPublished] = useState();
 	const [publishFormVisible, setPublishFormVisible] = useState(false);
-	const [collabId, setCollabId] = useState();
+	const [shareFormVisible, setShareFormVisible] = useState(false);
+	
+	const [roomData, setRoomData] = useState({});
 
 	const { userData } = useUser()
 	const { id: userId } = userData
 	const [participants, setParticipants] = useState([{pfp: userData.data?.pfp, username: userData.data?.username, userId}]);
 	const { id: roomId } = useParams()
+	const history = useHistory();
+
+	useTraceUpdate({socket,published,publishFormVisible,shareFormVisible,roomData,userData,userId,participants,roomId})
 
 	useEffect(() => {
 		getDoc(doc(db, "virtual-spaces", roomId)).then(docSnap => {
 			// eslint-disable-next-line no-throw-literal
 			if (!docSnap.data()) throw {code:404, msg:"Room doesn't exist"}
-			const collabId = docSnap.data().collabId
-			setCollabId(collabId)
+			const room = docSnap.data()
+			setRoomData(room)
 		})
 	}, [roomId]);
 
@@ -47,9 +58,9 @@ const VirtualSpace = () => {
 	}, [userData.data?.pfp, userData.data?.username, userId]);
 
 	useEffect(() => {
-		if (!collabId) return
+		if (!roomData.collabId) return
 		
-		const s = io("http://localhost:3000")
+		const s = io("https://insights--server.herokuapp.com")
 		setSocket(s)
 
 		// data received upon joining the room
@@ -81,77 +92,90 @@ const VirtualSpace = () => {
 			setParticipants((prev) => prev.filter((p) => p.userId !== data.userId))
 		})
 
+		console.log('ROOM ID: ', roomData.collabId)
+		console.log('COllab ID: ', roomId)
+		console.log('username: ', userData.data?.username)
+		console.log('user ID: ', userId)
+
 		// request the server to join the room
 		s.emit("join-room", {
 			userId,
 			username: userData.data?.username,
-			collabId,
+			collabId: roomData.collabId,
 			roomId
 		})
 
 		return () => {
-			if (!collabId) return
+			if (!roomData.collabId) return
+			console.log("Disconnecting from Virtual Space with socket: ", s)
 			s.disconnect()
-			console.log("Disconnected from Virtual Space")
 		}
 		
-	}, [collabId, roomId, userData.data?.username, userId])
+	}, [roomData.collabId, roomId, userData.data?.username, userId])
 
 	const expand = () => {
 		// some css to expand text editor to full screen
 	}
 
-	const sendInvite = () => {
-		// form to get invite id
+	const showForm = (e) => {
+		const val = e.target.value
+		// console.log("showForm: ", val)
+		val === "publish" && setPublishFormVisible(true)
+		val === "share-code" && setShareFormVisible(true)
 	}
 
-	const showForm = (e) => { 
-		setPublishFormVisible(true)
+	const hideForm = (e) => {
+		const target = e.target
+		target.value === "publish" && setPublishFormVisible(false)
+		target.name === "share-code" && setShareFormVisible(false)
 	}
 
-	const hideForm = (e) => { 
-		setPublishFormVisible(false)
-	}
-
-	const filterByPublishStatus = (x,y,z) => { 
+	const filterByPublishStatus = (x, y, z) => {
 		if (published === true) return x
 		if (published === false) return y
-		if (published === null) return z
+		if (published === undefined) return z
+	}
+
+	const onLeaveRoom = () => { 
+		history.push("/app/rooms")
 	}
 
     return (
 		<>
-			{publishFormVisible && <Publish onSubmit={(e) => { hideForm(e); setPublished(true) }} collabId={collabId} onCancel={hideForm}/>}
-			<AppBar style={{ border: "2px solid green", position: "sticky", top: 0 }}/>
+			{publishFormVisible && <Publish onSubmit={(e) => { hideForm(e); setPublished(true) }} collabId={roomData.collabId} onCancel={hideForm}/>}
+			{shareFormVisible && <ShareCode onCopy={hideForm} id={roomData.writeId} onCancel={hideForm}/>}
+			<AppBar onClickHandler={onLeaveRoom} buttons={AppBarButtons}/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
-					<TextEditor onDocumentLoad={setPublished} roomId={roomId} collabId={collabId} socket={socket} />
+					<TextEditor onDocumentLoad={setPublished} roomId={roomId} collabId={roomData.collabId} socket={socket} />
 				</div>
-
-				<div className={styles["publish-expand"]}>
-					<div
-						className={ filterByPublishStatus(styles["publish-button-published"], styles["publish-button-not-published"], styles["publish-button-not-published"]) }
-						onClick={filterByPublishStatus(() => { }, showForm, () => { })}>
-						<p>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
+				<div className={styles["footer"]}>
+					<div className={styles["publish-expand"]}>
+						<button
+							value="publish"
+							className={filterByPublishStatus(styles["publish-button-inactive"], styles["publish-button-active"], styles["publish-button-inactive"]) }
+							onClick={filterByPublishStatus(undefined, showForm, undefined)}>
+							<p style={{pointerEvents: "none"}}>{filterByPublishStatus("Succesfully published!","Publish","Checking...")}</p>
+						</button>
+						<button className={styles["expand-button"]} onClick={expand}>
+							<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
+						</button>
 					</div>
-					<button className={styles["expand-button"]} onClick={expand}>
-						<FontAwesomeIcon className={styles["expand-icon"]} size="2x" icon={faExpandAlt}/>
-					</button>
-				</div>
 
-				<div className={styles["online-collaborators"]}>				
-					{participants.map(({ pfp, username }, index) => {
-						if (!pfp || !username) return undefined
-						return(	
-							<img key={index} alt={`User ${username}`} className= {styles["images"]} src={pfp}/>
-						);
-					})}
-					<button className={styles["invite-button"]} onClick={sendInvite}>
-						<FontAwesomeIcon className={styles["invite-icon"]} size="3x" icon={faUserPlus}/>
-					</button>
+					<div className={styles["online-collaborators"]}>				
+						{participants.map(({ pfp, username }, index) => {
+							if (!pfp || !username) return undefined
+							return(	
+								<img key={index} alt={`User ${username}`} className= {styles["images"]} src={pfp}/>
+							);
+						})}
+						<button className={styles["invite-button"]} value="share-code" onClick={showForm}>
+							<FontAwesomeIcon className={styles["invite-icon"]} size="3x" icon={faUserPlus}/>
+						</button>
+					</div>
 				</div>
 				<div className={styles["chat"]}>
-					{/* <Chat socket={socket} username={userData.username} room={roomId} /> */}
+					<Chat socket={socket} username={userData.data?.username} roomId={roomId}/>
 				</div>
 			</div>
 		</>

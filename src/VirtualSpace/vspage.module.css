@@ -1,62 +1,65 @@
-:root {
-    --page: #12254f;
-    --icons: #FC9C54;
-    --buttons: #4B3D60;
-    --bars: #08183A;
-    --cards: #172b57;
-    --forms: #172b57;
-}
-
 .parent {
     display: grid;
     grid-template-areas:
         "text-editor chat"
-        "publish-expand chat"
-        "online-collaborators chat" ;
-    grid-template-rows: 1fr 50px 80px;
+        "footer chat";
+    grid-template-rows: 1fr 130px;
     grid-template-columns: 1fr 275px;
-    /* border: 3px solid yellow; */
+    /* border: solid 5px red; */
     z-index: 0;
-    /* position: sticky;
-    top: 0; */
-    border: 1px solid black;
+    height: 100vh;
+    height: 100%;
 }
 
 .parent > .text-editor {
     grid-area: text-editor;
-    /* border: 2px solid red; */
-    /* position: sticky;
-    top: 0; */
     z-index: 0;
-    /* background-color: var(--page); */
+    /* border: solid 5px blue; */
+    border: none;
+    --toolbar-height: 42.4px;
 }
 
 
-.parent > .publish-expand {
-    grid-area: publish-expand;
+.publish-expand {
+    height: 38%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    /* padding: 7px 20px 5px 20px; */
     padding-inline: 10px;
+    width: 100%;
     background-color: white;
-    border-top: 1px solid black;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
 }
 
-
-.parent > .online-collaborators {
-    grid-area: online-collaborators;
-    background-color: white;
-    position: sticky;
+.parent > .footer {
+    grid-area: footer;
+    display: flex;
+    flex-direction: column;
+    /* height: 100%; */
+    width: 100%;
     bottom: 0;
-    border-top: 1px solid black;
+    position: sticky;
+    box-shadow: 0 0 7.5px 0 rgba(0, 0, 0, .5);
+}
+
+.online-collaborators {
+    width: 100%;
+    background-color: white;
+    z-index: 3;
+    border-top: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    height: 62%;
 }
 
 .parent > .chat {
     grid-area: chat;
+    min-height: 0;
+    max-height: 100%;
+    z-index: 3;
 }
 
-.publish-button-not-published {
+.publish-button-active {
     display: flex;
     color: white;
     justify-content: center;
@@ -70,7 +73,7 @@
     white-space: nowrap;
 }
 
-.publish-button-published {
+.publish-button-inactive {
     display: flex;
     color: white;
     justify-content: center;
@@ -84,13 +87,13 @@
     pointer-events: fill;
 }
 
-.publish-button-published:hover {
+.publish-button-inactive:hover {
     cursor: not-allowed;
 }
 
 .expand-button {
     background-color: transparent;
-    padding-top: 5px;
+    /* padding-top: 5px; */
 }
 
 .expand-button:hover {
@@ -99,7 +102,7 @@
 
 .expand-icon {
     height: 100%;
-    padding-top: 12.5px;
+    /* padding-top: 12.5px; */
     color: var(--icons)
 }
 
@@ -115,6 +118,7 @@
 
 .invite-icon {
     color: var(--icons);
+    pointer-events: none;
 }
 
 .online-collaborators {

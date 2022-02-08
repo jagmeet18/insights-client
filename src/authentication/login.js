@@ -46,6 +46,10 @@ const Login = ({ history }) => {
         }
     }
 
+    const keyPressHandler = (e) => { 
+        e.key === "Enter" && handleSubmit(e);
+    }
+
     return ( 
         <div className={styles["container"]}>
             <div className={styles["form"]}>
@@ -53,11 +57,11 @@ const Login = ({ history }) => {
                 <div className={styles["errorHandle"]}>{error.msg}</div>
                 <div className={styles["form_group"]}>
                     <label htmlFor="Email">E-mail</label>
-                    <input onChange={handleInputChange} type="email" name="email" placeholder="Enter your e-mail address"></input>
+                    <input onKeyPress={keyPressHandler} onChange={handleInputChange} type="email" name="email" placeholder="Enter your e-mail address"></input>
                 </div>
                 <div className={styles["form_group"]}>
                     <label htmlFor="Password">Password</label>
-                    <input onChange={handleInputChange} type="password" name="password" placeholder="Enter your password"></input>
+                    <input onKeyPress={keyPressHandler} onChange={handleInputChange} type="password" name="password" placeholder="Enter your password"></input>
                 </div>
                 <div className={styles["footer"]}>
                     <Link to="/signup" className={styles["links"]}>Create an account?</Link>

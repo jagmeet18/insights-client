@@ -18,10 +18,10 @@ const TOOLBAR_OPTIONS = [
 	["clean"],
 ]
 
-export default function TextEditor({ socket, collabId, onDocumentLoad }) {
+export default function TextEditor({ socket, roomId, collabId, onDocumentLoad }) {
 	const [quill, setQuill] = useState()
 
-	console.log("Text Editor component rendered!")
+	console.log(" Text Editor Component rendered!")
 
 
 	// useEffect(() => {
@@ -92,6 +92,7 @@ export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 		if (socket == null || quill == null) return
 
 		const handler = (delta) => {
+			console.log(delta)
 			quill.updateContents(delta)
 		}
 		socket.on("receive-changes", handler)
@@ -103,8 +104,8 @@ export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 
 	const saveCollabDebounced = debounce(async () => { 
 		if (!collabId) return
-		const data = await updateDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
-		console.log("saved document ["+collabId+"]: ", data)
+		await updateDoc(doc(db, "collabs", collabId), { content: quill.getContents().ops })
+		console.log("saved document ["+collabId+"]")
 	}, 1000)
 
 	// this sends changes to the server everytime there is a change
@@ -113,7 +114,7 @@ export default function TextEditor({ socket, collabId, onDocumentLoad }) {
 
 		const handler = async (delta, oldDelta, source) => {
 			if (source !== "user") return
-			socket.emit("send-changes", delta, { collabId })
+			socket.emit("send-changes", delta, { roomId })
 			saveCollabDebounced()
 			// setDoc(doc(db, "collabs", collabId), quill.getContents())
 		}

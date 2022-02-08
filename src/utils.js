@@ -1,3 +1,22 @@
+import { useEffect, useRef } from 'react'
+
+export function useTraceUpdate(state) {
+  const prev = useRef(state);
+  useEffect(() => {
+    const changedState = Object.entries(state).reduce((ps, [k, v]) => {
+      if (prev.current[k] !== v) {
+        ps[k] = [prev.current[k], v];
+      }
+      return ps;
+    }, {});
+    if (Object.keys(changedState).length > 0) {
+      console.log('Changed state:', changedState);
+    }
+    prev.current = state;
+  });
+}
+
+
 export function onError(e, cb) {
     switch (e.code) {
         case `auth/password-mismatch`:
@@ -247,7 +266,6 @@ export const loadingMessages = [
     "Digested cookies being baked again.",
     "Live long and prosper.",
     "There is no cow level, but there's a goat one!",
-    "Deleting all your hidden porn...",
     "Running with scissors...",
     "Definitely not a virus...",
     "You may call me Steve.",

@@ -59,11 +59,16 @@ const Publish = ({ collabId, onSubmit, onCancel }) => {
                 <div className={styles["form_group"]}>
                     {error && <div className={styles["error-handle"]}>{error}</div>}
                     Name your Collab
-                    <input type="text" name="bio" placeholder="Name" value={name} onChange={(e) => {
-                        setName(e.target.value);
-                        if (!error) return
-                        setError('')
-                    }}></input>
+                    <input type="text" name="bio" placeholder="Name" value={name}
+                        onChange={(e) => {
+                            setName(e.target.value);
+                            if (!error) return
+                            setError('')
+                        }}
+                        onKeyPress={(e) => {
+                            e.key === "Enter" && publishCollab(e);
+                        }}
+                    ></input>
                 </div>
                 <div className={styles["pfp"]}>
                     <p>Add a cover image</p>
@@ -71,7 +76,7 @@ const Publish = ({ collabId, onSubmit, onCancel }) => {
                 </div>
                 <div className={styles["footer"]}>
                     <button onClick={publishCollab} type="button" className={styles["submit"]}>Publish</button>
-                    <button type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
+                    <button value="publish" type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
                 </div>
             </div>
         </div>

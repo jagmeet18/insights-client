@@ -37,9 +37,9 @@ const CollabCard = (props) => {
             </div>
            
             <div className={styles["btn"]}>
-                <button>
+                <div className={styles['card-action']}>
                     View Collab
-                </button>
+                </div>
             </div>
         </div>
     );

@@ -19,6 +19,7 @@
     z-index: 1;
     width: 100%;
     font-size: 100px;
+    border-block: solid 1px #ccc;
 }
 
 .navbar img {
@@ -51,7 +52,7 @@
     /* border-top: 2px solid crimson; */
     /* padding-top: 20px; */
     /* padding-bottom: 10px; */
-    margin-inline: 15px;
+    margin-inline: 30px;
     /* border: solid white 2px; */
 }
 
