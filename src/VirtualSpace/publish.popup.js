@@ -75,7 +75,7 @@ const Publish = ({ collabId, onSubmit, onCancel }) => {
                     <input type="file" accept="image/*" name="image-upload" id="input" onChange={UploadPic}></input>
                 </div>
                 <div className={styles["footer"]}>
-                    <button onClick={publishCollab} type="button" className={styles["submit"]}>Publish</button>
+                    <button onClick={publishCollab} value="publish" type="button" className={styles["submit"]}>Publish</button>
                     <button value="publish" type="button" onClick={onCancel} className={styles["cancel"]}>Cancel</button>
                 </div>
             </div>
