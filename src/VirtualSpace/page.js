@@ -65,7 +65,7 @@ const VirtualSpace = () => {
 
 		// data received upon joining the room
 		s.on("join-room ack", ({userId: uid , username: uname}) => {
-			console.log("Data from user: ", uname)
+			// console.log("Data from user: ", uname)
 			getDoc(doc(db, "users", uid)).then((snapshot) => {
 				const { pfp } = snapshot.data()
 				setParticipants((prev) => [...prev, { pfp, userId: uid, username: uname }])
@@ -92,10 +92,10 @@ const VirtualSpace = () => {
 			setParticipants((prev) => prev.filter((p) => p.userId !== data.userId))
 		})
 
-		console.log('ROOM ID: ', roomData.collabId)
-		console.log('COllab ID: ', roomId)
-		console.log('username: ', userData.data?.username)
-		console.log('user ID: ', userId)
+		// console.log('ROOM ID: ', roomData.collabId)
+		// console.log('COllab ID: ', roomId)
+		// console.log('username: ', userData.data?.username)
+		// console.log('user ID: ', userId)
 
 		// request the server to join the room
 		s.emit("join-room", {
@@ -126,7 +126,7 @@ const VirtualSpace = () => {
 
 	const hideForm = (e) => {
 		const target = e.target
-		console.log('target: ',target)
+		// console.log('target: ',target)
 		target.value === "publish" && setPublishFormVisible(false)
 		target.name === "share-code" && setShareFormVisible(false)
 	}
@@ -148,7 +148,7 @@ const VirtualSpace = () => {
 			<AppBar onClickHandler={onLeaveRoom} buttons={AppBarButtons}/>
 			<div className={styles["parent"]}>
 				<div className={styles["text-editor"]}>
-					<TextEditor onDocumentLoad={setPublished} roomId={roomId} collabId={roomData.collabId} socket={socket} />
+					<TextEditor onMembersChange={(cb) => cb(participants)} onDocumentLoad={setPublished} roomId={roomId} collabId={roomData.collabId} socket={socket} />
 				</div>
 				<div className={styles["footer"]}>
 					<div className={styles["publish-expand"]}>
