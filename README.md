@@ -1,4 +1,5 @@
 # Insights 📖
+## Community-oriented platform for writers to create and publish text-based content in real-time with other writers.
 
 Frontend for [Insights virtual-space server](https://github.com/farhansolodev/insights-server).
 
