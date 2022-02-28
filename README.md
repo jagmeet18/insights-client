@@ -1,6 +1,6 @@
 # Insights 📖
 
-Frontend for [Insights virtual-space server](https://github.com/farhansolodev/insights-client).
+Frontend for [Insights virtual-space server](https://github.com/farhansolodev/insights-server).
 
 ## Available Scripts
 
